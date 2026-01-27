@@ -26,6 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Assets\Fonts\" />
+    <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
 </Project>
