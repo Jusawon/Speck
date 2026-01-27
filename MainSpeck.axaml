@@ -1,0 +1,26 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1440" d:DesignHeight="1024"
+        x:Class="Speck.MainWindow"
+        Title="Speck">
+    <Grid ColumnDefinitions="Auto, Auto">
+        <DockPanel Grid.Column="0" Width="200" Background ="#D0FFC9">
+            <DockPanel.Effect>
+                <DropShadowEffect Color="Black" BlurRadius="4" Opacity="0.25" OffsetX="0" OffsetY="0"/>
+             </DockPanel.Effect>
+
+            <StackPanel Orientation="Vertical" Margin="20 20" Spacing="10" DockPanel.Dock="Top">
+				<ToggleButton>
+					<TextBlock Text="New File" FontSize="40"  Foreground="Black"/>
+                </ToggleButton>
+
+            </StackPanel>
+
+        </DockPanel>
+            <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Background ="#F9FAFB">
+
+            </ScrollViewer>
+    </Grid>
+</Window>
