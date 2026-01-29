@@ -11,6 +11,7 @@
    
     <Application.Styles>
         <FluentTheme />
+        <StyleInclude Source="/SpeckStyles.axaml"/>
 
          <Style Selector= "Window">
             <Setter Property="FontFamily"

@@ -1,0 +1,58 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Design.PreviewWith>
+    <Border Padding="20">
+      <!-- Add Controls for Previewer Here -->
+      <ToggleButton Classes="MenuItems">
+          <StackPanel Classes="MenuItemContent">
+              <Image Classes="MenuItemIcon" Source="{SvgImage //Speck/Assets/Icons/Menu Items/Dashboard (Idle).svg}"/>
+              <TextBlock Classes="MenuItemText" Text="Dashboard"/>
+          </StackPanel>
+      </ToggleButton>
+                    
+    </Border>
+  </Design.PreviewWith>
+
+    <Style Selector="ToggleButton.MenuItems"> <!-- Side Menu Items-->
+		<Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="CornerRadius" Value="14"/>
+        <Setter Property="Width" Value="180"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+
+
+        <Style Selector="^:checked /template/ ContentPresenter#PART_ContentPresenter">
+			<Setter Property="Foreground" Value="#5A8753"/>
+            <Setter Property="Background" Value="#A7E99C"/>
+        </Style>
+
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Foreground" Value="#5A8753"/>
+            <Setter Property="Background" Value="#94C88C"/>
+        </Style>
+    </Style>
+
+    <Style Selector="StackPanel.MenuItemContent">
+            <Setter Property="Orientation" Value="Horizontal"/>
+            <Setter Property="Spacing" Value="15"/>
+    </Style>
+
+    <Style Selector="TextBlock.MenuItemText">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+    </Style>
+
+    <Style Selector="Image.MenuItemIcon">
+        <Setter Property="Width" Value="20"/>
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="20, 0, 0, 0"/>
+    </Style>
+
+
+  <!-- Add Styles Here -->
+</Styles>
