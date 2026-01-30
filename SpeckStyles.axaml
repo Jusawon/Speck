@@ -3,12 +3,7 @@
   <Design.PreviewWith>
     <Border Padding="20">
       <!-- Add Controls for Previewer Here -->
-      <ToggleButton Classes="MenuItems">
-          <StackPanel Classes="MenuItemContent">
-              <Image Classes="MenuItemIcon" Source="{SvgImage //Speck/Assets/Icons/Menu Items/Dashboard (Idle).svg}"/>
-              <TextBlock Classes="MenuItemText" Text="Dashboard"/>
-          </StackPanel>
-      </ToggleButton>
+
                     
     </Border>
   </Design.PreviewWith>
@@ -23,35 +18,48 @@
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
 
-
-        <Style Selector="^:checked /template/ ContentPresenter#PART_ContentPresenter">
-			<Setter Property="Foreground" Value="#5A8753"/>
-            <Setter Property="Background" Value="#A7E99C"/>
-        </Style>
-
-        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Foreground" Value="#5A8753"/>
-            <Setter Property="Background" Value="#94C88C"/>
-        </Style>
-    </Style>
-
-    <Style Selector="StackPanel.MenuItemContent">
+        <Style Selector="^ StackPanel">
             <Setter Property="Orientation" Value="Horizontal"/>
             <Setter Property="Spacing" Value="15"/>
-    </Style>
+        </Style>
 
-    <Style Selector="TextBlock.MenuItemText">
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="FontWeight" Value="Medium"/>
-    </Style>
+        <Style Selector="^ TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Padding" Value="0,4, 0, 0"/>
+        </Style>
 
-    <Style Selector="Image.MenuItemIcon">
-        <Setter Property="Width" Value="20"/>
-        <Setter Property="Height" Value="20"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="Margin" Value="20, 0, 0, 0"/>
-    </Style>
+        <Style Selector="^ Image">
+            <Setter Property="Width" Value="20"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Margin" Value="10, 0, 0, 0"/>
+            <Setter Property="OpacityMask" Value="Green"/>
+        </Style>
+
+
+        <Style Selector="^:checked /template/ ContentPresenter">
+            <Setter Property="Background" Value="#A7E99C"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+
+        <Style Selector="^:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#94C88C"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+
+        <Style Selector="^:checked StackPanel">
+			        <Setter Property="Opacity" Value="0.4"/>
+        </Style>
+
+         <Style Selector="^:pointerover StackPanel">
+			        <Setter Property="Opacity" Value="0.4"/>
+        </Style>
+    </Style> <!-- Side Menu Items-->
+
+
+
 
 
   <!-- Add Styles Here -->

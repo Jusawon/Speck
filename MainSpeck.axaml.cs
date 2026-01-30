@@ -7,6 +7,82 @@ namespace Speck
         public MainWindow()
         {
             InitializeComponent();
+
+            // Menu Items
+            MI_Dashboard.Click += MI_Dashboard_Click;
+            MI_Scans.Click += MI_Scans_Click;
+            MI_Vulnerabilities.Click += MI_Vulnerabilities_Click;
+            MI_Logs.Click += MI_Logs_Click;
+            MI_Customization.Click += MI_Customization_Click;
+            MI_Settings.Click += MI_Settings_Click;
+            //Menu Items
+
+        }
+
+        private void MI_Dashboard_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            MI_Scans.IsChecked = false;
+            MI_Vulnerabilities.IsChecked = false;
+            MI_Logs.IsChecked = false;
+            MI_Customization.IsChecked = false;
+            MI_Settings.IsChecked = false;
+
+
+        }
+
+        private void MI_Scans_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            MI_Dashboard.IsChecked = false;
+            MI_Vulnerabilities.IsChecked = false;
+            MI_Logs.IsChecked = false;
+            MI_Customization.IsChecked = false;
+            MI_Settings.IsChecked = false;
+
+
+        }
+
+        private void MI_Vulnerabilities_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            MI_Dashboard.IsChecked = false;
+            MI_Scans.IsChecked = false;
+            MI_Logs.IsChecked = false;
+            MI_Customization.IsChecked = false;
+            MI_Settings.IsChecked = false;
+
+
+        }
+
+        private void MI_Logs_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            MI_Dashboard.IsChecked = false;
+            MI_Scans.IsChecked = false;
+            MI_Vulnerabilities.IsChecked = false;
+            MI_Customization.IsChecked = false;
+            MI_Settings.IsChecked = false;
+
+
+        }
+
+        private void MI_Customization_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            MI_Dashboard.IsChecked = false;
+            MI_Scans.IsChecked = false;
+            MI_Vulnerabilities.IsChecked = false;
+            MI_Logs.IsChecked = false;
+            MI_Settings.IsChecked = false;
+
+
+        }
+
+        private void MI_Settings_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            MI_Dashboard.IsChecked = false;
+            MI_Scans.IsChecked = false;
+            MI_Vulnerabilities.IsChecked = false;
+            MI_Logs.IsChecked = false;
+            MI_Customization.IsChecked = false;
+
+
         }
     }
 }

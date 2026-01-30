@@ -1,6 +1,0 @@
-<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect x="1" y="7.5" width="7.5" height="11.5" rx="2" stroke="#5A8753" stroke-width="2"/>
-<rect x="1" y="-1" width="7.5" height="11.5" rx="2" transform="matrix(1 0 0 -1 10.5 11.5)" stroke="#5A8753" stroke-width="2"/>
-<rect x="1" y="1" width="7.5" height="3.5" rx="1" stroke="#5A8753" stroke-width="2"/>
-<rect x="1" y="-1" width="7.5" height="3.5" rx="1" transform="matrix(1 0 0 -1 10.5 18)" stroke="#5A8753" stroke-width="2"/>
-</svg>
