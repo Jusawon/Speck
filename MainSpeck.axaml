@@ -4,8 +4,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="1440" d:DesignHeight="1024"
         x:Class="Speck.MainWindow"
-        Title="Speck">
-    <Grid ColumnDefinitions="200, Auto">
+        Title="Speck"
+        MinWidth="800"
+        MinHeight="600">
+
+
+    <Grid ColumnDefinitions="Auto, *">
         <DockPanel Classes="SidePanel"
                    Grid.Column="0">
 
@@ -61,7 +65,10 @@
                       </StackPanel>
             </ToggleButton>
         </DockPanel>
-            <ContentControl Grid.Column="1">
+            <ContentControl 
+                Name="MainCC"
+                Grid.Column="1"
+                ZIndex="0">
 
             </ContentControl>
     </Grid>

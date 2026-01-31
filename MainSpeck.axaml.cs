@@ -24,68 +24,78 @@ namespace Speck
 
         private void MI_Dashboard_Click(object? sender, RoutedEventArgs e)
         {
+            MI_Dashboard.IsChecked = true;
             MI_Scans.IsChecked = false;
             MI_Vulnerabilities.IsChecked = false;
             MI_Logs.IsChecked = false;
             MI_Customization.IsChecked = false;
             MI_Settings.IsChecked = false;
+
+            MainCC.Content = new Dashboard();
 
 
         }
 
         private void MI_Scans_Click(object? sender, RoutedEventArgs e)
         {
+            
+
+            MI_Scans.IsChecked = true;
             MI_Dashboard.IsChecked = false;
             MI_Vulnerabilities.IsChecked = false;
             MI_Logs.IsChecked = false;
             MI_Customization.IsChecked = false;
             MI_Settings.IsChecked = false;
 
-
+            MainCC.Content = new Scans();
         }
 
         private void MI_Vulnerabilities_Click(object? sender, RoutedEventArgs e)
         {
+            MI_Vulnerabilities.IsChecked = true;
             MI_Dashboard.IsChecked = false;
             MI_Scans.IsChecked = false;
             MI_Logs.IsChecked = false;
             MI_Customization.IsChecked = false;
             MI_Settings.IsChecked = false;
 
-
+            MainCC.Content = new Vulnerabilities();
         }
 
         private void MI_Logs_Click(object? sender, RoutedEventArgs e)
         {
+            MI_Logs.IsChecked = true;
             MI_Dashboard.IsChecked = false;
             MI_Scans.IsChecked = false;
             MI_Vulnerabilities.IsChecked = false;
             MI_Customization.IsChecked = false;
             MI_Settings.IsChecked = false;
 
-
+            MainCC.Content = new Logs();
         }
 
         private void MI_Customization_Click(object? sender, RoutedEventArgs e)
         {
+            MI_Customization.IsChecked = true;
             MI_Dashboard.IsChecked = false;
             MI_Scans.IsChecked = false;
             MI_Vulnerabilities.IsChecked = false;
             MI_Logs.IsChecked = false;
             MI_Settings.IsChecked = false;
 
-
+            MainCC.Content = new Customization();
         }
 
         private void MI_Settings_Click(object? sender,  RoutedEventArgs e)
         {
+            MI_Settings.IsChecked = true;
             MI_Dashboard.IsChecked = false;
             MI_Scans.IsChecked = false;
             MI_Vulnerabilities.IsChecked = false;
             MI_Logs.IsChecked = false;
             MI_Customization.IsChecked = false;
 
-
+            MainCC.Content = new Settings();
         }
     }
 }

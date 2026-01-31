@@ -6,7 +6,58 @@
              x:Class="Speck.Dashboard"
              Background="#F9FAFB"
              HorizontalAlignment="Stretch"
-             VerticalAlignment="Stretch">
-  Welcome to Avalonia!
+             VerticalAlignment="Stretch"
+             >
+    <ScrollViewer >
+           <StackPanel Classes="VControlStack">
+                  <TextBlock Classes="H1" Text="Dashboard"/>
+                  <TextBlock Classes="H2" Text="Overview"/>
+              <WrapPanel Classes="HControlStack">
+                  <Border Classes="OverviewBoxes">
+                        <StackPanel>
+                            <TextBlock Text="0" Foreground="#537BFF" Classes="OverviewCounter"/>
+
+                            <StackPanel>
+			                     <TextBlock Text="Total Scan(s) Run" Classes="OverviewDescription"/>
+                                <Button Content="Run a Scan Now" Classes="ViewLink"/>
+                            </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                  <Border Classes="OverviewBoxes">
+                        <StackPanel>
+                            <TextBlock Text="0" Foreground="#CB1111" Classes="OverviewCounter"/>
+
+                            <StackPanel>
+			                     <TextBlock Text="Vulnerabilities Found" Classes="OverviewDescription"/>
+                                <Button Content="Solve Now" Classes="ViewLink"/>
+                            </StackPanel>
+                        </StackPanel>
+                </Border>
+
+                 <Border Classes="OverviewBoxes">
+                        <StackPanel>
+                            <TextBlock Text="0" Foreground="#89B382" Classes="OverviewCounter"/>
+
+                            <StackPanel>
+			                     <TextBlock Text="Total Risk(s) Mitigated" Classes="OverviewDescription"/>
+                            </StackPanel>
+                        </StackPanel>
+                </Border>
+
+                 <Border Classes="OverviewBoxes">
+                        <StackPanel>
+                            <TextBlock Text="0.0" Foreground="#CB1111" Classes="OverviewCounter"/>
+
+                            <StackPanel>
+			                     <TextBlock Text="Risk Score" Classes="OverviewDescription"/>
+                            </StackPanel>
+                        </StackPanel>
+                </Border>
+
+            </WrapPanel>
+
+          </StackPanel>
+    </ScrollViewer>
 
 </UserControl>
