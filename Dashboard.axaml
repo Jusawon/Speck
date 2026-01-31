@@ -8,7 +8,7 @@
              HorizontalAlignment="Stretch"
              VerticalAlignment="Stretch"
              >
-    <ScrollViewer >
+    <ScrollViewer>
            <StackPanel Classes="VControlStack">
                   <TextBlock Classes="H1" Text="Dashboard"/>
                   <TextBlock Classes="H2" Text="Overview"/>
@@ -56,6 +56,8 @@
                 </Border>
 
             </WrapPanel>
+
+
 
           </StackPanel>
     </ScrollViewer>

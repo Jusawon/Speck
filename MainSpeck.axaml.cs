@@ -18,6 +18,9 @@ namespace Speck
             MI_Customization.Click += MI_Customization_Click;
             MI_Settings.Click += MI_Settings_Click;
             //Menu Items
+            Btn_Chat.Click += Btn_Chat_Click;
+            Btn_Send_Chat.Click += Btn_Send_Chat_Click;
+            Btn_Close_Chat.Click += Btn_Close_Chat_Click;
 
             MI_Dashboard_Click(this, new RoutedEventArgs());
         }
@@ -96,6 +99,20 @@ namespace Speck
             MI_Customization.IsChecked = false;
 
             MainCC.Content = new Settings();
+        }
+
+        private void Btn_Chat_Click(object? sender, RoutedEventArgs e)
+        {
+            ChatWindow.IsPaneOpen = true;
+        }
+        private void Btn_Close_Chat_Click(object? sender, RoutedEventArgs e)
+        {
+            ChatWindow.IsPaneOpen = false;
+        }
+
+        private void Btn_Send_Chat_Click(object? sender, RoutedEventArgs e)
+        {
+            ChatInput.Text = "";
         }
     }
 }
