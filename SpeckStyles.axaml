@@ -1,12 +1,39 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <Design.PreviewWith>
-    <Border Padding="20">
+    <Border Padding="20" Background="#F9FAFB">
       <!-- Add Controls for Previewer Here -->
+      <StackPanel>
+            <TextBlock Classes="H1" Text="Dashboard"/>
+          <TextBlock Classes="H2" Text="Overview"/>
 
-                    
+          <Border Classes="OverviewBoxes">
+    <StackPanel>
+        <!-- Add your panel contents here -->
+        <TextBlock Text="0" Foreground="Blue" Classes="OverviewCounter"/>
+
+        <StackPanel>
+			 <TextBlock Text="Testing Container" Classes="OverviewDescription"/>
+            <Button Content="View Details" Classes="ViewLink"/>
+        </StackPanel>
+
+    </StackPanel>
+</Border>
+      </StackPanel>
     </Border>
   </Design.PreviewWith>
+
+    <Style Selector="DockPanel.SidePanel">
+        <Setter Property="Background" Value="#D0FFC9"/>
+        <Setter Property="LastChildFill" Value="False"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="Black" BlurRadius="4" Opacity="0.25" OffsetY="0"/>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
 
     <Style Selector="ToggleButton.MenuItems"> <!-- Side Menu Items-->
 		<Setter Property="Foreground" Value="Black"/>
@@ -17,6 +44,7 @@
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
 
         <Style Selector="^ StackPanel">
             <Setter Property="Orientation" Value="Horizontal"/>
@@ -58,9 +86,87 @@
         </Style>
     </Style> <!-- Side Menu Items-->
 
+    <Style Selector="Border.OverviewBoxes"> <!-- Overview Boxes-->
+		<Setter Property="Background" Value="White"/>
+        <Setter Property="CornerRadius" Value="16"/>
+        <Setter Property="Padding" Value="0, 35"/>
+        <Setter Property="Width" Value="280"/>
+        <Setter Property="Height" Value="200"/>
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="Black" BlurRadius="4" Opacity="0.1" OffsetY="0" OffsetX="0"/>
+            </Setter.Value>
+        </Setter>
 
+        <Style Selector="^ StackPanel">
+            <Setter Property="Orientation" Value="Vertical"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            
+            <Style Selector="^ StackPanel">
+                <Setter Property="Orientation" Value="Vertical"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                
+            </Style>
 
+        </Style>
 
+    </Style> <!-- Overview Boxes-->
+
+    <Style Selector="TextBlock.H1">
+		<Setter Property="FontSize" Value="32"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextAlignment" Value="Left"/>
+    </Style>
+
+    <Style Selector="TextBlock.H2">
+		<Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontWeight" Value="Light"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextAlignment" Value="Left"/>
+    </Style>
+
+    <Style Selector="TextBlock.OverviewCounter">
+		<Setter Property="FontSize" Value="96"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
+
+    <Style Selector="TextBlock.OverviewDescription">
+		<Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
+
+    <Style Selector="Button.ViewLink">
+		<Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontWeight" Value="Regular"/>
+        <Setter Property="Foreground" Value="#61A1FF"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Cursor" Value="Hand"/>
+
+        <Style Selector="^:pointerover /template/ ContentPresenter">
+            <Setter Property="Foreground" Value="Blue"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+         </Style>
+    </Style>
 
   <!-- Add Styles Here -->
 </Styles>

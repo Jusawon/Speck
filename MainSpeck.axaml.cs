@@ -1,4 +1,6 @@
 using Avalonia.Controls;
+using Avalonia.Interactivity;
+using System;
 
 namespace Speck
 {
@@ -17,9 +19,10 @@ namespace Speck
             MI_Settings.Click += MI_Settings_Click;
             //Menu Items
 
+            MI_Dashboard_Click(this, new RoutedEventArgs());
         }
 
-        private void MI_Dashboard_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void MI_Dashboard_Click(object? sender, RoutedEventArgs e)
         {
             MI_Scans.IsChecked = false;
             MI_Vulnerabilities.IsChecked = false;
@@ -30,7 +33,7 @@ namespace Speck
 
         }
 
-        private void MI_Scans_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void MI_Scans_Click(object? sender, RoutedEventArgs e)
         {
             MI_Dashboard.IsChecked = false;
             MI_Vulnerabilities.IsChecked = false;
@@ -41,7 +44,7 @@ namespace Speck
 
         }
 
-        private void MI_Vulnerabilities_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void MI_Vulnerabilities_Click(object? sender, RoutedEventArgs e)
         {
             MI_Dashboard.IsChecked = false;
             MI_Scans.IsChecked = false;
@@ -52,7 +55,7 @@ namespace Speck
 
         }
 
-        private void MI_Logs_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void MI_Logs_Click(object? sender, RoutedEventArgs e)
         {
             MI_Dashboard.IsChecked = false;
             MI_Scans.IsChecked = false;
@@ -63,7 +66,7 @@ namespace Speck
 
         }
 
-        private void MI_Customization_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void MI_Customization_Click(object? sender, RoutedEventArgs e)
         {
             MI_Dashboard.IsChecked = false;
             MI_Scans.IsChecked = false;
@@ -74,7 +77,7 @@ namespace Speck
 
         }
 
-        private void MI_Settings_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        private void MI_Settings_Click(object? sender,  RoutedEventArgs e)
         {
             MI_Dashboard.IsChecked = false;
             MI_Scans.IsChecked = false;
