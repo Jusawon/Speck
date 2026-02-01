@@ -9,7 +9,7 @@
         MinHeight="600">
 
 
-<SplitView Classes="AIChat" Name="ChatWindow">
+<SplitView Classes="AIChat" Name="ChatWindow" >
           <SplitView.Pane>
               <Grid RowDefinitions="*">
               <Border Classes="PaneContent">
@@ -35,7 +35,30 @@
                              </Grid>
                       
                       <ScrollViewer Grid.Row="1">
-						  
+                                <!-- REMEMBER TO MAKE THIS DYNAMIC LATER ON -->
+						    <StackPanel Classes="ChatBoxWrap">
+							  <Border Classes="UserChat">
+								  <SelectableTextBlock>
+                                      Hello
+                                   </SelectableTextBlock>
+                              </Border>
+
+                              <Grid Classes="AIChatBox"
+                                    ColumnDefinitions="auto, *">
+                                  <Image Source="{SvgImage //Speck/Assets/Icons/AI/Speck Chat Icon.svg}"
+                                         Grid.Column="0"/>
+ 
+                                  <WrapPanel Grid.Column="1">
+                                      <Border>
+                                      <SelectableTextBlock>
+                                          Hi there! How can I assist you today?aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+                                            </SelectableTextBlock>
+                                        </Border>
+                                    </WrapPanel> 
+                              </Grid>
+                           </StackPanel>
+                        <!-- REMEMBER TO MAKE THIS DYNAMIC LATER ON -->
                       </ScrollViewer>
 
                       <Panel Grid.Row="2">
@@ -62,8 +85,13 @@
               </Border>
 </Grid>
            </SplitView.Pane>
-
+    
     <Panel>
+        <Panel Background="White" Name="Overlay"
+               ZIndex="101"
+               Opacity="0.7"
+               IsVisible="False"/>
+
         <Grid RowDefinitions="*, *"
               ColumnDefinitions="*, *"
               ZIndex="100">

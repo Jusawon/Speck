@@ -37,17 +37,7 @@
 
                  <Border Classes="OverviewBoxes">
                         <StackPanel>
-                            <TextBlock Text="0" Foreground="#89B382" Classes="OverviewCounter"/>
-
-                            <StackPanel>
-			                     <TextBlock Text="Total Risk(s) Mitigated" Classes="OverviewDescription"/>
-                            </StackPanel>
-                        </StackPanel>
-                </Border>
-
-                 <Border Classes="OverviewBoxes">
-                        <StackPanel>
-                            <TextBlock Text="0.0" Foreground="#CB1111" Classes="OverviewCounter"/>
+                            <TextBlock Text="0.0" Foreground="#FF893A" Classes="OverviewCounter"/>
 
                             <StackPanel>
 			                     <TextBlock Text="Risk Score" Classes="OverviewDescription"/>

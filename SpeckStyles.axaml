@@ -33,7 +33,27 @@
                              </Grid>
                       
                       <ScrollViewer Grid.Row="1">
-						  
+                          <StackPanel Classes="ChatBoxWrap">
+							  <Border Classes="UserChat">
+								  <SelectableTextBlock>
+                                      Hello
+                                   </SelectableTextBlock>
+                              </Border>
+
+                              <Grid Classes="AIChatBox"
+                                    ColumnDefinitions="auto, *">
+                                  <Image Grid.Column="0"/>
+ 
+                                  <WrapPanel Grid.Column="1">
+                                      <Border>
+                                      <SelectableTextBlock >
+                                          Hi there! How can I assist you today?aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+                                            </SelectableTextBlock>
+                                        </Border>
+                                    </WrapPanel> 
+                              </Grid>
+                           </StackPanel>
                       </ScrollViewer>
 
                       <Panel Grid.Row="2">
@@ -359,6 +379,79 @@
                 <Setter Property="Opacity" Value="0.4"/>
         </Style>
     </Style>
+
+    <Style Selector="StackPanel.ChatBoxWrap">
+		<Setter Property="Orientation" Value="Vertical"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="Spacing" Value="5"/>
+    </Style>
+
+    <Style Selector="Border.UserChat">
+		    <Setter Property="Background" Value="White"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="CornerRadius" Value="20"/>
+            <Setter Property="Margin" Value="50, 10, 10, 10"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" BlurRadius="4" Opacity="0.1" OffsetY="0" OffsetX="0"/>
+                </Setter.Value>
+             </Setter>
+
+                <Style Selector="^ SelectableTextBlock">
+                    <Setter Property="FontSize" Value="16"/>
+                    <Setter Property="FontWeight" Value="Regular"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="TextWrapping" Value="Wrap"/>
+                    <Setter Property="TextAlignment" Value="Right"/>
+                 </Style>
+ 
+    </Style>
+
+    <Style Selector="Grid.AIChatBox">
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="ColumnSpacing" Value="10"/>
+                    
+        <Style Selector="^ Image">
+            <Setter Property="Width" Value="45"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Source" Value="{SvgImage //Speck/Assets/Icons/AI/Speck Chat Icon.svg}"/>
+        </Style>
+        <Style Selector="^ WrapPanel">
+			<Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+        
+        <Style Selector="^ Border">
+		    <Setter Property="Background" Value="White"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="CornerRadius" Value="20"/>
+            <Setter Property="Margin" Value="10, 0, 50, 10"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" BlurRadius="4" Opacity="0.1" OffsetY="0" OffsetX="0"/>
+                </Setter.Value>
+             </Setter>
+
+                <Style Selector="^ SelectableTextBlock">
+                    <Setter Property="FontSize" Value="16"/>
+                    <Setter Property="FontWeight" Value="Regular"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="TextWrapping" Value="Wrap"/>
+                    <Setter Property="TextAlignment" Value="Left"/>
+
+                 </Style>
+ 
+                </Style>
+            </Style>
+
+    </Style>
+
 
 
 

@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using System;
 
@@ -21,8 +22,20 @@ namespace Speck
             Btn_Chat.Click += Btn_Chat_Click;
             Btn_Send_Chat.Click += Btn_Send_Chat_Click;
             Btn_Close_Chat.Click += Btn_Close_Chat_Click;
+            ChatWindow.PaneClosing += ChatWindow_PaneClosing;
+            ChatWindow.PaneOpening += ChatWindow_PaneOpening;
 
             MI_Dashboard_Click(this, new RoutedEventArgs());
+        }
+
+        private void ChatWindow_PaneClosing(object? sender, CancelRoutedEventArgs e)
+        {
+            Overlay.IsVisible = false;
+        }
+
+        private void ChatWindow_PaneOpening(object? sender, CancelRoutedEventArgs e)
+        {
+            Overlay.IsVisible = true;
         }
 
         private void MI_Dashboard_Click(object? sender, RoutedEventArgs e)
