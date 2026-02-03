@@ -3,7 +3,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:local="using:Speck"
              x:Class="Speck.Dashboard"
+             x:DataType="local:MainWindow"
              Background="#F9FAFB"
              HorizontalAlignment="Stretch"
              VerticalAlignment="Stretch"
@@ -15,29 +17,29 @@
               <WrapPanel Classes="HControlStack">
                   <Border Classes="OverviewBoxes">
                         <StackPanel>
-                            <TextBlock Text="0" Foreground="#537BFF" Classes="OverviewCounter"/>
+                            <TextBlock Text="{Binding ScanCount}" Foreground="#537BFF" Classes="OverviewCounter" Name="ScanCounter"/>
 
                             <StackPanel>
 			                     <TextBlock Text="Total Scan(s) Run" Classes="OverviewDescription"/>
-                                <Button Content="Run a Scan Now" Classes="ViewLink"/>
+                                <Button Content="Run a Scan Now" Classes="ViewLink" Name="NavScan" Click="NavScan_Click"/>
                             </StackPanel>
                     </StackPanel>
                 </Border>
 
                   <Border Classes="OverviewBoxes">
                         <StackPanel>
-                            <TextBlock Text="0" Foreground="#CB1111" Classes="OverviewCounter"/>
+                            <TextBlock Text="{Binding VulnCount}" Foreground="#CB1111" Classes="OverviewCounter" Name="VulCounter"/>
 
                             <StackPanel>
 			                     <TextBlock Text="Vulnerabilities Found" Classes="OverviewDescription"/>
-                                <Button Content="Solve Now" Classes="ViewLink"/>
+                                <Button Content="Solve Now" Classes="ViewLink" Name="NavVuln" Click="NavVuln_Click"/>
                             </StackPanel>
                         </StackPanel>
                 </Border>
 
                  <Border Classes="OverviewBoxes">
                         <StackPanel>
-                            <TextBlock Text="0.0" Foreground="#FF893A" Classes="OverviewCounter"/>
+                            <TextBlock Text="{Binding RiskMetric}" Foreground="#FF893A" Classes="OverviewCounter" Name="RiskMetric"/>
 
                             <StackPanel>
 			                     <TextBlock Text="Risk Score" Classes="OverviewDescription"/>

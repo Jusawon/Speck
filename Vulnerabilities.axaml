@@ -8,9 +8,14 @@
              VerticalAlignment="Stretch">
 
   <ScrollViewer>
+      <WrapPanel>
            <StackPanel Classes="VControlStack">
-                  <TextBlock Classes="H1" Text="Vulnerabilities"/>
+               <TextBlock Classes="H1" Text="Vulnerabilities"/>
+               <TextBlock Classes="Desc" Text="Vulnerabilities displayed are based on the final scan. If you had updated or mitigated any vulnerabilities, please run a new scan."/>
 
+
+                <TextBlock Classes="H2" Text="Executive Overview"/>
                   </StackPanel>
+          </WrapPanel>
     </ScrollViewer>
 </UserControl>

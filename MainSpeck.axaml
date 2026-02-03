@@ -3,6 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="1440" d:DesignHeight="1024"
+        xmlns:local="using:Speck"
         x:Class="Speck.MainWindow"
         Title="Speck"
         MinWidth="800"
@@ -35,30 +36,7 @@
                              </Grid>
                       
                       <ScrollViewer Grid.Row="1">
-                                <!-- REMEMBER TO MAKE THIS DYNAMIC LATER ON -->
-						    <StackPanel Classes="ChatBoxWrap">
-							  <Border Classes="UserChat">
-								  <SelectableTextBlock>
-                                      Hello
-                                   </SelectableTextBlock>
-                              </Border>
-
-                              <Grid Classes="AIChatBox"
-                                    ColumnDefinitions="auto, *">
-                                  <Image Source="{SvgImage //Speck/Assets/Icons/AI/Speck Chat Icon.svg}"
-                                         Grid.Column="0"/>
- 
-                                  <WrapPanel Grid.Column="1">
-                                      <Border>
-                                      <SelectableTextBlock>
-                                          Hi there! How can I assist you today?aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-
-                                            </SelectableTextBlock>
-                                        </Border>
-                                    </WrapPanel> 
-                              </Grid>
-                           </StackPanel>
-                        <!-- REMEMBER TO MAKE THIS DYNAMIC LATER ON -->
+						    <StackPanel Classes="ChatBoxWrap" Name="ChatPanel"/>
                       </ScrollViewer>
 
                       <Panel Grid.Row="2">
@@ -100,7 +78,8 @@
                     HorizontalAlignment="Right" 
                     VerticalAlignment="Bottom"
                     Grid.Row="1" 
-                    Grid.Column="1">
+                    Grid.Column="1"
+                    >
 
                     <Image Classes="MenuItemIcon" Source="{SvgImage //Speck/Assets/Icons/Menu Items/Chat Icon.svg}"/>
             </Button>

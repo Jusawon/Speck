@@ -7,84 +7,7 @@
     <Border Padding="20" Background="#F9FAFB">
       <!-- Add Controls for Previewer Here -->
 
-      <Panel>
-      <SplitView Classes="AIChat" IsPaneOpen="True" Width="1440" Height="1024">
-          <SplitView.Pane>
-              <Border Classes="PaneContent">
-                
-                  <Grid
-                  RowDefinitions="auto, *, auto">
-                             <Grid 
-                             ColumnDefinitions="*, auto"
-                             Grid.Row="0">
-                             <TextBlock 
-                             VerticalAlignment="Center"
-                             FontSize="16"
-                             FontWeight="DemiBold"
-                             Grid.Column="0">
-								 SpeckAI
-                             </TextBlock>
-
-                                <Button Classes="PaneButton" Grid.Column="1">
-                                    <Image Source="{SvgImage //Speck/Assets/Icons/Menu Items/Cancel Icon.svg}"
-                                           Width="15"
-                                           Height="15"/>
-                                </Button>
-                             </Grid>
-                      
-                      <ScrollViewer Grid.Row="1">
-                          <StackPanel Classes="ChatBoxWrap">
-							  <Border Classes="UserChat">
-								  <SelectableTextBlock>
-                                      Hello
-                                   </SelectableTextBlock>
-                              </Border>
-
-                              <Grid Classes="AIChatBox"
-                                    ColumnDefinitions="auto, *">
-                                  <Image Grid.Column="0"/>
- 
-                                  <WrapPanel Grid.Column="1">
-                                      <Border>
-                                      <SelectableTextBlock >
-                                          Hi there! How can I assist you today?aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-
-                                            </SelectableTextBlock>
-                                        </Border>
-                                    </WrapPanel> 
-                              </Grid>
-                           </StackPanel>
-                      </ScrollViewer>
-
-                      <Panel Grid.Row="2">
-						 <Border Classes=" ChatBox">
-                             <Grid 
-                             ColumnDefinitions="*, auto">
-                             
-                                 <TextBox 
-                                 Grid.Column="0">
-                                 
-                                 </TextBox>
-
-                                <Button Classes="PaneButton" Grid.Column="1">
-                                    <Image Source="{SvgImage //Speck/Assets/Icons/Menu Items/Send Icon.svg}"
-                                           Width="30"
-                                           Height="26"/>
-                                </Button>
-                             </Grid>
-                         </Border>
-                      </Panel>
-
-                  </Grid>
-              </Border>
-
-           </SplitView.Pane>
-
-
-
-      </SplitView>
-       
-</Panel>
+    
         
     </Border>
   </Design.PreviewWith>
@@ -195,6 +118,15 @@
     <Style Selector="TextBlock.H2">
 		<Setter Property="FontSize" Value="24"/>
         <Setter Property="FontWeight" Value="Light"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextAlignment" Value="Left"/>
+    </Style>
+
+    <Style Selector="TextBlock.Desc">
+		<Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontWeight" Value="Regular"/>
         <Setter Property="Foreground" Value="Black"/>
         <Setter Property="Margin" Value="10"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
@@ -359,6 +291,7 @@
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Cursor" Value="Hand"/>
+       
 
         <Style Selector="^ Image">
             <Setter Property="OpacityMask" Value="Green"/>
@@ -372,12 +305,19 @@
 
          <Style Selector="^:pointerover /template/ ContentPresenter">
             <Setter Property="Background" Value="Transparent"/>
+        </Style>
 
+        <Style Selector="^:disabled /template/ ContentPresenter">
+			<Setter Property="Background" Value="Transparent"/>
         </Style>
 
         <Style Selector="^:pointerover Image">
                 <Setter Property="Opacity" Value="0.4"/>
         </Style>
+
+        <Style Selector="^:disabled Image">
+                <Setter Property="Opacity" Value="0.2"/>
+         </Style>
     </Style>
 
     <Style Selector="StackPanel.ChatBoxWrap">
@@ -449,7 +389,6 @@
  
                 </Style>
             </Style>
-
     </Style>
 
 

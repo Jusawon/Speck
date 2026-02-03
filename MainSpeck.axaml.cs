@@ -1,12 +1,51 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Speck
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        private int _scanCount;
+        private int _vulnCount;
+        private float _riskMetric;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public int ScanCount
+        {
+            get => _scanCount;
+            set
+            {
+                _scanCount = value;
+                PropertyChanged?.Invoke(this, new(nameof(ScanCount)));
+            }
+        }
+
+        public int VulnCount
+        {
+            get => _vulnCount;
+            set
+            {
+                _vulnCount = value;
+                PropertyChanged?.Invoke(this, new(nameof(VulnCount)));
+            }
+        }
+
+        public float RiskMetric
+        {
+            get => _riskMetric;
+            set
+            {
+                _riskMetric = value;
+                PropertyChanged?.Invoke(this, new(nameof(RiskMetric)));
+            }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -24,6 +63,13 @@ namespace Speck
             Btn_Close_Chat.Click += Btn_Close_Chat_Click;
             ChatWindow.PaneClosing += ChatWindow_PaneClosing;
             ChatWindow.PaneOpening += ChatWindow_PaneOpening;
+
+            ChatInput.TextChanged += (s, e) =>
+            {
+                Btn_Send_Chat.IsEnabled = !string.IsNullOrWhiteSpace(ChatInput.Text);
+            };
+
+            Btn_Send_Chat.IsEnabled = false;
 
             MI_Dashboard_Click(this, new RoutedEventArgs());
         }
@@ -47,9 +93,22 @@ namespace Speck
             MI_Customization.IsChecked = false;
             MI_Settings.IsChecked = false;
 
-            MainCC.Content = new Dashboard();
+            var dashboard = new Dashboard
+            {
+                DataContext = this
+            };
 
+            dashboard.VulnerabilitiesRequested += () =>
+            {
+                MI_Vulnerabilities_Click(this, new RoutedEventArgs());
+            };
 
+            dashboard.ScansRequested += () =>
+            {
+                MI_Scans_Click(this, new RoutedEventArgs());
+            };
+
+            MainCC.Content = dashboard;
         }
 
         private void MI_Scans_Click(object? sender, RoutedEventArgs e)
@@ -125,7 +184,72 @@ namespace Speck
 
         private void Btn_Send_Chat_Click(object? sender, RoutedEventArgs e)
         {
-            ChatInput.Text = "";
+            AddUserMessage(ChatInput.Text);
+            ChatInput.Text = string.Empty;
+        }
+
+        private void OnPropertyChanged([CallerMemberName] string? name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        private void AddUserMessage(string text)
+        {
+            var messageText = new SelectableTextBlock
+            {
+                Text = text
+            };
+
+            var bubble = new Border
+            {
+                Classes = { "UserChat" },
+                Child = messageText
+            };
+
+
+            ChatPanel.Children.Add(bubble);
+        }
+
+        private void AddAIResponse(string text)
+        {
+            var icon = new Image();
+            // Source comes from Style — DO NOT set it here
+
+            var messageText = new SelectableTextBlock
+            {
+                Text = text
+            };
+
+            var bubble = new Border
+            {
+                Child = messageText
+            };
+
+            var wrapPanel = new WrapPanel
+            {
+                Children =
+        {
+            bubble
+        }
+            };
+
+            var container = new Grid
+            {
+                Classes = { "AIChatBox" },
+                ColumnDefinitions =
+        {
+            new ColumnDefinition(GridLength.Auto),
+            new ColumnDefinition(GridLength.Star)
+        }
+            };
+
+            Grid.SetColumn(icon, 0);
+            Grid.SetColumn(wrapPanel, 1);
+
+            container.Children.Add(icon);
+            container.Children.Add(wrapPanel);
+
+            ChatPanel.Children.Add(container);
         }
     }
 }
