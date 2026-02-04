@@ -76,12 +76,12 @@ namespace Speck
 
         private void ChatWindow_PaneClosing(object? sender, CancelRoutedEventArgs e)
         {
-            Overlay.IsVisible = false;
+            Overlay.Opacity= 0;
         }
 
         private void ChatWindow_PaneOpening(object? sender, CancelRoutedEventArgs e)
         {
-            Overlay.IsVisible = true;
+            Overlay.Opacity = 0.7;
         }
 
         private void MI_Dashboard_Click(object? sender, RoutedEventArgs e)

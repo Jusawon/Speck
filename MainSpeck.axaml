@@ -65,10 +65,20 @@
            </SplitView.Pane>
     
     <Panel>
-        <Panel Background="White" Name="Overlay"
-               ZIndex="101"
-               Opacity="0.7"
-               IsVisible="False"/>
+            <Panel Name="Overlay"
+                   Background="White"
+                   ZIndex="101"
+                   Opacity="0"
+                   IsHitTestVisible="False">
+
+                <Panel.Transitions>
+                    <Transitions>
+                        <DoubleTransition Property="Opacity"
+                                          Duration="0:0:0.2"
+                                          Easing="CubicEaseOut"/>
+                    </Transitions>
+                </Panel.Transitions>
+            </Panel>
 
         <Grid RowDefinitions="*, *"
               ColumnDefinitions="*, *"
