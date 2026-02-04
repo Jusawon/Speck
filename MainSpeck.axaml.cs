@@ -49,6 +49,7 @@ namespace Speck
         public MainWindow()
         {
             InitializeComponent();
+            
 
             // Menu Items
             MI_Dashboard.Click += MI_Dashboard_Click;
@@ -73,6 +74,8 @@ namespace Speck
 
             MI_Dashboard_Click(this, new RoutedEventArgs());
         }
+
+
 
         private void ChatWindow_PaneClosing(object? sender, CancelRoutedEventArgs e)
         {
