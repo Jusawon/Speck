@@ -9,9 +9,27 @@
              VerticalAlignment="Stretch">
 
   <ScrollViewer>
+          <WrapPanel>
            <StackPanel Classes="VControlStack">
                   <TextBlock Classes="H1" Text="Scans"/>
 
+               <TextBlock Classes="H2" Text="Run a Scan"/>
+                      <Border Classes="ScanButtonBlock">
+                      <WrapPanel>
+			            <Image Source="{SvgImage //Speck/Assets/Specks/Speck Magnifying Glass Kampoeng.svg}"/>
+
+                        <WrapPanel>
+                            <TextBlock Classes="Heading"/>
+                            <TextBlock Classes="Explanation"/>
+                         </WrapPanel>
+
+                        <Button Name="BtnScan" Click="BtnScan_Click"/>
+                            </WrapPanel>
+                        </Border>
+
+               <TextBlock Classes="H2" Text="Running Scan"/>
+
                   </StackPanel>
+              </WrapPanel>
     </ScrollViewer>
 </UserControl>

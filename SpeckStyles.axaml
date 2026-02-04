@@ -7,7 +7,9 @@
     <Border Padding="20" Background="#F9FAFB">
       <!-- Add Controls for Previewer Here -->
 
-    
+  
+
+   
         
     </Border>
   </Design.PreviewWith>
@@ -392,6 +394,145 @@
     </Style>
 
 
+
+        <Style Selector="Border.ScanButtonBlock">  <!-- Scan Button Block-->
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="40"/>
+            <Setter Property="Padding" Value="20, 20, 40, 20"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            
+            <Setter Property="Effect">
+                   <Setter.Value>
+                        <DropShadowEffect Color="Black" BlurRadius="4" Opacity="0.1" OffsetY="0" OffsetX="0"/>
+                   </Setter.Value>
+             </Setter>
+
+              <Style Selector="^ WrapPanel">
+		        <Setter Property="Orientation" Value="Horizontal"/>
+                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                <Setter Property="VerticalAlignment" Value="Stretch"/>
+                <Setter Property="ItemSpacing" Value="30"/>
+                 <Setter Property="ItemsAlignment" Value="Center"/>
+
+                <Style Selector="^ Image">
+			        <Setter Property="Width" Value="161"/>
+                    <Setter Property="Height" Value="163"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                </Style>
+
+                <Style Selector="^ WrapPanel">
+                    <Setter Property="Orientation" Value="Vertical"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="ItemsAlignment" Value="Start"/>
+                    <Setter Property="Width" Value="345"/>
+                    <Setter Property="ItemSpacing" Value="20"/>
+
+                    <Style Selector="^ TextBlock.Heading">
+                        <Setter Property="FontSize" Value="48"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="Foreground" Value="Black"/>
+                        <Setter Property="TextWrapping" Value="Wrap"/>
+                        <Setter Property="TextAlignment" Value="Left"/>
+                        <Setter Property="Text" Value="Run a Scan?"/>
+                    </Style>
+
+                    <Style Selector="^ TextBlock.Explanation">
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="FontWeight" Value="Regular"/>
+                        <Setter Property="Foreground" Value="#5F5F5F"/>
+                        <Setter Property="TextWrapping" Value="Wrap"/>
+                        <Setter Property="TextAlignment" Value="Justify"/>
+                        <Setter Property="Text" Value="Once you’ve started a scan, you cannot change pages or run another scan until the current scan is complete. "/>
+                    </Style>
+                </Style>
+
+                <Style Selector="^ Button">
+                    <Setter Property="Width" Value="200"/>
+                    <Setter Property="Height" Value="50"/>
+                    <Setter Property="Background" Value="#89B382"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="FontSize" Value="20"/>
+                    <Setter Property="FontWeight" Value="SemiBold"/>
+                    <Setter Property="CornerRadius" Value="20"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="20"/>
+                    <Setter Property="Content" Value="Scan your Device"/>
+                    
+
+                    <Style Selector="^:pointerover /template/ ContentPresenter">
+                        <Setter Property="Background" Value="#89B382"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="Opacity" Value="0.6"/>
+                    </Style>
+
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect Color="Black" BlurRadius="4" Opacity="0.1" OffsetY="0" OffsetX="0"/>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+
+            </Style>
+    </Style> <!-- Scan Button Block-->
+
+    <Style Selector="WrapPanel.ExecutiveSum"> <!-- Executive Summary Boxes-->
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="ItemSpacing" Value="5"/>
+        <Setter Property="ItemsAlignment" Value="Center"/>
+
+        <Style Selector="^ Border">
+            <Setter Property="Width" Value="180"/>
+            <Setter Property="Height" Value="140"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="20"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Margin" Value="5"/>
+
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" BlurRadius="4" Opacity="0.25" OffsetY="0" OffsetX="0"/>
+                </Setter.Value>
+             </Setter>
+
+                <Style Selector="^ StackPanel">
+                    <Setter Property="Orientation" Value="Vertical"/>
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                    
+                    <Setter Property="Spacing" Value="8"/>
+
+                    <Style Selector="^ Image">
+                        <Setter Property="Width" Value="35"/>
+                        <Setter Property="Height" Value="35"/>
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                    </Style>
+
+                    <Style Selector="^ TextBlock.Title">
+                        <Setter Property="FontSize" Value="26"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="Foreground" Value="Black"/>
+                        <Setter Property="TextWrapping" Value="Wrap"/>
+                        <Setter Property="TextAlignment" Value="Center"/>
+                     </Style>
+
+                     <Style Selector="^ TextBlock.ExecSummCounter">
+                        <Setter Property="FontSize" Value="28"/>
+                        <Setter Property="FontWeight" Value="Light"/>
+                        <Setter Property="Foreground" Value="Black"/>
+                        <Setter Property="TextWrapping" Value="Wrap"/>
+                        <Setter Property="TextAlignment" Value="Center"/>
+                     </Style>
+
+                </Style>
+            </Style>
+    </Style><!-- Executive Summary Boxes-->
 
 
 </Styles>

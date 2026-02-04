@@ -15,6 +15,60 @@
 
 
                 <TextBlock Classes="H2" Text="Executive Overview"/>
+
+                          <WrapPanel Classes="ExecutiveSum">
+                                <Border>
+                                    <StackPanel>
+                                        <Image Source="{SvgImage //Speck/Assets/Icons/Scan Items/Critical.svg}"/>
+                                        <TextBlock Classes="Title" Text="Critical"/>
+                                        <TextBlock Classes="ExecSummCounter" Text="0" Name="CriticalCounter"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border>
+                                    <StackPanel>
+                                        <Image Source="{SvgImage //Speck/Assets/Icons/Scan Items/High.svg}"/>
+                                        <TextBlock Classes="Title" Text="High"/>
+                                        <TextBlock Classes="ExecSummCounter" Text="0" Name="HighCounter"/>
+                                    </StackPanel>
+                                </Border>
+
+                                  <Border>
+                                    <StackPanel>
+                                        <Image Source="{SvgImage //Speck/Assets/Icons/Scan Items/Medium.svg}"
+                                                />
+                                        <TextBlock Classes="Title" Text="Medium"/>
+                                        <TextBlock Classes="ExecSummCounter" Text="0" Name="MediumCounter"/>
+                                    </StackPanel>
+                                  </Border>
+
+                                  <Border>
+                                    <StackPanel>
+                                        <Image Source="{SvgImage //Speck/Assets/Icons/Scan Items/Low.svg}"
+                                                />
+                                        <TextBlock Classes="Title" Text="Low"/>
+                                        <TextBlock Classes="ExecSummCounter" Text="0" Name="LowCounter"/>
+                                    </StackPanel>
+                                   </Border>
+
+                                  <Border>
+                                    <StackPanel>
+                                        <Image Source="{SvgImage //Speck/Assets/Icons/Scan Items/Info.svg}"
+                                               />
+                                        <TextBlock Classes="Title" Text="Info"/>
+                                        <TextBlock Classes="ExecSummCounter" Text="0" Name="InfoCounter"/>
+                                    </StackPanel>
+                                   </Border>
+
+                                  <Border>
+                                    <StackPanel>
+                                        <Image Source="{SvgImage //Speck/Assets/Icons/Scan Items/Unknown.svg}"
+                                               />
+                                        <TextBlock Classes="Title" Text="Unknown"/>
+                                        <TextBlock Classes="ExecSummCounter" Text="0" Name="UnknownCounter"/>
+                                    </StackPanel>
+                                   </Border>
+                               </WrapPanel>
                   </StackPanel>
           </WrapPanel>
     </ScrollViewer>

@@ -10,4 +10,8 @@ public partial class Scans : UserControl
     {
         InitializeComponent();
     }
+
+    private void BtnScan_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+    }
 }

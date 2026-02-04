@@ -38,4 +38,9 @@
   <ItemGroup>
     <Content Include="Assets\Icons\App General\Speck App Icon.ico" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Assets\Icons\Scan Items\" />
+    <Folder Include="Assets\Specks\" />
+  </ItemGroup>
 </Project>
