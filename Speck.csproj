@@ -37,13 +37,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Scanners\Nuclei\nuclei.exe" />
+    <None Remove="Scanners\Osquery\osqueryi.exe" />
     <None Remove="Scanners\Trivy\trivy.exe" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Scanners\Trivy\trivy.exe">
+    <Content Include="Scanners\Nuclei\nuclei.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Content>
+    <Content Include="Scanners\Osquery\osqueryi.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scanners\Trivy\trivy.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -53,14 +61,5 @@
   <ItemGroup>
     <Folder Include="Assets\Icons\Scan Items\" />
     <Folder Include="Assets\Specks\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Scanners\Nuclei\nuclei.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Scanners\Osquery\osqueryi.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 </Project>
