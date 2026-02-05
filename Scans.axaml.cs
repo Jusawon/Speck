@@ -237,21 +237,23 @@ public partial class Scans : UserControl
     {
         try
         {
-            string scanRoot =
-                OperatingSystem.IsWindows() ? @"C:\" : "/";
+            string scanRoot = OperatingSystem.IsWindows() ? @"C:\" : "/";
+            string trivyArgs ="";
 
             // =========================
             // TRIVY
             // =========================
             Console.WriteLine($"[TRIVY] Starting filesystem scan ({profile})...");
 
-            string trivyArgs =
-                $"fs {scanRoot} " +
-                "--scanners vuln " +
-                "--format json " +
-                "--exit-code 0 " +
-                "--ignore-unfixed " +
-                "--skip-dirs \"Windows,ProgramData,AppData,Temp,System Volume Information,bin,obj,.git,node_modules\"";
+            var userFolders = Directory.GetDirectories(@"C:\Users")
+                                       .Where(u => !u.EndsWith("Public"));
+            foreach (var folder in userFolders)
+            {
+                trivyArgs = $"fs {folder} --scanners vuln --format json --exit-code 0 --ignore-unfixed " +
+                                   "--skip-dirs \"AppData\\Local\\Temp,System Volume Information,.git,node_modules\"";
+                await RunCommand(ScannerPaths.Trivy, trivyArgs, onOutput: Console.WriteLine, onError: Console.Error.WriteLine);
+            }
+
 
             await RunCommand(
                 ScannerPaths.Trivy,
