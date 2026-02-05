@@ -7,9 +7,6 @@
     <Border Padding="20" Background="#F9FAFB">
       <!-- Add Controls for Previewer Here -->
 
-  
-
-   
         
     </Border>
   </Design.PreviewWith>
@@ -448,6 +445,10 @@
                     </Style>
                 </Style>
 
+                  <Style Selector="^ StackPanel">
+                      <Setter Property="HorizontalAlignment" Value="Center"/>
+                      <Setter Property="VerticalAlignment" Value="Center"/>
+
                 <Style Selector="^ Button">
                     <Setter Property="Width" Value="200"/>
                     <Setter Property="Height" Value="50"/>
@@ -476,6 +477,19 @@
                     </Setter>
                 </Style>
 
+                      <Style Selector="^ ComboBox">
+                          <Setter Property="CornerRadius" Value="16"/>
+                          <Setter Property="HorizontalAlignment" Value="Center"/>
+                          <Setter Property="BorderBrush" Value="Transparent"/>
+                          <Setter Property="Background" Value="#EEEEEE"/>
+                          <Setter Property="Width" Value="120"/>
+                          <Setter Property="Height" Value="40"/> 
+                          <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                          <Setter Property="VerticalContentAlignment" Value="Center"/>
+                          <Setter Property="PlaceholderText" Value="Select Type"/>
+                     
+                       </Style>
+            </Style>
 
             </Style>
     </Style> <!-- Scan Button Block-->
@@ -533,6 +547,7 @@
                 </Style>
             </Style>
     </Style><!-- Executive Summary Boxes-->
+
 
 
 </Styles>

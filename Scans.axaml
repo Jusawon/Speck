@@ -23,7 +23,14 @@
                             <TextBlock Classes="Explanation"/>
                          </WrapPanel>
 
-                        <Button Name="BtnScan" Click="BtnScan_Click"/>
+                          <StackPanel>
+                         <Button Name="BtnScan" Click="BtnScan_Click"/>
+                                <ComboBox Name="ScanCmb" SelectionChanged="ScanCmb_SelectionChanged">
+							    <ComboBoxItem Name="QuickItem"> Quick </ComboBoxItem>
+                                <ComboBoxItem Name="FullItem"> Full </ComboBoxItem>
+                            </ComboBox> 
+                          </StackPanel>
+
                             </WrapPanel>
                         </Border>
 

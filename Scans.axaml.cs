@@ -13,11 +13,13 @@ namespace Speck;
 
 public partial class Scans : UserControl
 {
-    ScanProfile ScanOption = ScanProfile.Full;
-       public Scans()
-        {
-            InitializeComponent();
-        }
+    ScanProfile ScanOption = ScanProfile.Quick;
+    public Scans()
+    {
+        InitializeComponent();
+
+        BtnScan.IsEnabled = false;
+    }
 
     //private async Task VulnerabilityScan()
     //{
@@ -348,7 +350,7 @@ public partial class Scans : UserControl
 
         await process.WaitForExitAsync();
 
-        if(process.ExitCode != 0 && process.ExitCode != 1)
+        if (process.ExitCode != 0 && process.ExitCode != 1)
             throw new Exception($"{Path.GetFileName(fileName)} exited with code {process.ExitCode}");
     }
 
@@ -359,6 +361,24 @@ public partial class Scans : UserControl
         BtnScan.IsEnabled = false;
         await VulnerabilityScan(ScanOption);
         BtnScan.IsEnabled = true;
+
+    }
+
+    private void ScanCmb_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+
+
+        if (QuickItem.IsSelected)
+        {
+            BtnScan.IsEnabled = true;
+            ScanOption = ScanProfile.Quick;
+        }
+        else if (FullItem.IsSelected)
+        {
+            BtnScan.IsEnabled = true;
+            ScanOption = ScanProfile.Full;
+        }
+        else BtnScan.IsEnabled = false;
 
     }
 }
