@@ -4,6 +4,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace Speck
@@ -13,7 +14,7 @@ namespace Speck
         private int _scanCount;
         private int _vulnCount;
         private float _riskMetric;
-        public const string ConnectionString = "Host=localhost;Port=5432;Username=postgres;Password=;Database=speck"; //Add password later
+        public const string ConnectionString = "Host=localhost;Port=5434;Username=postgres;Password=;Database=dbspeck"; //Remember to add password after commiting
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -47,10 +48,37 @@ namespace Speck
             }
         }
 
+
+        //Delete This Later
+        public static bool CanConnectToDatabase(string connectionString)
+        {
+            using (var connection = new Npgsql.NpgsqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    Debug.WriteLine("Connected!");
+                    return true;
+                }
+                catch (Npgsql.NpgsqlException)
+                {
+                    Debug.WriteLine("Nah Man");
+                    return false;
+                }
+                catch (System.Exception)
+                {
+                    Debug.WriteLine("Nah Man");
+                    return false;
+                }
+            }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
-            
+
+            //Delete This Later
+            CanConnectToDatabase(ConnectionString);
 
             // Menu Items
             MI_Dashboard.Click += MI_Dashboard_Click;
