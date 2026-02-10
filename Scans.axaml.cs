@@ -1,23 +1,31 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Speck;
 
 public partial class Scans : UserControl
 {
+    private readonly ConcurrentQueue<string> _logQueue = new();
+    private readonly StringBuilder _logBuffer = new();
+    private DispatcherTimer? _logTimer;
     ScanProfile ScanOption = ScanProfile.Quick;
     public Scans()
     {
         InitializeComponent();
 
+
+        StartLogPump();
         BtnScan.IsEnabled = false;
     }
 
@@ -98,6 +106,39 @@ public partial class Scans : UserControl
         Quick,
         Full
     }
+    private void AppendConsoleLine(string message)
+    {
+        _logQueue.Enqueue(message);
+    }
+
+    private void StartLogPump()
+    {
+        _logTimer = new DispatcherTimer
+        {
+            Interval = TimeSpan.FromMilliseconds(75)
+        };
+
+        _logTimer.Tick += (_, _) =>
+        {
+            if (_logQueue.IsEmpty)
+                return;
+
+            while (_logQueue.TryDequeue(out var line))
+                _logBuffer.AppendLine(line);
+
+            ConsoleTextBlock.Text += _logBuffer.ToString();
+            _logBuffer.Clear();
+
+            ConsoleScrollViewer.Offset =
+                new Avalonia.Vector(
+                    ConsoleScrollViewer.Offset.X,
+                    ConsoleScrollViewer.Extent.Height
+                );
+        };
+
+        _logTimer.Start();
+    }
+
 
     private static readonly HashSet<int> QuickHttpPorts = new()
         {
@@ -163,7 +204,7 @@ public partial class Scans : UserControl
             ScannerPaths.Osquery,
             "--json --disable_extensions \"SELECT port FROM listening_ports WHERE protocol = 6;\"",
             onOutput: line => rawLines.Add(line),
-            onError: line => Console.Error.WriteLine($"[OSQUERY] {line}")
+            onError: line => AppendConsoleLine($"[OSQUERY] {line}")
         );
 
         // Find JSON array boundaries
@@ -174,7 +215,7 @@ public partial class Scans : UserControl
 
         if (start == -1 || end == -1 || end <= start)
         {
-            Console.Error.WriteLine("No valid JSON array found in osquery output");
+            AppendConsoleLine("No valid JSON array found in osquery output");
             return new List<int>();
         }
 
@@ -193,7 +234,7 @@ public partial class Scans : UserControl
         }
         catch (Exception ex)
         {
-            Console.Error.WriteLine($"JSON parse error: {ex.Message}");
+            AppendConsoleLine($"JSON parse error: {ex.Message}");
             return new List<int>();
         }
     }
@@ -237,42 +278,48 @@ public partial class Scans : UserControl
     {
         try
         {
+            BtnScan.IsEnabled = false;
+            ConsoleTextBlock.Text = "";
             string scanRoot = OperatingSystem.IsWindows() ? @"C:\" : "/";
             string trivyArgs ="";
 
+            AppendConsoleLine("========================= SCAN STARTING =========================");
             // =========================
             // TRIVY
             // =========================
-            Console.WriteLine($"[TRIVY] Starting filesystem scan ({profile})...");
+            AppendConsoleLine($"[TRIVY] Starting filesystem scan ({profile})...");
 
             var userFolders = Directory.GetDirectories(@"C:\Users")
                                        .Where(u => !u.EndsWith("Public"));
             foreach (var folder in userFolders)
             {
-                trivyArgs = $"fs {folder} --scanners vuln --format json --exit-code 0 --ignore-unfixed " +
-                                   "--skip-dirs \"AppData\\Local\\Temp,System Volume Information,.git,node_modules\"";
-                await RunCommand(ScannerPaths.Trivy, trivyArgs, onOutput: Console.WriteLine, onError: Console.Error.WriteLine);
+               trivyArgs =
+                    $"fs \"{folder}\" " +
+                    "--scanners vuln " +
+                    "--format json " +
+                    "--exit-code 0 " +
+                    "--skip-version-check " +
+                    "--skip-dirs \"AppData\\Local\\Temp,System Volume Information,.git,node_modules\"";
+
+                await RunCommand(
+                    ScannerPaths.Trivy,
+                    trivyArgs,
+                    onOutput: AppendConsoleLine,
+                    onError: AppendConsoleLine
+                );
             }
-
-
-            await RunCommand(
-                ScannerPaths.Trivy,
-                trivyArgs,
-                onOutput: line => Console.WriteLine($"[TRIVY] {line}"),
-                onError: line => Console.Error.WriteLine($"[TRIVY] {line}")
-            );
 
             // =========================
             // PORT DISCOVERY
             // =========================
-            Console.WriteLine("[OSQUERY] Detecting local listening TCP ports...");
+            ConsoleTextBlock.Text += ("[OSQUERY] Detecting local listening TCP ports...");
 
             var ports = await GetListeningPortsAsync();
             var filteredPorts = FilterPorts(ports, profile);
 
             if (filteredPorts.Count == 0)
             {
-                Console.WriteLine("[NUCLEI] No suitable HTTP targets found. Skipping.");
+                AppendConsoleLine("[NUCLEI] No suitable HTTP targets found. Skipping.");
             }
             else
             {
@@ -283,13 +330,13 @@ public partial class Scans : UserControl
                 // =========================
                 foreach (var target in targets)
                 {
-                    Console.WriteLine($"[NUCLEI] Scanning {target} ({profile})...");
+                    AppendConsoleLine($"[NUCLEI] Scanning {target} ({profile})...");
 
                     await RunCommand(
                         ScannerPaths.Nuclei,
                         BuildNucleiArgs(target, profile),
-                        onOutput: line => Console.WriteLine($"[NUCLEI] {line}"),
-                        onError: line => Console.Error.WriteLine($"[NUCLEI] {line}")
+                        onOutput: line => AppendConsoleLine($"[NUCLEI] {line}"),
+                        onError: line => AppendConsoleLine($"[NUCLEI][Err] {line}")
                     );
                 }
             }
@@ -297,21 +344,23 @@ public partial class Scans : UserControl
             // =========================
             // SYSTEM INFO
             // =========================
-            Console.WriteLine("[OSQUERY] Collecting OS info...");
+            AppendConsoleLine("[OSQUERY] Collecting OS info...");
 
             await RunCommand(
                 ScannerPaths.Osquery,
                 "--json \"SELECT * FROM os_version;\"",
-                onOutput: line => Console.WriteLine($"[OSQUERY] {line}"),
-                onError: line => Console.Error.WriteLine($"[OSQUERY] {line}")
+                onOutput: line => AppendConsoleLine($"[OSQUERY] {line}"),
+                onError: line => AppendConsoleLine($"[OSQUERY][Err] {line}")
             );
 
-            Console.WriteLine("✔ Scan complete");
+            AppendConsoleLine("========================= SCAN COMPLETED =========================");
         }
         catch (Exception ex)
         {
-            Console.Error.WriteLine($"✖ Scan failed: {ex.Message}");
+            AppendConsoleLine($"========================= SCAN FAILED: {ex.Message} =========================");
         }
+        BtnScan.IsEnabled = true;
+        //Add a bool for this
     }
 
     private async Task RunCommand(
@@ -360,10 +409,8 @@ public partial class Scans : UserControl
 
     private async void BtnScan_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        BtnScan.IsEnabled = false;
-        await VulnerabilityScan(ScanOption);
-        BtnScan.IsEnabled = true;
 
+        await VulnerabilityScan(ScanOption);
     }
 
     private void ScanCmb_SelectionChanged(object? sender, SelectionChangedEventArgs e)

@@ -34,7 +34,16 @@
                             </WrapPanel>
                         </Border>
 
-               <TextBlock Classes="H2" Text="Running Scan"/>
+               <TextBlock Classes="H2" Text="Scan Logs"/>
+                     
+		                  <Grid Classes="ConsoleLog"
+                          ColumnDefinitions="*">
+                             <Border Grid.Column="0">
+			                  <ScrollViewer Name="ConsoleScrollViewer">
+				                  <SelectableTextBlock Name="ConsoleTextBlock"/>
+                              </ScrollViewer>
+                          </Border>
+                      </Grid>  
 
                   </StackPanel>
               </WrapPanel>
