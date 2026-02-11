@@ -69,6 +69,43 @@
                                     </StackPanel>
                                    </Border>
                                </WrapPanel>
+
+                <TextBlock Classes="H2" Text="Vulnerabilities Found"/>
+
+                              <Grid 
+                               ColumnDefinitions="*, auto"
+                               HorizontalAlignment="Stretch"      
+                                     >
+
+				                <Border Classes=" ChatBox"
+                
+                                Height="20"
+                                    Grid.Column="1">
+
+                                             <Grid 
+                                             ColumnDefinitions="*, auto">
+                             
+                                                 <TextBox 
+                                                 Grid.Column="0"
+                                                 Name="SearchInput"
+                                                 Watermark="Search Database..."
+                                                 MaxLength="100"
+                                                 MaxLines="1">
+                                 
+                                 
+                                                 </TextBox>
+
+                                                <Button Classes="PaneButton" Grid.Column="1" Name="Btn_Search">
+                                                    <Image Source="{SvgImage //Speck/Assets/Icons/Menu Items/Search Icon.svg}"
+                                                           Width="20"
+                                                           Height="20"/>
+                                                </Button>
+                                             </Grid>
+                                         </Border>
+                               </Grid>
+
+
+
                   </StackPanel>
           </WrapPanel>
     </ScrollViewer>

@@ -1,15 +1,55 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:emit="using:System.Reflection.Emit"
+             xmlns:local="using:Speck"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:metadata="using:System.Reflection.Metadata"
+             xmlns:security="using:System.Net.Security"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Speck.Logs"                          Background="#F9FAFB"
+             x:Class="Speck.Logs" x:DataType="local:Logs"                          
+             Background="#F9FAFB"
              HorizontalAlignment="Stretch"
              VerticalAlignment="Stretch">
 
   <ScrollViewer>
            <StackPanel Classes="VControlStack">
                   <TextBlock Classes="H1" Text="Logs"/>
+                <TextBlock Classes="H2" Text="Scan Logs"/>
+               <Grid 
+               ColumnDefinitions="*, auto"
+               HorizontalAlignment="Stretch"      
+                     >
+
+				<Border Classes=" ChatBox"
+                
+                Height="20"
+                    Grid.Column="1">
+
+                             <Grid 
+                             ColumnDefinitions="*, auto">
+                             
+                                 <TextBox 
+                                 Grid.Column="0"
+                                 Name="SearchInput"
+                                 Watermark="Search Database..."
+                                 MaxLength="100"
+                                 MaxLines="1">
+                                 
+                                 
+                                 </TextBox>
+
+                                <Button Classes="PaneButton" Grid.Column="1" Name="Btn_Search">
+                                    <Image Source="{SvgImage //Speck/Assets/Icons/Menu Items/Search Icon.svg}"
+                                           Width="20"
+                                           Height="20"/>
+                                </Button>
+                             </Grid>
+                         </Border>
+               </Grid>
+
+              
+			    <DataGrid Classes="DatabaseView" Name="ScansTable"/>
 
                   </StackPanel>
     </ScrollViewer>

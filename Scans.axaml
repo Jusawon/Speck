@@ -34,7 +34,7 @@
                             </WrapPanel>
                         </Border>
 
-               <TextBlock Classes="H2" Text="Scan Logs"/>
+               <TextBlock Classes="H2" Text="Scan Console"/>
                      
 		                  <Grid Classes="ConsoleLog"
                           ColumnDefinitions="*">
