@@ -14,7 +14,7 @@ namespace Speck
         private int _scanCount;
         private int _vulnCount;
         private float _riskMetric;
-        public const string ConnectionString = "Host=localhost;Port=5434;Username=postgres;Password=;Database=dbspeck"; //Remember to add password after commiting
+        public const string ConnectionString = "Host=localhost;Port=5434;Username=postgres;Password=1234;Database=dbspeck"; //Remember to add password after commiting
 
         public event PropertyChangedEventHandler? PropertyChanged;
 

@@ -110,18 +110,22 @@ public partial class Scans : UserControl
             ScanProfile.Quick =>
                 $"-target {target} " +
                 "-jsonl " +
+                "-tags cve,vuln,rce,lfi,sqli,xss "+
                 "-severity critical,high " +
                 "-type http " +
                 "-timeout 3 " +
                 "-retries 0 " +
+                "-no-color " +
                 "-no-interactsh ",
 
             ScanProfile.Full =>
                 $"-target {target} " +
                 "-jsonl " +
+                "-tags cve,vuln,rce,lfi,sqli,xss " +
                 "-severity critical,high,medium,low " +
                 "-timeout 5 " +
                 "-retries 1 " +
+                "-no-color " +
                 "-no-interactsh",
 
             _ => ""
@@ -173,18 +177,27 @@ public partial class Scans : UserControl
         }
     }
 
-    private static List<string> BuildNucleiTargets(IEnumerable<int> ports)
+    private static List<string> BuildNucleiTargets(
+        IEnumerable<int> ports,
+        ScanProfile profile)
     {
         var targets = new List<string>();
 
         foreach (var port in ports)
         {
-            if (port == 80)
-                targets.Add("http://localhost");
-            else if (port == 443)
-                targets.Add("https://localhost");
-            else
-                targets.Add($"http://localhost:{port}");
+            if (profile == ScanProfile.Quick)
+            {
+                if (port == 80)
+                    targets.Add("http://localhost");
+                else if (port == 443)
+                    targets.Add("https://localhost");
+                else
+                    targets.Add($"http://localhost:{port}");
+            }
+            else // Full
+            {
+                targets.Add($"localhost:{port}");
+            }
         }
 
         return targets;
@@ -238,7 +251,7 @@ public partial class Scans : UserControl
                     outputLines.Add(line);
                     AppendConsoleLine($"[TRIVY] {line}");
                 },
-                onError: line => AppendConsoleLine($"[TRIVY][Err] {line}")
+                onError: line => AppendConsoleLine($"[TRIVY][Log] {line}")
             );
 
             var json = string.Join("\n", outputLines).Trim();
@@ -264,19 +277,25 @@ public partial class Scans : UserControl
             return results;
         }
 
-        foreach (var target in BuildNucleiTargets(filteredPorts))
+        foreach (var target in BuildNucleiTargets(filteredPorts, profile))
         {
             AppendConsoleLine($"[NUCLEI] Scanning {target} ({profile})...");
 
             await RunCommand(
                 ScannerPaths.Nuclei,
                 BuildNucleiArgs(target, profile),
-                onOutput: line =>
-                {
-                    results.Add(new NucleiResult(line));
-                    AppendConsoleLine($"[NUCLEI] {line}");
-                },
-                onError: line => AppendConsoleLine($"[NUCLEI][Err] {line}")
+                    onOutput: line =>
+                    {
+                        var trimmed = line.TrimStart();
+
+                        if (trimmed.StartsWith("{"))
+                        {
+                            results.Add(new NucleiResult(trimmed));
+                        }
+
+                        AppendConsoleLine($"[NUCLEI] {line}");
+                    },
+                onError: line => AppendConsoleLine($"[NUCLEI][Log] {line}")
             );
         }
 
@@ -287,20 +306,35 @@ public partial class Scans : UserControl
     {
         AppendConsoleLine("[OSQUERY] Collecting OS info...");
 
-        var lines = new List<string>();
+        var outputLines = new List<string>();
+
+        var args =
+            "--json " +
+            "\"SELECT * FROM os_version;\"";
 
         await RunCommand(
             ScannerPaths.Osquery,
-            "--json \"SELECT * FROM os_version;\"",
+            args,
             onOutput: line =>
             {
-                lines.Add(line);
+                outputLines.Add(line);
                 AppendConsoleLine($"[OSQUERY] {line}");
             },
-            onError: line => AppendConsoleLine($"[OSQUERY][Err] {line}")
+            onError: line =>
+            {
+                AppendConsoleLine($"[OSQUERY][Log] {line}");
+            }
         );
 
-        return new OsqueryResult(string.Join("\n", lines));
+        var json = string.Join("\n", outputLines).Trim();
+
+        if (string.IsNullOrWhiteSpace(json))
+        {
+            AppendConsoleLine("[OSQUERY] No JSON output received.");
+            return new OsqueryResult("[]"); // valid empty JSON array
+        }
+
+        return new OsqueryResult(json);
     }
 
     private async Task InsertScanAsync(
@@ -412,9 +446,9 @@ public partial class Scans : UserControl
 
     private async Task InsertNucleiFindingAsync(
     Guid scanId,
-    string rawJsonLine)
+    string rawJson)
     {
-        using var doc = JsonDocument.Parse(rawJsonLine);
+        using var doc = JsonDocument.Parse(rawJson);
         var root = doc.RootElement;
 
         await using var conn = new NpgsqlConnection(MainWindow.ConnectionString);
@@ -450,7 +484,7 @@ public partial class Scans : UserControl
         cmd.Parameters.AddWithValue("ident", root.GetProperty("template-id").GetString() ?? "");
         cmd.Parameters.AddWithValue("title", root.GetProperty("info").GetProperty("name").GetString() ?? "");
         cmd.Parameters.AddWithValue("severity", root.GetProperty("info").GetProperty("severity").GetString() ?? "info");
-        cmd.Parameters.AddWithValue("data", rawJsonLine);
+        cmd.Parameters.AddWithValue("data", rawJson);
 
         await cmd.ExecuteNonQueryAsync();
     }
@@ -459,87 +493,70 @@ public partial class Scans : UserControl
     Guid scanId,
     string rawJson)
     {
+        using var doc = JsonDocument.Parse(rawJson);
+
+        if (doc.RootElement.ValueKind != JsonValueKind.Array)
+            return;
+
         await using var conn = new NpgsqlConnection(MainWindow.ConnectionString);
         await conn.OpenAsync();
 
-        var cmd = new NpgsqlCommand("""
-        INSERT INTO scan_findings (
-            finding_id,
-            scan_id,
-            category,
-            identifier,
-            title,
-            severity,
-            exposed,
-            source_tool,
-            data
-        )
-        VALUES (
-            @id,
-            @scan,
-            'configuration',
-            'os_version',
-            'Operating System Information',
-            'info',
-            false,
-            'osquery',
-            @data::jsonb
-        )
-    """, conn);
+        foreach (var row in doc.RootElement.EnumerateArray())
+        {
 
-        cmd.Parameters.AddWithValue("id", Guid.NewGuid());
-        cmd.Parameters.AddWithValue("scan", scanId);
-        cmd.Parameters.AddWithValue("data", rawJson);
+                    var cmd = new NpgsqlCommand("""
+                INSERT INTO scan_findings (
+                    finding_id,
+                    scan_id,
+                    category,
+                    identifier,
+                    title,
+                    severity,
+                    exposed,
+                    source_tool,
+                    data
+                )
+                VALUES (
+                    @id,
+                    @scan,
+                    'configuration',
+                    'os_version',
+                    'Operating System Information',
+                    'INFO',
+                    false,
+                    'osquery',
+                    @data::jsonb
+                )
+            """, conn);
 
-        await cmd.ExecuteNonQueryAsync();
+            cmd.Parameters.AddWithValue("id", Guid.NewGuid());
+            cmd.Parameters.AddWithValue("scan", scanId);
+            cmd.Parameters.AddWithValue("data", rawJson);
+
+            await cmd.ExecuteNonQueryAsync();
+        }
     }
 
     private async Task PersistScanResultsAsync(
-        ScanProfile profile,
+        Guid scanId,
         List<TrivyResult> trivy,
         List<NucleiResult> nuclei,
         OsqueryResult osquery)
     {
-        var scanId = Guid.NewGuid();
+        foreach (var t in trivy)
+            await InsertTrivyFindingsAsync(scanId, t.RawJson);
 
-        try
-        {
-            // =========================
-            // SCAN (START)
-            // =========================
-            await InsertScanAsync(
-                scanId,
-                profile,
-                new[] { "trivy", "nuclei", "osquery" }
-            );
+        foreach (var n in nuclei)
+            await InsertNucleiFindingAsync(scanId, n.RawJson);
 
-            // =========================
-            // FINDINGS
-            // =========================
-            foreach (var t in trivy)
-                await InsertTrivyFindingsAsync(scanId, t.RawJson);
-
-            foreach (var n in nuclei)
-                await InsertNucleiFindingAsync(scanId, n.RawJson);
-
-            await InsertOsqueryFindingAsync(scanId, osquery.RawJson);
-
-            // =========================
-            // SCAN (END)
-            // =========================
-            await MarkScanFinishedAsync(scanId, "completed");
-        }
-        catch
-        {
-            await MarkScanFinishedAsync(scanId, "failed");
-            throw;
-        }
+        await InsertOsqueryFindingAsync(scanId, osquery.RawJson);
     }
-
 
 
     private async Task VulnerabilityScan(ScanProfile profile)
     {
+        Guid scanId = Guid.NewGuid();
+
         try
         {
             BtnScan.IsEnabled = false;
@@ -547,21 +564,32 @@ public partial class Scans : UserControl
 
             AppendConsoleLine("========================= SCAN STARTING =========================");
 
+            // CREATE SCAN IMMEDIATELY
+            await InsertScanAsync(
+                scanId,
+                profile,
+                new[] { "trivy", "nuclei", "osquery" }
+            );
+
             var trivyResults = await RunTrivyScanAsync(profile);
             var nucleiResults = await RunNucleiScanAsync(profile);
             var osqueryResult = await RunOsqueryInfoAsync();
 
             await PersistScanResultsAsync(
-                profile,
+                scanId,
                 trivyResults,
                 nucleiResults,
                 osqueryResult
             );
 
+            await MarkScanFinishedAsync(scanId, "completed");
+
             AppendConsoleLine("========================= SCAN COMPLETED =========================");
         }
         catch (Exception ex)
         {
+            await MarkScanFinishedAsync(scanId, "failed");
+
             AppendConsoleLine($"========================= SCAN FAILED: {ex.Message} =========================");
         }
         finally
