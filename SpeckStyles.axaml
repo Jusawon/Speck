@@ -598,11 +598,12 @@
     <Setter Property="HorizontalGridLinesBrush" Value="Transparent"/>
     <Setter Property="VerticalGridLinesBrush" Value="Transparent"/>
     <Setter Property="RowBackground" Value="#E2E2E2"/>
-    <Setter Property="RowHeight" Value="50"/>
+    <Setter Property="RowHeight" Value="40"/>
     <Setter Property="HorizontalAlignment" Value="Stretch"/>
     <Setter Property="VerticalAlignment" Value="Stretch"/>
     <Setter Property="FontSize" Value="14"/>
     <Setter Property="IsReadOnly" Value="True"/>
+    <Setter Property="MaxHeight" Value="400"/>
 
     <Setter Property="Effect">
         <Setter.Value>

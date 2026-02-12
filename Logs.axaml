@@ -22,27 +22,21 @@
                      >
 
 				<Border Classes=" ChatBox"
-                
-                Height="20"
+        Height="20"
                     Grid.Column="1">
-
-                             <Grid 
+                            <Grid 
                              ColumnDefinitions="*, auto">
-                             
-                                 <TextBox 
+                             <TextBox 
+                                TextChanged="SearchInput_TextChanged"
                                  Grid.Column="0"
                                  Name="SearchInput"
                                  Watermark="Search Database..."
-                                 MaxLength="100"
-                                 MaxLines="1">
-                                 
-                                 
-                                 </TextBox>
+                                />
 
-                                <Button Classes="PaneButton" Grid.Column="1" Name="Btn_Search">
-                                    <Image Source="{SvgImage //Speck/Assets/Icons/Menu Items/Search Icon.svg}"
-                                           Width="20"
-                                           Height="20"/>
+                                <Button Classes="PaneButton" Click="Btn_Clear_Click" Grid.Column="1" Name="Btn_Clear">
+                                    <Image Source="{SvgImage //Speck/Assets/Icons/Menu Items/Cancel Icon.svg}"
+                                           Width="15"
+                                           Height="15"/>
                                 </Button>
                              </Grid>
                          </Border>

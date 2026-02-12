@@ -2,16 +2,21 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Npgsql;
+using ExCSS;
+using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using static Speck.Vulnerabilities;
 
 namespace Speck;
 
 public partial class Logs : UserControl
 {
     public ObservableCollection<Scans_DB> ScansDB { get; set; } = new();
+    private ObservableCollection<Scans_DB> filteredScansDB = new();
 
     public class Scans_DB
     {
@@ -61,10 +66,30 @@ public partial class Logs : UserControl
         return scanList;
     }
 
-    public Logs()
+    private void ApplyFilter(string searchText = "")
     {
-        InitializeComponent();
-        LoadData();
+        filteredScansDB.Clear();
+
+        var filteredItems = ScansDB
+            .Where(item => string.IsNullOrEmpty(searchText) ||
+                          item.ID.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
+                          item.Type.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
+                          item.Tools.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
+                          item.Started_at.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
+                          item.Finished_at.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
+                          item.Status.Contains(searchText, StringComparison.OrdinalIgnoreCase))
+            .ToList();
+
+        foreach (var item in filteredItems)
+        {
+            filteredScansDB.Add(item);
+        }
+
+        var dataGrid = this.FindControl<DataGrid>("ScansTable");
+        if (dataGrid != null)
+        {
+            dataGrid.ItemsSource = filteredScansDB;
+        }
     }
 
     private void LoadData()
@@ -75,11 +100,23 @@ public partial class Logs : UserControl
         {
             ScansDB.Add(scan);
         }
-        
-        var dataGrid = this.FindControl<DataGrid>("ScansTable");
-        if (dataGrid != null)
-        {
-            dataGrid.ItemsSource = ScansDB;
-        }
+
+        ApplyFilter();
+    }
+
+    public Logs()
+    {
+        InitializeComponent();
+        LoadData();
+    }
+
+    private void SearchInput_TextChanged(object? sender, TextChangedEventArgs e)
+    {
+        ApplyFilter(SearchInput.Text);
+    }
+    private void Btn_Clear_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        SearchInput.Clear();
+        ApplyFilter();
     }
 }

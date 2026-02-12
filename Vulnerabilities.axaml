@@ -3,7 +3,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Speck.Vulnerabilities"                          Background="#F9FAFB"
+             x:Class="Speck.Vulnerabilities"                          
+             
+             Background="#F9FAFB"
              HorizontalAlignment="Stretch"
              VerticalAlignment="Stretch">
 
@@ -81,30 +83,25 @@
                 
                                 Height="20"
                                     Grid.Column="1">
-
-                                             <Grid 
+                                            <Grid 
                                              ColumnDefinitions="*, auto">
-                             
-                                                 <TextBox 
+                                             <TextBox 
                                                  Grid.Column="0"
                                                  Name="SearchInput"
                                                  Watermark="Search Database..."
-                                                 MaxLength="100"
-                                                 MaxLines="1">
-                                 
-                                 
-                                                 </TextBox>
+                                                 TextChanged="SearchInput_TextChanged"/>
 
-                                                <Button Classes="PaneButton" Grid.Column="1" Name="Btn_Search">
-                                                    <Image Source="{SvgImage //Speck/Assets/Icons/Menu Items/Search Icon.svg}"
-                                                           Width="20"
-                                                           Height="20"/>
+                                                <Button Classes="PaneButton" Click="Btn_Clear_Click" Grid.Column="1" Name="Btn_Clear">
+                                                    <Image Source="{SvgImage //Speck/Assets/Icons/Menu Items/Cancel Icon.svg}"
+                                                           Width="15"
+                                                           Height="15"
+                                                           />
                                                 </Button>
                                              </Grid>
                                          </Border>
                                </Grid>
 
-
+               <DataGrid Classes="DatabaseView" Name="VulnTable"/>
 
                   </StackPanel>
           </WrapPanel>
