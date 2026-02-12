@@ -18,36 +18,6 @@ namespace Speck
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public int ScanCount
-        {
-            get => _scanCount;
-            set
-            {
-                _scanCount = value;
-                PropertyChanged?.Invoke(this, new(nameof(ScanCount)));
-            }
-        }
-
-        public int VulnCount
-        {
-            get => _vulnCount;
-            set
-            {
-                _vulnCount = value;
-                PropertyChanged?.Invoke(this, new(nameof(VulnCount)));
-            }
-        }
-
-        public float RiskMetric
-        {
-            get => _riskMetric;
-            set
-            {
-                _riskMetric = value;
-                PropertyChanged?.Invoke(this, new(nameof(RiskMetric)));
-            }
-        }
-
 
         //Delete This Later
         public static bool CanConnectToDatabase(string connectionString)

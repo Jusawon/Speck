@@ -5,7 +5,6 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              xmlns:local="using:Speck"
              x:Class="Speck.Dashboard"
-             x:DataType="local:MainWindow"
              Background="#F9FAFB"
              HorizontalAlignment="Stretch"
              VerticalAlignment="Stretch"
@@ -17,7 +16,7 @@
               <WrapPanel Classes="HControlStack">
                   <Border Classes="OverviewBoxes">
                         <StackPanel>
-                            <TextBlock Text="{Binding ScanCount}" Foreground="#537BFF" Classes="OverviewCounter" Name="ScanCounter"/>
+                            <TextBlock  Foreground="#537BFF" Classes="OverviewCounter" Name="ScanCounter"/>
 
                             <StackPanel>
 			                     <TextBlock Text="Total Scan(s) Run" Classes="OverviewDescription"/>
@@ -28,7 +27,7 @@
 
                   <Border Classes="OverviewBoxes">
                         <StackPanel>
-                            <TextBlock Text="{Binding VulnCount}" Foreground="#CB1111" Classes="OverviewCounter" Name="VulCounter"/>
+                            <TextBlock  Foreground="#CB1111" Classes="OverviewCounter" Name="VulnCounter"/>
 
                             <StackPanel>
 			                     <TextBlock Text="Vulnerabilities Found" Classes="OverviewDescription"/>
@@ -39,7 +38,7 @@
 
                  <Border Classes="OverviewBoxes">
                         <StackPanel>
-                            <TextBlock Text="{Binding RiskMetric}" Foreground="#FF893A" Classes="OverviewCounter" Name="RiskMetric"/>
+                            <TextBlock  Foreground="#FF893A" Classes="OverviewCounter" Name="RiskMetric"/>
 
                             <StackPanel>
 			                     <TextBlock Text="Risk Score" Classes="OverviewDescription"/>
