@@ -15,7 +15,6 @@ namespace Speck
         private int _vulnCount;
         private float _riskMetric;
         public const string ConnectionString = "Host=localhost;Port=5434;Username=postgres;Password=1234;Database=dbspeck"; //Remember to add password after commiting
-        private Scans scan = new Scans();
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -104,7 +103,7 @@ namespace Speck
             MI_Customization.IsChecked = false;
             MI_Settings.IsChecked = false;
 
-            MainCC.Content = scan;
+            MainCC.Content = new Scans();
         }
 
         private void MI_Vulnerabilities_Click(object? sender, RoutedEventArgs e)
