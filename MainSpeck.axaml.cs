@@ -19,37 +19,16 @@ namespace Speck
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-
-        //Delete This Later
-        public static bool CanConnectToDatabase(string connectionString)
-        {
-            using (var connection = new Npgsql.NpgsqlConnection(connectionString))
-            {
-                try
-                {
-                    connection.Open();
-                    Debug.WriteLine("Connected!");
-                    return true;
-                }
-                catch (Npgsql.NpgsqlException)
-                {
-                    Debug.WriteLine("Nah Man");
-                    return false;
-                }
-                catch (System.Exception)
-                {
-                    Debug.WriteLine("Nah Man");
-                    return false;
-                }
-            }
-        }
-
         public MainWindow()
         {
             InitializeComponent();
 
-            //Delete This Later
-            CanConnectToDatabase(ConnectionString);
+            //LLM Loading
+            LMKit.Global.Runtime.EnableCuda = true;
+            LMKit.Global.Runtime.Initialize();
+
+            //LLM Loading
+
 
             // Menu Items
             MI_Dashboard.Click += MI_Dashboard_Click;
