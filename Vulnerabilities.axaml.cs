@@ -10,12 +10,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using static Speck.Logs;
+using static Speck.Glb;
 
 namespace Speck;
 
 public partial class Vulnerabilities : UserControl
 {
+
+    public event Action<string>? OpenChat;
     public ObservableCollection<Vuln_DB> VulnDB { get; set; } = new();
     private ObservableCollection<Vuln_DB> filteredVulnDB = new();
     private string VulnID { get; set; } = string.Empty;
@@ -38,7 +40,7 @@ public partial class Vulnerabilities : UserControl
 
         try
         {
-            using var conn = new NpgsqlConnection(MainWindow.ConnectionString);
+            using var conn = new NpgsqlConnection(ConnectionString);
             conn.Open();
 
             using var cmd = new NpgsqlCommand("""
@@ -146,8 +148,13 @@ public partial class Vulnerabilities : UserControl
 
     private void AskVuln_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        Debug.WriteLine(VulnID);
-        VulnID = string.Empty;
+        if (VulnID != String.Empty)
+        {
+            var quest = "How do i mitigate " + VulnID + "?";
+            VulnID = string.Empty;
+            OpenChat?.Invoke(quest);
+        }
+
 
         //Closing
         Overlay.Opacity = 0;

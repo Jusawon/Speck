@@ -41,12 +41,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="AI\speck-ai.gguf" />
     <None Remove="Scanners\Nuclei\nuclei.exe" />
     <None Remove="Scanners\Osquery\osqueryi.exe" />
     <None Remove="Scanners\Trivy\trivy.exe" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="AI\speck-ai.gguf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scanners\Nuclei\nuclei.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

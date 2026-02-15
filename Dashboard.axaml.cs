@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using static Speck.Vulnerabilities;
+using static Speck.Glb;
 
 namespace Speck;
 
@@ -37,7 +37,7 @@ public partial class Dashboard : UserControl, INotifyPropertyChanged
 
         try
         {
-            using var conn = new NpgsqlConnection(MainWindow.ConnectionString);
+            using var conn = new NpgsqlConnection(ConnectionString);
             conn.Open();
 
             using var cmd = new NpgsqlCommand("""
@@ -121,7 +121,7 @@ public partial class Dashboard : UserControl, INotifyPropertyChanged
         int VulnCount = 0;
         try 
         {
-            using var conn = new NpgsqlConnection(MainWindow.ConnectionString);
+            using var conn = new NpgsqlConnection(ConnectionString);
             conn.Open();
 
             using var cmd = new NpgsqlCommand("""
@@ -155,7 +155,7 @@ public partial class Dashboard : UserControl, INotifyPropertyChanged
 
         try
         {
-            using var conn = new NpgsqlConnection(MainWindow.ConnectionString);
+            using var conn = new NpgsqlConnection(ConnectionString);
             conn.Open();
 
             using var cmd = new NpgsqlCommand("""

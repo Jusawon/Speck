@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static Speck.Glb;
 
 namespace Speck;
 
@@ -342,7 +343,7 @@ public partial class Scans : UserControl
     ScanProfile profile,
     string[] tools)
     {
-        await using var conn = new NpgsqlConnection(MainWindow.ConnectionString);
+        await using var conn = new NpgsqlConnection(ConnectionString);
         await conn.OpenAsync();
 
         var cmd = new NpgsqlCommand("""
@@ -371,7 +372,7 @@ public partial class Scans : UserControl
 
     private async Task MarkScanFinishedAsync(Guid scanId, string status)
     {
-        await using var conn = new NpgsqlConnection(MainWindow.ConnectionString);
+        await using var conn = new NpgsqlConnection(ConnectionString);
         await conn.OpenAsync();
 
         var cmd = new NpgsqlCommand("""
@@ -397,7 +398,7 @@ public partial class Scans : UserControl
         if (!doc.RootElement.TryGetProperty("Results", out var results))
             return;
 
-        await using var conn = new NpgsqlConnection(MainWindow.ConnectionString);
+        await using var conn = new NpgsqlConnection(ConnectionString);
         await conn.OpenAsync();
 
         foreach (var result in results.EnumerateArray())
@@ -451,7 +452,7 @@ public partial class Scans : UserControl
         using var doc = JsonDocument.Parse(rawJson);
         var root = doc.RootElement;
 
-        await using var conn = new NpgsqlConnection(MainWindow.ConnectionString);
+        await using var conn = new NpgsqlConnection(ConnectionString);
         await conn.OpenAsync();
 
         var cmd = new NpgsqlCommand("""
@@ -498,7 +499,7 @@ public partial class Scans : UserControl
         if (doc.RootElement.ValueKind != JsonValueKind.Array)
             return;
 
-        await using var conn = new NpgsqlConnection(MainWindow.ConnectionString);
+        await using var conn = new NpgsqlConnection(ConnectionString);
         await conn.OpenAsync();
 
         foreach (var row in doc.RootElement.EnumerateArray())

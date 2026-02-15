@@ -15,7 +15,6 @@ namespace Speck
         private int _vulnCount;
         private float _riskMetric;
         private Scans scans;
-        public const string ConnectionString = "Host=localhost;Port=5434;Username=postgres;Password=1234;Database=dbspeck"; //Remember to add password after commiting
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -24,7 +23,7 @@ namespace Speck
         {
             InitializeComponent();
 
-
+            LoadConfig();
             scans = new Scans();
 
 
@@ -53,7 +52,10 @@ namespace Speck
             MI_Dashboard_Click(this, new RoutedEventArgs());
         }
 
-
+        private void LoadConfig()
+        {
+            //Load Config Json later
+        }
 
         private void ChatWindow_PaneClosing(object? sender, CancelRoutedEventArgs e)
         {
@@ -115,7 +117,20 @@ namespace Speck
             MI_Customization.IsChecked = false;
             MI_Settings.IsChecked = false;
 
-            MainCC.Content = new Vulnerabilities();
+            var vulnerabilities = new Vulnerabilities
+            {
+                DataContext = this
+            };
+
+            vulnerabilities.OpenChat+= (quest) =>
+            {
+                Btn_Chat_Click(this, new RoutedEventArgs());
+                ChatInput.Text = String.Empty;
+                ChatInput.Text = quest;
+                ChatInput.Focus();
+            };
+
+            MainCC.Content = vulnerabilities;
         }
 
         private void MI_Logs_Click(object? sender, RoutedEventArgs e)

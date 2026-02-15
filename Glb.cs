@@ -8,21 +8,15 @@ namespace Speck
 {
     internal class Glb
     {
+        public const string ConnectionString = "Host=localhost;Port=5434;Username=postgres;Password=1234;Database=dbspeck";
+        public static string SpeckBreed { get; set; } = "Kampoeng";
+        public static string ExportType { get; set; }  = "JSON"; //JSON/CSV/XML
 
         enum Platform
         {
             Windows,
             Linux,
             MacOS
-        }
-
-        static Platform GetPlatform()
-        {
-            if (OperatingSystem.IsWindows()) return Platform.Windows;
-            if (OperatingSystem.IsLinux()) return Platform.Linux;
-            if (OperatingSystem.IsMacOS()) return Platform.MacOS;
-
-            throw new NotSupportedException("Unsupported OS");
         }
     }
 }
