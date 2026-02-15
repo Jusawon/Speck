@@ -1,13 +1,16 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.VisualTree;
 using DocumentFormat.OpenXml.Spreadsheet;
 using ExCSS;
 using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
+using static Speck.Logs;
 
 namespace Speck;
 
@@ -15,6 +18,7 @@ public partial class Vulnerabilities : UserControl
 {
     public ObservableCollection<Vuln_DB> VulnDB { get; set; } = new();
     private ObservableCollection<Vuln_DB> filteredVulnDB = new();
+    private string VulnID { get; set; } = string.Empty;
 
     public class Vuln_DB
     {
@@ -142,6 +146,13 @@ public partial class Vulnerabilities : UserControl
 
     private void AskVuln_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
+        Debug.WriteLine(VulnID);
+        VulnID = string.Empty;
+
+        //Closing
+        Overlay.Opacity = 0;
+        Overlay.IsHitTestVisible = false;
+        VulnQuest.IsVisible = false;
     }
 
     private void Btn_Close_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -153,8 +164,34 @@ public partial class Vulnerabilities : UserControl
 
     private void VulnTable_DoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)
     {
-        Overlay.Opacity = 0.7;
-        Overlay.IsHitTestVisible = true;
-        VulnQuest.IsVisible = true;
+
+        if (e.Source is not Avalonia.Controls.Control control)
+            return;
+
+        var row = control.FindAncestorOfType<DataGridRow>();
+
+        if (row == null)
+            return;
+
+
+        if (VulnTable.SelectedItem is Vuln_DB selectedVuln)
+        {
+            Overlay.Opacity = 0.7;
+            Overlay.IsHitTestVisible = true;
+            VulnQuest.IsVisible = true;
+
+            VulnID = selectedVuln.Identifier;
+            QuestBodyText.Inlines.Clear();
+
+            QuestBodyText.Inlines.Add(new Avalonia.Controls.Documents.Run("Ask Speck About "));
+
+            QuestBodyText.Inlines.Add(new Avalonia.Controls.Documents.Run(VulnID)
+            {
+                FontWeight = Avalonia.Media.FontWeight.SemiBold
+            });
+
+            QuestBodyText.Inlines.Add(new Avalonia.Controls.Documents.Run("?"));
+        }
+
     }
 }

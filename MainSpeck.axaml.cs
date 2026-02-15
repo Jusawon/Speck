@@ -174,7 +174,7 @@ namespace Speck
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        private void AddUserMessage(string text)
+        public void AddUserMessage(string text)
         {
             var messageText = new SelectableTextBlock
             {

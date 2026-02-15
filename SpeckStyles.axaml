@@ -184,7 +184,7 @@
 
     <Style Selector="WrapPanel.HControlStack">
 		<Setter Property="Orientation" Value="Horizontal"/>
-        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Stretch"/>
         <Setter Property="ItemSpacing" Value="20"/>
     </Style>
@@ -659,7 +659,7 @@
 
          <Style Selector="^ TextBlock.Body">
             <Setter Property="FontSize" Value="24"/>
-            <Setter Property="FontWeight" Value="Thin"/>
+            <Setter Property="FontWeight" Value="Light"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
              <Setter Property="TextWrapping" Value="Wrap"/>
              <Setter Property="TextAlignment" Value="Center"/>

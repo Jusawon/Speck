@@ -1,13 +1,17 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using Npgsql;
+using Avalonia.VisualTree;
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
+using DocumentFormat.OpenXml.Spreadsheet;
 using ExCSS;
+using Npgsql;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using static Speck.Vulnerabilities;
 
@@ -17,6 +21,7 @@ public partial class Logs : UserControl
 {
     public ObservableCollection<Scans_DB> ScansDB { get; set; } = new();
     private ObservableCollection<Scans_DB> filteredScansDB = new();
+    private string ExportLogID { get; set; } = string.Empty;
 
     public class Scans_DB
     {
@@ -122,7 +127,13 @@ public partial class Logs : UserControl
 
     private void ExpLog_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
+        Debug.WriteLine(ExportLogID);
+        ExportLogID = string.Empty;
 
+        //Closing
+        Overlay.Opacity = 0;
+        Overlay.IsHitTestVisible = false;
+        LogQuest.IsVisible = false;
     }
 
     private void Btn_Close_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -134,8 +145,32 @@ public partial class Logs : UserControl
 
     private void ScansTable_DoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)
     {
-        Overlay.Opacity = 0.7;
-        Overlay.IsHitTestVisible = true;
-        LogQuest.IsVisible = true;
+        if (e.Source is not Avalonia.Controls.Control control)
+            return;
+
+        var row = control.FindAncestorOfType<DataGridRow>();
+
+        if (row == null)
+            return;
+
+
+        if (ScansTable.SelectedItem is Scans_DB selectedScan)
+        {
+            Overlay.Opacity = 0.7;
+            Overlay.IsHitTestVisible = true;
+            LogQuest.IsVisible = true;
+
+            ExportLogID = selectedScan.ID;
+            QuestBodyText.Inlines.Clear();
+
+            QuestBodyText.Inlines.Add(new Avalonia.Controls.Documents.Run("Do you want to export "));
+
+            QuestBodyText.Inlines.Add(new Avalonia.Controls.Documents.Run(ExportLogID)
+            {
+                FontWeight = Avalonia.Media.FontWeight.SemiBold
+            });
+
+            QuestBodyText.Inlines.Add(new Avalonia.Controls.Documents.Run(" and all it's finding(s)?"));
+        }
     }
 }

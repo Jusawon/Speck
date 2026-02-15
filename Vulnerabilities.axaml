@@ -25,9 +25,7 @@
                                />
 
                     
-                    <TextBlock Classes="Body"
-                               Text="Ask Speck about {finding_id}?"
-                               />
+                    <TextBlock Classes="Body" Name="QuestBodyText"/>
                     <Button Classes="RunFunc" Content="Ask Speck" Name="AskVuln" Click="AskVuln_Click"/>
                 </WrapPanel>
           </Border>

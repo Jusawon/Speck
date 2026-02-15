@@ -30,9 +30,7 @@
                                />
 
                     
-                    <TextBlock Classes="Body"
-                               Text="Do you want to export {scan_id} and all it’s findings?"
-                               />
+                    <TextBlock Classes="Body" Name="QuestBodyText"/>
 
                     <Button Classes="RunFunc" Content="Export Log" Name="ExpLog" Click="ExpLog_Click"/>
                 </WrapPanel>
