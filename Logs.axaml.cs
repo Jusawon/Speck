@@ -119,4 +119,23 @@ public partial class Logs : UserControl
         SearchInput.Clear();
         ApplyFilter();
     }
+
+    private void ExpLog_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+
+    }
+
+    private void Btn_Close_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        Overlay.Opacity = 0;
+        Overlay.IsHitTestVisible = false;
+        LogQuest.IsVisible = false;
+    }
+
+    private void ScansTable_DoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)
+    {
+        Overlay.Opacity = 0.7;
+        Overlay.IsHitTestVisible = true;
+        LogQuest.IsVisible = true;
+    }
 }

@@ -8,7 +8,45 @@
              Background="#F9FAFB"
              HorizontalAlignment="Stretch"
              VerticalAlignment="Stretch">
+<Panel>
+	        <Border Classes="QuestionPanel" Name="VulnQuest">
+		        <WrapPanel>
+					         <Grid 
+                             ColumnDefinitions="*, auto">
+                                <Button Classes="PaneButton" Click="Btn_Close_Click" Name="Btn_Close" Grid.Column="1">
+                                    <Image Source="{SvgImage //Speck/Assets/Icons/Menu Items/Cancel Icon.svg}"
+                                           Width="15"
+                                           Height="15"
+                                           />
+                                </Button>
+                             </Grid>
+                    <TextBlock Classes="Heading"
+                               Text="Ask Speck?"
+                               />
 
+                    
+                    <TextBlock Classes="Body"
+                               Text="Ask Speck about {finding_id}?"
+                               />
+                    <Button Classes="RunFunc" Content="Ask Speck" Name="AskVuln" Click="AskVuln_Click"/>
+                </WrapPanel>
+          </Border>
+
+    <Panel>
+		            <Panel Name="Overlay"
+                   Background="White"
+                   ZIndex="95"
+                   Opacity="0"
+                   IsHitTestVisible="False">
+
+                <Panel.Transitions>
+                    <Transitions>
+                        <DoubleTransition Property="Opacity"
+                                          Duration="0:0:0.2"
+                                          Easing="CubicEaseOut"/>
+                    </Transitions>
+                </Panel.Transitions>
+            </Panel>
   <ScrollViewer>
       <WrapPanel>
            <StackPanel Classes="VControlStack">
@@ -101,9 +139,11 @@
                                          </Border>
                                </Grid>
 
-               <DataGrid Classes="DatabaseView" Name="VulnTable"/>
+               <DataGrid Classes="DatabaseView" Name="VulnTable" DoubleTapped="VulnTable_DoubleTapped"/>
 
                   </StackPanel>
           </WrapPanel>
     </ScrollViewer>
+        </Panel>
+    </Panel>
 </UserControl>

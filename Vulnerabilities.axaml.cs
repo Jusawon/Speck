@@ -139,4 +139,22 @@ public partial class Vulnerabilities : UserControl
         SearchInput.Clear();
         ApplyFilter();
     }
+
+    private void AskVuln_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+    }
+
+    private void Btn_Close_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        Overlay.Opacity = 0;
+        Overlay.IsHitTestVisible = false;
+        VulnQuest.IsVisible = false;
+    }
+
+    private void VulnTable_DoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)
+    {
+        Overlay.Opacity = 0.7;
+        Overlay.IsHitTestVisible = true;
+        VulnQuest.IsVisible = true;
+    }
 }

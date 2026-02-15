@@ -3,9 +3,16 @@
         >
 
 
+
   <Design.PreviewWith>
     <Border Padding="20" Background="#F9FAFB">
       <!-- Add Controls for Previewer Here -->
+      <WrapPanel>
+
+
+
+
+        </WrapPanel>
 
 
     </Border>
@@ -619,5 +626,78 @@
         <Setter Property="Background" Value="White"/>
     </Style>
 </Style>
+
+<!-- Question Panel -->
+<Style Selector="Border.QuestionPanel">
+			<Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Width" Value="370"/>
+            <Setter Property="CornerRadius" Value="20"/>
+            <Setter Property="Background" Value="White" />
+            <Setter Property="ZIndex" Value="90"/>
+            <Setter Property="IsVisible" Value="False"/>
+
+  <Setter Property="Effect">
+        <Setter.Value>
+            <DropShadowEffect Color="Black" BlurRadius="4" Opacity="0.1" OffsetY="0" OffsetX="0"/>
+        </Setter.Value>
+    </Setter>
+    <Style Selector="^ WrapPanel">
+	    <Setter Property="Orientation" Value="Vertical"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="ItemSpacing" Value="20"/>
+        <Setter Property="Margin" Value="20"/>
+
+
+        <Style Selector="^ TextBlock.Heading">
+            <Setter Property="FontSize" Value="32"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+         </Style>
+
+         <Style Selector="^ TextBlock.Body">
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontWeight" Value="Thin"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+             <Setter Property="TextWrapping" Value="Wrap"/>
+             <Setter Property="TextAlignment" Value="Center"/>
+         </Style>
+
+
+          <Style Selector="^ Button.RunFunc">
+                    <Setter Property="Width" Value="200"/>
+                    <Setter Property="Height" Value="50"/>
+                    <Setter Property="Background" Value="#89B382"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="FontSize" Value="20"/>
+                    <Setter Property="FontWeight" Value="SemiBold"/>
+                    <Setter Property="CornerRadius" Value="20"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    <Setter Property="Content" Value="This is a button"/>
+                    
+
+                    <Style Selector="^:pointerover /template/ ContentPresenter">
+                        <Setter Property="Background" Value="#89B382"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="Opacity" Value="0.6"/>
+                    </Style>
+
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect Color="Black" BlurRadius="4" Opacity="0.1" OffsetY="0" OffsetX="0"/>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+    </Style>
+
+</Style>
+
+
+<!-- Question Panel -->
 
 </Styles>

@@ -12,6 +12,47 @@
              HorizontalAlignment="Stretch"
              VerticalAlignment="Stretch">
 
+
+          <Panel>
+              <Border Classes="QuestionPanel" Name="LogQuest">
+		        <WrapPanel>
+					         <Grid 
+                             ColumnDefinitions="*, auto">
+                                <Button Classes="PaneButton" Grid.Column="1" Name="Btn_Close" Click="Btn_Close_Click">
+                                    <Image Source="{SvgImage //Speck/Assets/Icons/Menu Items/Cancel Icon.svg}"
+                                           Width="15"
+                                           Height="15"
+                                           />
+                                </Button>
+                             </Grid>
+                    <TextBlock Classes="Heading"
+                               Text="Export Log?"
+                               />
+
+                    
+                    <TextBlock Classes="Body"
+                               Text="Do you want to export {scan_id} and all it’s findings?"
+                               />
+
+                    <Button Classes="RunFunc" Content="Export Log" Name="ExpLog" Click="ExpLog_Click"/>
+                </WrapPanel>
+          </Border>
+
+         <Panel>
+		            <Panel Name="Overlay"
+                   Background="White"
+                   ZIndex="95"
+                   Opacity="0"
+                   IsHitTestVisible="False">
+
+                <Panel.Transitions>
+                    <Transitions>
+                        <DoubleTransition Property="Opacity"
+                                          Duration="0:0:0.2"
+                                          Easing="CubicEaseOut"/>
+                    </Transitions>
+                </Panel.Transitions>
+            </Panel>
   <ScrollViewer>
            <StackPanel Classes="VControlStack">
                   <TextBlock Classes="H1" Text="Logs"/>
@@ -43,8 +84,11 @@
                </Grid>
 
               
-			    <DataGrid Classes="DatabaseView" Name="ScansTable"/>
+			    <DataGrid Classes="DatabaseView" Name="ScansTable" DoubleTapped="ScansTable_DoubleTapped"/>
 
                   </StackPanel>
-    </ScrollViewer>
+ 
+        </ScrollViewer>
+             </Panel>
+                </Panel>
 </UserControl>
