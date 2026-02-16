@@ -139,6 +139,7 @@ namespace Speck
             var messageText = new SelectableTextBlock
             {
                 Text = "Thinking...",
+                Foreground = Brushes.Gray,
                 Name = $"Loading_{loadingId}"
             };
 
@@ -200,7 +201,7 @@ namespace Speck
 
             var parameters = new ModelParams(modelPath)
             {
-                ContextSize = 4096,
+                ContextSize = 8192,
                 BatchSize = 512,
                 GpuLayerCount = -1  // All layers to GPU
             };
@@ -229,30 +230,27 @@ namespace Speck
             if (_executor == null)
             {
                 AddAIResponse("Model is not initialized. Please wait for loading to complete.");
-                AbleToChat = true;
+                LoadingResp = false;
                 return;
             }
 
-            // Trim history before adding new message to prevent overflow
-            TrimHistoryIfNeeded();
-
-            // Add user message to UI
-            AddUserMessage(userInput);
-
-            // Add loading indicator
-            var loadingIndicatorId = AddLoadingIndicator();
-            ChatScrollViewer.Offset =
-                new Avalonia.Vector(
-                    ChatScrollViewer.Offset.X,
-                    ChatScrollViewer.Extent.Height
-                );
-
-            // Add user message to conversation history
-            _history.AddMessage(AuthorRole.User, userInput);
-
             try
             {
-                // Build the full prompt with system prompt and conversation history
+                // Add user message to UI
+                AddUserMessage(userInput);
+
+                // Add loading indicator
+                var loadingIndicatorId = AddLoadingIndicator();
+                ChatScrollViewer.Offset =
+                    new Avalonia.Vector(
+                        ChatScrollViewer.Offset.X,
+                        ChatScrollViewer.Extent.Height
+                    );
+
+                // Add user message to conversation history
+                _history.AddMessage(AuthorRole.User, userInput);
+
+                // Build the full prompt with system prompt and limited conversation history
                 var fullPrompt = BuildPrompt();
 
                 // Configure inference parameters
@@ -263,7 +261,7 @@ namespace Speck
                         Temperature = 0.7f,
                     },
                     AntiPrompts = new List<string> { "User:", "###" },
-                    MaxTokens = 200,
+                    MaxTokens = 500,
                 };
 
                 // Get AI response
@@ -276,11 +274,14 @@ namespace Speck
 
                 var responseText = aiResponse.ToString().Trim();
 
+                // Clean up the response
+                responseText = CleanResponse(responseText);
+
                 // Remove loading indicator and add response
                 RemoveLoadingIndicator(loadingIndicatorId);
                 AddAIResponse(responseText);
 
-                // Add AI response to conversation history
+                // Add AI response to conversation history (only once!)
                 _history.AddMessage(AuthorRole.Assistant, responseText);
 
                 ChatScrollViewer.Offset =
@@ -289,86 +290,78 @@ namespace Speck
                     ChatScrollViewer.Extent.Height
                 );
             }
-            catch (Exception ex)
-            {
-                // Remove loading indicator and show error
-                RemoveLoadingIndicator(loadingIndicatorId);
-                AddAIResponse($"Error generating response: {ex.Message}");
-
-                // Log the full exception for debugging
-                Debug.WriteLine($"Exception details: {ex}");
-
-                // If there's a context error, reset the context
-                try
-                {
-                    _context = SpeckModel.CreateContext(new ModelParams(modelPath)
-                    {
-                        ContextSize = 4096,
-                        BatchSize = 512,
-                        GpuLayerCount = -1
-                    });
-                    _executor = new InteractiveExecutor(_context);
-                }
-                catch
-                {
-                    // If reset fails, the model is probably in an unrecoverable state
-                }
-            }
             finally
             {
                 LoadingResp = false;
             }
         }
 
-        public void TrimHistoryIfNeeded()
+        private string CleanResponse(string response)
         {
-            const int maxMessages = 10; // Reduced to be more conservative
-            const int threshold = 8;    // Start trimming when we reach this count
-
-            if (_history.Messages.Count > threshold)
+            // Remove anything after the first occurrence of "User:" or other assistant tags
+            var userIndex = response.IndexOf("User:");
+            if (userIndex >= 0)
             {
-                // Keep only the most recent messages, ensuring we keep the system context manageable
-                var recentMessages = _history.Messages.Skip(Math.Max(0, _history.Messages.Count - maxMessages)).ToList();
-                _history.Messages.Clear();
-                _history.Messages.AddRange(recentMessages);
+                response = response.Substring(0, userIndex).TrimEnd();
             }
+
+            var assistantIndex = response.IndexOf("<|im_start|>assistant");
+            if (assistantIndex >= 0)
+            {
+                response = response.Substring(0, assistantIndex).TrimEnd();
+            }
+
+            var assistantTagIndex = response.IndexOf("Assistant:");
+            if (assistantTagIndex >= 0)
+            {
+                response = response.Substring(0, assistantTagIndex).TrimEnd();
+            }
+
+            // Remove trailing whitespace and special characters
+            response = response.TrimEnd('\n', '\r', ' ', ':', '<', '|', 'i', 'm', '_', 's', 't', 'a', 'r', 't', '>', 'e', 'n', 'd');
+
+            return response;
         }
 
         private string BuildPrompt()
         {
             var promptBuilder = new StringBuilder();
 
-            // Add system prompt
-            promptBuilder.AppendLine("System: You are Speck, an experienced cybersecurity expert with a unique personality. " +
-                                    "You analyze vulnerabilities with deep technical knowledge while maintaining a friendly, approachable tone. " +
-                                    "Explain with occasional chicken sounds (*Pock* *Pock*). Don't overdo it " +
-                                    "Provide practical, actionable advice that general users can implement immediately. " +
-                                    "Use varied sentence structures and speak conversationally while remaining professional. " +
-                                    "When discussing patches, focus on explaining the core concept rather than saying 'No patch available'. " +
-                                    "Think step-by-step: identify the vulnerability type, explain the risk, describe the impact, and suggest specific mitigations." +
-                                    "If no mitigation steps are found, answer with the patch method or no ways to mitigate vulnerability for now" +
-                                    "Exclude 'diff' in your responses" +
-                                    "When asked about who you are, explain who you are; no need to tell step-by-step or path method as you are explaining yourself");
-            promptBuilder.AppendLine();
+            var systemPrompt = "You are Speck, an experienced cybersecurity expert with a unique personality. " +
+                              "You analyze vulnerabilities with deep technical knowledge while maintaining a friendly, approachable tone. " +
+                              "Explain with occasional chicken sounds (*Pock* *Pock*). " +
+                              "Think step-by-step: identify the vulnerability type, explain the risk, describe the impact, and suggest specific mitigations.";
 
-            // Limit conversation history to prevent context overflow
-            var recentMessages = _history.Messages.TakeLast(10).ToList(); // Keep only last 10 messages
+            //var systemPrompt = "You are Speck, an experienced cybersecurity expert with a unique personality. " +
+            //                  "You analyze vulnerabilities with deep technical knowledge while maintaining a friendly, approachable tone. " +
+            //                  "Explain with occasional chicken sounds (*Pock* *Pock*). " +
+            //                  "Provide practical, actionable advice that general users can implement immediately. " +
+            //                  "Use varied sentence structures and speak conversationally while remaining professional. " +
+            //                  "When discussing patches, focus on explaining the core concept rather than saying 'No patch available'. " +
+            //                  "Think step-by-step: identify the vulnerability type, explain the risk, describe the impact, and suggest specific mitigations." +
+            //                  "If no mitigation steps are found, answer with the patch method or no ways to mitigate vulnerability for now";
+
+            promptBuilder.AppendLine($"<|im_start|>system");
+            promptBuilder.AppendLine($"{systemPrompt}<|im_end|>");
+
+            var recentMessages = _history.Messages.TakeLast(2).ToList();
 
             foreach (var message in recentMessages)
             {
                 switch (message.Role)
                 {
                     case AuthorRole.User:
-                        promptBuilder.AppendLine($"User: {message.Content}");
+                        promptBuilder.AppendLine($"<|im_start|>user");
+                        promptBuilder.AppendLine($"{message.Content}<|im_end|>");
                         break;
                     case AuthorRole.Assistant:
-                        promptBuilder.AppendLine($"Assistant: {message.Content}");
+                        promptBuilder.AppendLine($"<|im_start|>assistant");
+                        promptBuilder.AppendLine($"{message.Content}<|im_end|>");
                         break;
                 }
             }
 
-            // Prepare for next response
-            promptBuilder.Append("Assistant:");
+            promptBuilder.AppendLine($"<|im_start|>assistant");
 
             return promptBuilder.ToString();
         }
