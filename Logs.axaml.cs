@@ -4,8 +4,6 @@ using Avalonia.Controls.Documents;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
-using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
-using DocumentFormat.OpenXml.Spreadsheet;
 using ExCSS;
 using Npgsql;
 using System;

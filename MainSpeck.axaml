@@ -35,7 +35,7 @@
                                 </Button>
                              </Grid>
                       
-                      <ScrollViewer Grid.Row="1">
+                      <ScrollViewer Grid.Row="1" Name="ChatScrollViewer">
 						    <StackPanel Classes="ChatBoxWrap" Name="ChatPanel"/>
                       </ScrollViewer>
 
