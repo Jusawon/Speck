@@ -129,65 +129,6 @@ namespace Speck
         }
 
         // Track loading indicators
-        private readonly Dictionary<string, Control> _loadingControls = new Dictionary<string, Control>();
-
-        private string AddLoadingIndicator()
-        {
-            var loadingId = Guid.NewGuid().ToString();
-
-            // Create loading message UI element
-            var messageText = new SelectableTextBlock
-            {
-                Text = "Thinking...",
-                Foreground = Brushes.Gray,
-                Name = $"Loading_{loadingId}"
-            };
-
-            var bubble = new Avalonia.Controls.Border
-            {
-                Classes = { "AIChat" },
-                Child = messageText
-            };
-
-            var wrapPanel = new WrapPanel
-            {
-                Children = { bubble }
-            };
-
-            var container = new Grid
-            {
-                Classes = { "AIChatBox" },
-                ColumnDefinitions =
-        {
-            new ColumnDefinition(GridLength.Auto),
-            new ColumnDefinition(GridLength.Star)
-        }
-            };
-
-            var icon = new Image();
-            Grid.SetColumn(icon, 0);
-            Grid.SetColumn(wrapPanel, 1);
-
-            container.Children.Add(icon);
-            container.Children.Add(wrapPanel);
-
-            ChatPanel.Children.Add(container);
-
-            // Store reference to the container
-            _loadingControls[loadingId] = container;
-
-            return loadingId;
-        }
-
-        private void RemoveLoadingIndicator(string loadingId)
-        {
-            if (_loadingControls.TryGetValue(loadingId, out var control))
-            {
-                ChatPanel.Children.Remove(control);
-                _loadingControls.Remove(loadingId);
-            }
-        }
-
 
         public async Task InitializeModelAsync()
         {
@@ -239,8 +180,6 @@ namespace Speck
                 // Add user message to UI
                 AddUserMessage(userInput);
 
-                // Add loading indicator
-                var loadingIndicatorId = AddLoadingIndicator();
                 ChatScrollViewer.Offset =
                     new Avalonia.Vector(
                         ChatScrollViewer.Offset.X,
@@ -264,36 +203,111 @@ namespace Speck
                     MaxTokens = 500,
                 };
 
-                // Get AI response
+                // Create a temporary message UI element for streaming
+                var aiMessageContainer = CreateAIMessageUI(". . .");
+                var messageTextBlock = FindMessageTextBlock(aiMessageContainer); // You'll need this helper method
+                ChatPanel.Children.Add(aiMessageContainer);
+
+                // Get AI response with streaming
                 var aiResponse = new StringBuilder();
+                var lastUpdate = DateTime.Now;
 
                 await foreach (var token in _executor.InferAsync(fullPrompt, inferenceParams))
                 {
                     aiResponse.Append(token);
+
+                    // Update UI periodically to avoid excessive updates
+                    if ((DateTime.Now - lastUpdate).TotalMilliseconds > 50) // Update every 50ms
+                    {
+                        var currentText = CleanResponse(aiResponse.ToString().Trim());
+                        messageTextBlock.Text = currentText;
+
+                        // Scroll to bottom
+                        ChatScrollViewer.Offset =
+                            new Avalonia.Vector(
+                                ChatScrollViewer.Offset.X,
+                                ChatScrollViewer.Extent.Height
+                            );
+
+                        lastUpdate = DateTime.Now;
+                    }
                 }
 
-                var responseText = aiResponse.ToString().Trim();
+                var finalResponse = CleanResponse(aiResponse.ToString().Trim());
+                messageTextBlock.Text = finalResponse;
 
-                // Clean up the response
-                responseText = CleanResponse(responseText);
 
-                // Remove loading indicator and add response
-                RemoveLoadingIndicator(loadingIndicatorId);
-                AddAIResponse(responseText);
+                // Add final response to conversation history
+                _history.AddMessage(AuthorRole.Assistant, finalResponse);
 
-                // Add AI response to conversation history (only once!)
-                _history.AddMessage(AuthorRole.Assistant, responseText);
-
+                // Scroll to bottom one final time
                 ChatScrollViewer.Offset =
-                new Avalonia.Vector(
-                    ChatScrollViewer.Offset.X,
-                    ChatScrollViewer.Extent.Height
-                );
+                    new Avalonia.Vector(
+                        ChatScrollViewer.Offset.X,
+                        ChatScrollViewer.Extent.Height
+                    );
             }
             finally
             {
                 LoadingResp = false;
             }
+        }
+
+        // Helper method to create AI message UI
+        private Grid CreateAIMessageUI(string initialText)
+        {
+            var messageText = new SelectableTextBlock
+            {
+                Text = initialText
+            };
+
+            var bubble = new Avalonia.Controls.Border
+            {
+                Child = messageText
+            };
+
+            var wrapPanel = new WrapPanel
+            {
+                Children = { bubble }
+            };
+
+            var container = new Grid
+            {
+                Classes = { "AIChatBox" },
+                ColumnDefinitions =
+        {
+            new ColumnDefinition(GridLength.Auto),
+            new ColumnDefinition(GridLength.Star)
+        }
+            };
+
+            var icon = new Image();
+            Grid.SetColumn(icon, 0);
+            Grid.SetColumn(wrapPanel, 1);
+
+            container.Children.Add(icon);
+            container.Children.Add(wrapPanel);
+
+            return container;
+        }
+
+        // Helper method to find the SelectableTextBlock within the container
+        private SelectableTextBlock FindMessageTextBlock(Grid container)
+        {
+            foreach (var child in container.Children)
+            {
+                if (child is WrapPanel wrapPanel)
+                {
+                    foreach (var wrapChild in wrapPanel.Children)
+                    {
+                        if (wrapChild is Border border && border.Child is SelectableTextBlock textBlock)
+                        {
+                            return textBlock;
+                        }
+                    }
+                }
+            }
+            return null;
         }
 
         private string CleanResponse(string response)
