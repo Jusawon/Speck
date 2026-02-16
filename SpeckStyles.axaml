@@ -276,6 +276,8 @@
             <Setter Property="FontWeight" Value="Regular"/>
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="AcceptsReturn" Value="True"/>
+            <Setter Property="MaxHeight" Value="120"/>
+            <Setter Property="MaxLength" Value="1024"/>
             <Setter Property="AcceptsTab" Value="True"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -309,6 +311,7 @@
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Cursor" Value="Hand"/>
+        
        
 
         <Style Selector="^ Image">

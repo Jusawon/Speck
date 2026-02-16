@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.VisualTree;
@@ -23,7 +24,7 @@ namespace Speck
         private int _scanCount;
         private int _vulnCount;
         private float _riskMetric;
-        private bool _ableToChat;
+        private bool _ableToChat = false;
         private bool _loadingResp;
 
         private bool AbleToChat
@@ -67,6 +68,11 @@ namespace Speck
             InitializeComponent();
 
             LoadConfig();
+
+            ChatInput.AddHandler(
+            Avalonia.Input.InputElement.KeyDownEvent,
+            ChatInput_KeyDown,
+            Avalonia.Interactivity.RoutingStrategies.Tunnel);
             scans = new Scans();
 
             //============================ Model Loading ===============================
@@ -92,6 +98,7 @@ namespace Speck
             ChatInput.TextChanged += (s, e) =>
             {
                 if (!string.IsNullOrWhiteSpace(ChatInput.Text)) AbleToChat = true;
+                else AbleToChat = false;
             };
 
             Btn_Send_Chat.IsEnabled = false;
@@ -99,7 +106,7 @@ namespace Speck
             MI_Dashboard_Click(this, new RoutedEventArgs());
         }
 
-        
+
 
         private void LoadConfig()
         {
@@ -383,7 +390,7 @@ namespace Speck
 
         private void ChatWindow_PaneClosing(object? sender, CancelRoutedEventArgs e)
         {
-            Overlay.Opacity= 0;
+            Overlay.Opacity = 0;
         }
 
         private void ChatWindow_PaneOpening(object? sender, CancelRoutedEventArgs e)
@@ -420,7 +427,7 @@ namespace Speck
 
         private void MI_Scans_Click(object? sender, RoutedEventArgs e)
         {
-            
+
 
             MI_Scans.IsChecked = true;
             MI_Dashboard.IsChecked = false;
@@ -446,7 +453,7 @@ namespace Speck
                 DataContext = this
             };
 
-            vulnerabilities.OpenChat+= (quest) =>
+            vulnerabilities.OpenChat += (quest) =>
             {
                 Btn_Chat_Click(this, new RoutedEventArgs());
                 ChatInput.Text = String.Empty;
@@ -480,7 +487,7 @@ namespace Speck
             MainCC.Content = new Customization();
         }
 
-        private void MI_Settings_Click(object? sender,  RoutedEventArgs e)
+        private void MI_Settings_Click(object? sender, RoutedEventArgs e)
         {
             MI_Settings.IsChecked = true;
             MI_Dashboard.IsChecked = false;
@@ -503,8 +510,10 @@ namespace Speck
 
         private void Btn_Send_Chat_Click(object? sender, RoutedEventArgs e)
         {
-            ProcessUserInputAsync(ChatInput.Text);
-            ChatInput.Text = string.Empty;
+            if (Btn_Send_Chat.IsEnabled) {
+                ProcessUserInputAsync(ChatInput.Text);
+                ChatInput.Text = string.Empty;
+            }
         }
 
         private void OnPropertyChanged([CallerMemberName] string? name = null)
@@ -570,5 +579,15 @@ namespace Speck
 
             ChatPanel.Children.Add(container);
         }
+
+        private void ChatInput_KeyDown(object? sender, Avalonia.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && !e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+            {
+                e.Handled = true;
+                Btn_Send_Chat_Click(sender, e);
+            }
+        }
+
     }
 }

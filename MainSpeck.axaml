@@ -46,7 +46,8 @@
                              
                                  <TextBox 
                                  Grid.Column="0"
-                                 Name="ChatInput">
+                                 Name="ChatInput"
+                                 KeyDown="ChatInput_KeyDown">
                                  
                                  </TextBox>
 
