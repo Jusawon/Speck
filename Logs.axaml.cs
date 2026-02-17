@@ -25,6 +25,7 @@ namespace Speck;
 public partial class Logs : UserControl
 {
     public ObservableCollection<Scans_DB> ScansDB { get; set; } = new();
+    public ObservableCollection<SelectedVulns> SelectedLogVuln { get; set; } = new();
     private ObservableCollection<Scans_DB> filteredScansDB = new();
     private string ExportLogID { get; set; } = string.Empty;
 
@@ -36,6 +37,8 @@ public partial class Logs : UserControl
         public string Started_at { get; set; } = string.Empty;
         public string Finished_at { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
+        public string Count { get; set; } = string.Empty;
+
     }
 
     public class ScanExport
@@ -52,6 +55,7 @@ public partial class Logs : UserControl
         public string Started_at { get; set; } = string.Empty;
         public string Finished_at { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
+
     }
 
     public class Findings
@@ -66,6 +70,63 @@ public partial class Logs : UserControl
         public JsonElement? Data { get; set; }
     }
 
+    public class SelectedVulns
+    {
+        public string ID { get; set; } = string.Empty;
+        public string Category { get; set; } = string.Empty;
+        public string Identifier { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+        public string Severity { get; set; } = string.Empty;
+        public string Exposed { get; set; }
+        public string Tool { get; set; }
+
+    }
+
+    public void GetSelectedLogVulns(string scanId)
+    {
+       SelectedLogVuln.Clear();
+
+        try
+        {
+            using var conn = new NpgsqlConnection(ConnectionString);
+            conn.Open();
+
+            using var cmd = new NpgsqlCommand("""
+                SELECT finding_id, category, identifier, title, severity, exposed, source_tool
+                FROM scan_findings
+                WHERE scan_id = @id
+            """, conn);
+
+            cmd.Parameters.AddWithValue("@id", Guid.Parse(scanId));
+
+            using var reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                SelectedLogVuln.Add(new SelectedVulns
+                {
+                    ID = reader.GetGuid(0).ToString(),
+                    Category = reader.IsDBNull(1) ? string.Empty : reader.GetString(1),
+                    Identifier = reader.IsDBNull(2) ? string.Empty : reader.GetString(2),
+                    Title = reader.IsDBNull(3) ? string.Empty : reader.GetString(3),
+                    Severity = reader.IsDBNull(4) ? string.Empty : reader.GetString(4),
+                    Exposed = !reader.IsDBNull(5) ? string.Empty : reader.GetString(5),
+                    Tool = reader.IsDBNull(6) ? string.Empty : reader.GetString(6)
+                });
+            }
+        }
+        catch (System.Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Database error: {ex.Message}");
+        }
+
+        var dataGrid = this.FindControl<DataGrid>("SelectedLogTable");
+        if (dataGrid != null)
+        {
+            dataGrid.ItemsSource = SelectedLogVuln;
+        }
+    }
+
     public List<Scans_DB> GetScans()
     {
         var scanList = new List<Scans_DB>();
@@ -76,9 +137,25 @@ public partial class Logs : UserControl
             conn.Open();
 
             using var cmd = new NpgsqlCommand("""
-                SELECT scan_id, scan_type, tools, started_at, finished_at, status
-                FROM scans
-                ORDER BY started_at DESC
+                SELECT 
+                    s.scan_id, 
+                    s.scan_type, 
+                    s.tools, 
+                    s.started_at, 
+                    s.finished_at, 
+                    s.status,
+                    COUNT(f.scan_id) AS findings_count
+                FROM scans s
+                LEFT JOIN scan_findings f 
+                    ON f.scan_id = s.scan_id
+                GROUP BY 
+                    s.scan_id, 
+                    s.scan_type, 
+                    s.tools, 
+                    s.started_at, 
+                    s.finished_at, 
+                    s.status
+                ORDER BY s.started_at DESC
             """, conn);
 
             using var reader = cmd.ExecuteReader();
@@ -92,7 +169,8 @@ public partial class Logs : UserControl
                     Tools = reader.IsDBNull(2) ? string.Empty : string.Join(",", reader.GetFieldValue<string[]>(2) ?? new string[0]),
                     Started_at = reader.GetDateTime(3).ToString("yyyy-MM-dd HH:mm:ss"),
                     Finished_at = reader.IsDBNull(4) ? string.Empty : reader.GetDateTime(4).ToString("yyyy-MM-dd HH:mm:ss"),
-                    Status = reader.IsDBNull(5) ? string.Empty : reader.GetString(5)
+                    Status = reader.IsDBNull(5) ? string.Empty : reader.GetString(5),
+                    Count = reader.IsDBNull(6) ? "0" : reader.GetInt32(6).ToString()
                 });
             }
         }
@@ -115,7 +193,8 @@ public partial class Logs : UserControl
                           item.Tools.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
                           item.Started_at.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
                           item.Finished_at.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
-                          item.Status.Contains(searchText, StringComparison.OrdinalIgnoreCase))
+                          item.Status.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
+                          item.Count.Contains(searchText, StringComparison.OrdinalIgnoreCase))
             .ToList();
 
         foreach (var item in filteredItems)
@@ -405,11 +484,13 @@ public partial class Logs : UserControl
 
         if (ScansTable.SelectedItem is Scans_DB selectedScan)
         {
+
             Overlay.Opacity = 0.7;
             Overlay.IsHitTestVisible = true;
             LogQuest.IsVisible = true;
 
             ExportLogID = selectedScan.ID;
+            GetSelectedLogVulns(ExportLogID);
             QuestBodyText.Inlines.Clear();
 
             QuestBodyText.Inlines.Add(new Avalonia.Controls.Documents.Run("Do you want to export "));

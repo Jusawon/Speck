@@ -463,7 +463,7 @@
                         <Setter Property="Foreground" Value="#5F5F5F"/>
                         <Setter Property="TextWrapping" Value="Wrap"/>
                         <Setter Property="TextAlignment" Value="Justify"/>
-                        <Setter Property="Text" Value="Once you’ve started a scan, you cannot change pages or run another scan until the current scan is complete. "/>
+                        <Setter Property="Text" Value="Once you’ve started a scan, you cannot run another scan until the current scan is complete. "/>
                     </Style>
                 </Style>
 
