@@ -16,7 +16,7 @@
                <TextBlock Classes="H2" Text="Run a Scan"/>
                       <Border Classes="ScanButtonBlock">
                       <WrapPanel>
-			            <Image Source="{SvgImage //Speck/Assets/Specks/Speck Magnifying Glass Kampoeng.svg}"/>
+			            <Image Name="ScanSpeckImage"/>
 
                         <WrapPanel>
                             <TextBlock Classes="Heading"/>

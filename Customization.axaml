@@ -10,7 +10,44 @@
   <ScrollViewer>
            <StackPanel Classes="VControlStack">
                   <TextBlock Classes="H1" Text="Customize Your Speck!"/>
+                     <WrapPanel Classes="HControlStack">
 
+          <WrapPanel Classes="SpeckSelection">
+			  <ToggleButton Name="SelectKampoeng">
+				  <Image Source="{SvgImage //Speck/Assets/Specks/Normals/Basic/Kampoeng.svg}"/>
+              </ToggleButton>
+              <TextBlock Text="Kampoeng"/>
+          </WrapPanel>
+
+          <WrapPanel Classes="SpeckSelection">
+			  <ToggleButton Name="SelectOrpington">
+				  <Image Source="{SvgImage //Speck/Assets/Specks/Normals/Basic/Orpington.svg}"/>
+              </ToggleButton>
+              <TextBlock Text="Orpington"/>
+          </WrapPanel>
+
+          <WrapPanel Classes="SpeckSelection">
+			  <ToggleButton Name="SelectLeghorn">
+				  <Image Source="{SvgImage //Speck/Assets/Specks/Normals/Basic/Leghorn.svg}"/>
+              </ToggleButton>
+              <TextBlock Text="Leghorn"/>
+          </WrapPanel>
+
+          <WrapPanel Classes="SpeckSelection">
+			  <ToggleButton Name="SelectAustraslop">
+				  <Image Source="{SvgImage //Speck/Assets/Specks/Normals/Basic/Austraslop.svg}"/>
+              </ToggleButton>
+              <TextBlock Text="Austraslop"/>
+          </WrapPanel>
+
+          <WrapPanel Classes="SpeckSelection">
+			  <ToggleButton Name="SelectSussex">
+				  <Image Source="{SvgImage //Speck/Assets/Specks/Normals/Basic/Sussex.svg}"/>
+              </ToggleButton>
+              <TextBlock Text="Sussex"/>
+          </WrapPanel>
+
+        </WrapPanel>
                   </StackPanel>
     </ScrollViewer>
 </UserControl>

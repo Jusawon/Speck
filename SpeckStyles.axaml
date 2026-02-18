@@ -7,12 +7,7 @@
   <Design.PreviewWith>
     <Border Padding="20" Background="#F9FAFB">
       <!-- Add Controls for Previewer Here -->
-      <WrapPanel>
 
-
-
-
-        </WrapPanel>
 
 
     </Border>
@@ -509,6 +504,7 @@
                           <Setter Property="HorizontalContentAlignment" Value="Center"/>
                           <Setter Property="VerticalContentAlignment" Value="Center"/>
                           <Setter Property="PlaceholderText" Value="Select Type"/>
+                          <Setter Property="Cursor" Value="Hand"/>
                      
                        </Style>
             </Style>
@@ -702,5 +698,108 @@
 
 
 <!-- Question Panel -->
+
+    <Style Selector="WrapPanel.SpeckSelection">
+        <Setter Property="Orientation" Value="Vertical"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="ItemSpacing" Value="20"/>
+        <Setter Property="Margin" Value="20"/>
+
+
+            <Style Selector="^ ToggleButton">
+                 <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Width" Value="320"/>
+                <Setter Property="Height" Value="350"/>
+                <Setter Property="CornerRadius" Value="20"/>
+                <Setter Property="Background" Value="White" />
+                <Setter Property="Cursor" Value="Hand"/>
+                
+                <Style Selector="^ Image">
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="Width" Value="322"/>
+                    <Setter Property="Height" Value="326"/>
+
+                </Style>
+
+                <Style Selector="^:checked /template/ ContentPresenter">
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Foreground" Value="Transparent"/>
+                </Style>
+
+                <Style Selector="^:pointerover /template/ ContentPresenter">
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Foreground" Value="Transparent"/>
+                </Style>
+
+                <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect Color="Black" BlurRadius="4" Opacity="0.1" OffsetY="0" OffsetX="0"/>
+                        </Setter.Value>
+                </Setter>
+         </Style>
+
+        <Style Selector="^ TextBlock">
+			<Setter Property="FontSize" Value="28"/>
+            <Setter Property="Foreground" Value="Gray"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+</Style>
+
+    <Style Selector="Grid.SettingsItem">
+		<Setter Property="HorizontalAlignment" Value="Stretch"/>
+
+        <Style Selector="^ TextBlock.Title">
+			<Setter Property="FontSize" Value="28"/>
+            <Setter Property="FontWeight" Value="Light"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+
+        <Style Selector="^ ComboBox">
+            <Setter Property="CornerRadius" Value="16"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Background" Value="#EEEEEE"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Height" Value="40"/> 
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="0, 0, 20, 0"/>
+
+            <Style Selector="^ ComboBoxItem">
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="FontWeight" Value="Regular"/>
+            </Style>
+        </Style>
+
+       <Style Selector="^ Button">
+		<Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontWeight" Value="Regular"/>
+        <Setter Property="Foreground" Value="#61A1FF"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="Cursor" Value="Hand"/>
+                       <Setter Property="Margin" Value="0, 0, 20, 0"/>
+
+        <Style Selector="^:pointerover /template/ ContentPresenter">
+            <Setter Property="Foreground" Value="Blue"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+         </Style>
+    </Style>
+    </Style>
 
 </Styles>

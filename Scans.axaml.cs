@@ -1,6 +1,8 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Svg.Skia;
 using Avalonia.Threading;
 using Npgsql;
 using System;
@@ -21,6 +23,15 @@ public partial class Scans : UserControl
 {
     private readonly ConcurrentQueue<string> _logQueue = new();
     private readonly StringBuilder _logBuffer = new();
+    private static string _SpeckScan;
+
+    public static string SpeckScan { 
+        get { return _SpeckScan; }
+        set { _SpeckScan = value;
+   
+        } //Add DI i think
+    }
+
     private DispatcherTimer? _logTimer;
     ScanProfile ScanOption = ScanProfile.Quick;
 
@@ -31,12 +42,18 @@ public partial class Scans : UserControl
     public Scans()
     {
         InitializeComponent();
-
+        Glb.LoadSpecks();
+        loadImage(); //For now just left this here
 
         StartLogPump();
         BtnScan.IsEnabled = false;
     }
 
+    private void loadImage()
+    {
+        var Resource = SvgSource.Load(SpeckScan);
+        ScanSpeckImage.Source = new SvgImage { Source = Resource };
+    }
     private enum ScanProfile
     {
         Quick,
@@ -210,15 +227,15 @@ public partial class Scans : UserControl
             AppContext.BaseDirectory;
 
         public static string Trivy =>
-            Path.Combine(Base, "Scanners", "Trivy",
+            System.IO.Path.Combine(Base, "Scanners", "Trivy",
                 OperatingSystem.IsWindows() ? "trivy.exe" : "trivy");
 
         public static string Nuclei =>
-            Path.Combine(Base, "Scanners", "Nuclei",
+            System.IO.Path.Combine(Base, "Scanners", "Nuclei",
                 OperatingSystem.IsWindows() ? "nuclei.exe" : "nuclei");
 
         public static string Osquery =>
-            Path.Combine(Base, "Scanners", "Osquery",
+            System.IO.Path.Combine(Base, "Scanners", "Osquery",
                 OperatingSystem.IsWindows() ? "osqueryi.exe" : "osqueryi");
     }
 
@@ -610,7 +627,7 @@ public partial class Scans : UserControl
         {
             FileName = fileName,
             Arguments = arguments,
-            WorkingDirectory = Path.GetDirectoryName(fileName)!,
+            WorkingDirectory = System.IO.Path.GetDirectoryName(fileName)!,
             RedirectStandardOutput = true,
             RedirectStandardError = true,
             UseShellExecute = false,
@@ -639,7 +656,7 @@ public partial class Scans : UserControl
         await process.WaitForExitAsync();
 
         if (process.ExitCode != 0 && process.ExitCode != 1)
-            throw new Exception($"{Path.GetFileName(fileName)} exited with code {process.ExitCode}");
+            throw new Exception($"{System.IO.Path.GetFileName(fileName)} exited with code {process.ExitCode}");
     }
 
 

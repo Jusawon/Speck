@@ -67,7 +67,9 @@ namespace Speck
         {
             InitializeComponent();
 
+            
             LoadConfig();
+            Glb.LoadSpecks();
 
             ChatInput.AddHandler(
             Avalonia.Input.InputElement.KeyDownEvent,
@@ -111,6 +113,8 @@ namespace Speck
         private void LoadConfig()
         {
             //Load Config Json later
+
+            
         }
 
         public class ConversationMessage
