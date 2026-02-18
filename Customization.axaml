@@ -13,35 +13,35 @@
                      <WrapPanel Classes="HControlStack">
 
           <WrapPanel Classes="SpeckSelection">
-			  <ToggleButton Name="SelectKampoeng">
+			  <ToggleButton Name="SelectKampoeng" Click="SelectKampoeng_Click">
 				  <Image Source="{SvgImage //Speck/Assets/Specks/Normals/Basic/Kampoeng.svg}"/>
               </ToggleButton>
               <TextBlock Text="Kampoeng"/>
           </WrapPanel>
 
           <WrapPanel Classes="SpeckSelection">
-			  <ToggleButton Name="SelectOrpington">
+			  <ToggleButton Name="SelectOrpington" Click="SelectOrpington_Click">
 				  <Image Source="{SvgImage //Speck/Assets/Specks/Normals/Basic/Orpington.svg}"/>
               </ToggleButton>
               <TextBlock Text="Orpington"/>
           </WrapPanel>
 
           <WrapPanel Classes="SpeckSelection">
-			  <ToggleButton Name="SelectLeghorn">
+			  <ToggleButton Name="SelectLeghorn" Click="SelectLeghorn_Click">
 				  <Image Source="{SvgImage //Speck/Assets/Specks/Normals/Basic/Leghorn.svg}"/>
               </ToggleButton>
               <TextBlock Text="Leghorn"/>
           </WrapPanel>
 
           <WrapPanel Classes="SpeckSelection">
-			  <ToggleButton Name="SelectAustraslop">
+			  <ToggleButton Name="SelectAustraslop" Click="SelectAustraslop_Click">
 				  <Image Source="{SvgImage //Speck/Assets/Specks/Normals/Basic/Austraslop.svg}"/>
               </ToggleButton>
               <TextBlock Text="Austraslop"/>
           </WrapPanel>
 
           <WrapPanel Classes="SpeckSelection">
-			  <ToggleButton Name="SelectSussex">
+			  <ToggleButton Name="SelectSussex" Click="SelectSussex_Click">
 				  <Image Source="{SvgImage //Speck/Assets/Specks/Normals/Basic/Sussex.svg}"/>
               </ToggleButton>
               <TextBlock Text="Sussex"/>

@@ -3,6 +3,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.Svg.Skia;
 using Avalonia.VisualTree;
 using LLama;
 using LLama.Common;
@@ -15,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Speck
@@ -26,6 +28,17 @@ namespace Speck
         private float _riskMetric;
         private bool _ableToChat = false;
         private bool _loadingResp;
+        private static string _SpeckIcon;
+        private readonly string _configPath = Path.Combine(AppContext.BaseDirectory, "config.json");
+
+        public static string SpeckIcon
+        {
+            get { return _SpeckIcon; }
+            set
+            {
+                _SpeckIcon = value;
+            }
+        }
 
         private bool AbleToChat
         {
@@ -83,6 +96,11 @@ namespace Speck
 
             //==========================================================================
 
+            this.Closing += (_, __) =>
+            {
+                SaveConfig();
+            };
+
             // Menu Items
             MI_Dashboard.Click += MI_Dashboard_Click;
             MI_Scans.Click += MI_Scans_Click;
@@ -108,13 +126,74 @@ namespace Speck
             MI_Dashboard_Click(this, new RoutedEventArgs());
         }
 
-
+        public class AppConfig
+        {
+            public string ConfSpeckBreed { get; set; } = string.Empty;
+            public string ConfExportType { get; set; } = string.Empty;
+        }
 
         private void LoadConfig()
         {
-            //Load Config Json later
+            try
+            {
+                if (!File.Exists(_configPath))
+                {
+                    var defaultConfig = new AppConfig
+                    {
+                        ConfSpeckBreed = Glb.SpeckBreed,
+                        ConfExportType = Glb.ExportType
+                    };
 
-            
+                    var defaultJson = JsonSerializer.Serialize(defaultConfig, new JsonSerializerOptions
+                    {
+                        WriteIndented = true
+                    });
+
+                    File.WriteAllText(_configPath, defaultJson);
+
+                    Glb.SpeckBreed = defaultConfig.ConfSpeckBreed;
+                    Glb.ExportType = defaultConfig.ConfExportType;
+
+                    return;
+                }
+
+                var json = File.ReadAllText(_configPath);
+
+                var config = JsonSerializer.Deserialize<AppConfig>(json);
+
+                if (config != null)
+                {
+                    Glb.SpeckBreed = config.ConfSpeckBreed;
+                    Glb.ExportType = config.ConfExportType;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Config load error: {ex.Message}");
+            }
+        }
+
+        private void SaveConfig()
+        {
+            try
+            {
+                var config = new AppConfig
+                {
+                    ConfSpeckBreed = Glb.SpeckBreed,
+                    ConfExportType = Glb.ExportType
+                };
+
+                var json = JsonSerializer.Serialize(config, new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                });
+
+                File.WriteAllText(_configPath, json);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Config save error: {ex.Message}");
+            }
         }
 
         public class ConversationMessage
@@ -292,7 +371,14 @@ namespace Speck
         }
             };
 
-            var icon = new Image();
+            var Resource = SvgSource.Load(SpeckIcon);
+
+            var icon = new Image
+            {
+
+                Source = new SvgImage { Source = Resource }
+            };
+
             Grid.SetColumn(icon, 0);
             Grid.SetColumn(wrapPanel, 1);
 
@@ -544,8 +630,13 @@ namespace Speck
 
         private void AddAIResponse(string text)
         {
-            var icon = new Image();
-            // Source comes from Style — DO NOT set it here
+            var Resource = SvgSource.Load(SpeckIcon);
+
+            var icon = new Image
+            {
+
+                Source = new SvgImage { Source = Resource }
+            };
 
             var messageText = new SelectableTextBlock
             {

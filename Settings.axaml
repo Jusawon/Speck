@@ -19,8 +19,8 @@
 
                   <Grid ColumnDefinitions="*, *"  Classes="SettingsItem">
 			          <TextBlock Text="Log Export File Format" Classes="Title" Grid.Column="0"/>
-                      <ComboBox  Name="CmbFormat" SelectedItem="0" Grid.Column="1">
-                            <ComboBoxItem Content="JSON" Name="JsonSelect"/>
+                      <ComboBox SelectionChanged="CmbFormat_SelectionChanged" Name="CmbFormat" SelectedItem="0" Grid.Column="1">
+                            <ComboBoxItem Content="JSON" Name="JsonSelect" />
                             <ComboBoxItem Content="CSV" Name="CSVSelect"/>
                             <ComboBoxItem Content="XML" Name="XMLSelect"/>
                       </ComboBox>
