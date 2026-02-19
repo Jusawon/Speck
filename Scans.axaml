@@ -36,8 +36,7 @@
                <TextBlock Classes="H2" Text="Scan Console"/>
                      
 		                  <Grid Classes="ConsoleLog"
-                          ColumnDefinitions="*"
-                          ToolTip.Tip="Display Current Scan Console Log">
+                          ColumnDefinitions="*">
                              <Border Grid.Column="0">
 			                  <ScrollViewer Name="ConsoleScrollViewer">
 				                  <SelectableTextBlock Name="ConsoleTextBlock"/>

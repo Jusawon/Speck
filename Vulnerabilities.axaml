@@ -13,7 +13,7 @@
 		        <WrapPanel>
 					         <Grid 
                              ColumnDefinitions="*, auto">
-                                <Button Classes="PaneButton" Click="Btn_Close_Click" Name="Btn_Close" Grid.Column="1">
+                                <Button Classes="PaneButton" Click="Btn_Close_Click" Name="Btn_Close" Grid.Column="1" ToolTip.Tip="Cancel Asking Speck">
                                     <Image Source="{SvgImage //Speck/Assets/Icons/Menu Items/Cancel Icon.svg}"
                                            Width="15"
                                            Height="15"
@@ -26,7 +26,7 @@
 
                     
                     <TextBlock Classes="Body" Name="QuestBodyText"/>
-                    <Button Classes="RunFunc" Content="Ask Speck" Name="AskVuln" Click="AskVuln_Click"/>
+                    <Button Classes="RunFunc" Content="Ask Speck" Name="AskVuln" Click="AskVuln_Click" ToolTip.Tip="Ask Speck"/>
                 </WrapPanel>
           </Border>
 
@@ -136,9 +136,10 @@
                                                  Grid.Column="0"
                                                  Name="SearchInput"
                                                  Watermark="Search Database..."
-                                                 TextChanged="SearchInput_TextChanged"/>
+                                                 TextChanged="SearchInput_TextChanged"
+                                                 ToolTip.Tip="Search Database"/>
 
-                                                <Button Classes="PaneButton" Click="Btn_Clear_Click" Grid.Column="1" Name="Btn_Clear">
+                                                <Button Classes="PaneButton" Click="Btn_Clear_Click" Grid.Column="1" Name="Btn_Clear" ToolTip.Tip="Clear Search">
                                                     <Image Source="{SvgImage //Speck/Assets/Icons/Menu Items/Cancel Icon.svg}"
                                                            Width="15"
                                                            Height="15"
@@ -148,7 +149,7 @@
                                          </Border>
                                </Grid>
 
-               <DataGrid Classes="DatabaseView" Name="VulnTable" DoubleTapped="VulnTable_DoubleTapped"/>
+               <DataGrid Classes="DatabaseView" Name="VulnTable" DoubleTapped="VulnTable_DoubleTapped" ToolTip.Tip="Display All Currently Found Vulnerabilities"/>
 
                   </StackPanel>
           </WrapPanel>

@@ -17,7 +17,7 @@
                         <Border Classes="SpeckBorder">
                             <Grid RowDefinitions="*, auto" RowSpacing="10">
 			                        <TextBlock Name="SpeckBorderText" Classes="SpeckText" Grid.Row="0"/>
-                                    <Button Content="Run a Scan Now" Classes="ViewLink" Name="SpeckNavScan" Click="SpeckNavScan_Click" Grid.Row="1"/>
+                                    <Button Content="Run a Scan Now" Classes="ViewLink" Name="SpeckNavScan" Click="SpeckNavScan_Click" Grid.Row="1" ToolTip.Tip="Go to the Scan Page"/>
                              </Grid>
                         </Border>
 
@@ -32,7 +32,7 @@
 
                             <StackPanel>
 			                     <TextBlock Text="Total Scan(s) Run" Classes="OverviewDescription"/>
-                                <Button Content="Run a Scan Now" Classes="ViewLink" Name="NavScan" Click="NavScan_Click"/>
+                                <Button Content="Run a Scan Now" Classes="ViewLink" Name="NavScan" Click="NavScan_Click" ToolTip.Tip="Go To The Scan Page"/>
                             </StackPanel>
                     </StackPanel>
                 </Border>
@@ -43,7 +43,7 @@
 
                             <StackPanel>
 			                     <TextBlock Text="Vulnerabilities Found" Classes="OverviewDescription"/>
-                                <Button Content="Solve Now" Classes="ViewLink" Name="NavVuln" Click="NavVuln_Click"/>
+                                <Button Content="Solve Now" Classes="ViewLink" Name="NavVuln" Click="NavVuln_Click" ToolTip.Tip="Go To The Vulnerabilities Page"/>
                             </StackPanel>
                         </StackPanel>
                 </Border>
