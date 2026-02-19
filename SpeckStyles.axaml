@@ -107,6 +107,30 @@
 
     </Style> <!-- Overview Boxes-->
 
+        <Style Selector="Border.SpeckBorder"> <!-- Speck Border-->
+		<Setter Property="Background" Value="White"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="CornerRadius" Value="16"/>
+        <Setter Property="MaxWidth" Value="300"/>
+        <Setter Property="MaxHeight" Value="280"/>
+        <Setter Property="Padding" Value="20"/>
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="Black" BlurRadius="4" Opacity="0.1" OffsetY="0" OffsetX="0"/>
+            </Setter.Value>
+        </Setter>
+
+        <Style Selector="^ StackPanel">
+            <Setter Property="Orientation" Value="Vertical"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+
+        </Style>
+
+    </Style> <!-- Speck Border-->
+
     <Style Selector="TextBlock.H1">
 		<Setter Property="FontSize" Value="32"/>
         <Setter Property="FontWeight" Value="Bold"/>
@@ -118,7 +142,7 @@
 
     <Style Selector="TextBlock.H2">
 		<Setter Property="FontSize" Value="24"/>
-        <Setter Property="FontWeight" Value="Light"/>
+        <Setter Property="FontWeight" Value="SemiLight"/>
         <Setter Property="Foreground" Value="Black"/>
         <Setter Property="Margin" Value="10"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
@@ -148,6 +172,14 @@
         <Setter Property="Foreground" Value="Black"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
         <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
+
+    <Style Selector="TextBlock.SpeckText">
+		<Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontWeight" Value="Regular"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextAlignment" Value="Right"/>
     </Style>
 
     <Style Selector="Button.ViewLink">
@@ -412,7 +444,7 @@
             <Setter Property="Background" Value="White"/>
             <Setter Property="CornerRadius" Value="40"/>
             <Setter Property="Padding" Value="20, 20, 40, 20"/>
-            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
             
             <Setter Property="Effect">
                    <Setter.Value>
@@ -428,8 +460,8 @@
                  <Setter Property="ItemsAlignment" Value="Center"/>
 
                 <Style Selector="^ Image">
-			        <Setter Property="Width" Value="161"/>
-                    <Setter Property="Height" Value="163"/>
+			        <Setter Property="Width" Value="322"/>
+                    <Setter Property="Height" Value="326"/>
                     <Setter Property="VerticalAlignment" Value="Center"/>
                     <Setter Property="HorizontalAlignment" Value="Center"/>
                 </Style>
@@ -452,7 +484,7 @@
                     </Style>
 
                     <Style Selector="^ TextBlock.Explanation">
-                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="FontSize" Value="24"/>
                         <Setter Property="FontWeight" Value="Regular"/>
                         <Setter Property="Foreground" Value="#5F5F5F"/>
                         <Setter Property="TextWrapping" Value="Wrap"/>
@@ -574,7 +606,7 @@
 		    <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="VerticalAlignment" Value="Stretch"/>
             <Setter Property="MaxHeight" Value="600"/>
-            <Setter Property="CornerRadius" Value="40"/>
+            <Setter Property="CornerRadius" Value="20"/>
             <Setter Property="Padding" Value="40"/>
             <Setter Property="Background" Value="#2E2E2E" />
 
@@ -800,5 +832,14 @@
          </Style>
     </Style>
     </Style>
+
+    <Style Selector="Image.SpeckPic">
+       <Setter Property="HorizontalAlignment" Value="Center"/>
+       <Setter Property="VerticalAlignment" Value="Center"/>
+       <Setter Property="Width" Value="322"/>
+       <Setter Property="Height" Value="326"/>
+   </Style>
+
+
 
 </Styles>

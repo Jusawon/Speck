@@ -52,7 +52,18 @@
                <TextBlock Classes="Desc" Text="Vulnerabilities displayed are based on the final scan. If you had updated or mitigated any vulnerabilities, please run a new scan."/>
 
 
+
                 <TextBlock Classes="H2" Text="Executive Overview"/>
+
+                                      <WrapPanel Classes="HControlStack" Name="SpeckControl">
+                        <Border Classes="SpeckBorder">
+                            <Grid RowDefinitions="*, auto" RowSpacing="10">
+			                        <TextBlock Name="SpeckBorderText" Classes="SpeckText" Grid.Row="0"/>
+                             </Grid>
+                        </Border>
+
+                    <Image Classes="SpeckPic" Name="SpeckPic"/>
+                </WrapPanel>
 
                           <WrapPanel Classes="ExecutiveSum">
                                 <Border>

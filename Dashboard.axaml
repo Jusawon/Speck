@@ -12,6 +12,18 @@
     <ScrollViewer>
            <StackPanel Classes="VControlStack">
                   <TextBlock Classes="H1" Text="Dashboard"/>
+
+                <WrapPanel Classes="HControlStack" Name="SpeckControl">
+                        <Border Classes="SpeckBorder">
+                            <Grid RowDefinitions="*, auto" RowSpacing="10">
+			                        <TextBlock Name="SpeckBorderText" Classes="SpeckText" Grid.Row="0"/>
+                                    <Button Content="Run a Scan Now" Classes="ViewLink" Name="SpeckNavScan" Click="SpeckNavScan_Click" Grid.Row="1"/>
+                             </Grid>
+                        </Border>
+
+                    <Image Classes="SpeckPic" Name="SpeckPic"/>
+                </WrapPanel>
+
                   <TextBlock Classes="H2" Text="Overview"/>
               <WrapPanel Classes="HControlStack">
                   <Border Classes="OverviewBoxes">

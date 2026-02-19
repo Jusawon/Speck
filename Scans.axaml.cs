@@ -23,14 +23,7 @@ public partial class Scans : UserControl
 {
     private readonly ConcurrentQueue<string> _logQueue = new();
     private readonly StringBuilder _logBuffer = new();
-    private static string _SpeckScan;
-
-    public static string SpeckScan { 
-        get { return _SpeckScan; }
-        set { _SpeckScan = value;
-   
-        } //Add DI i think
-    }
+    public static string SpeckImg;
 
     private DispatcherTimer? _logTimer;
     ScanProfile ScanOption = ScanProfile.Quick;
@@ -43,16 +36,16 @@ public partial class Scans : UserControl
     {
         InitializeComponent();
         Glb.LoadSpecks();
-        loadImage(); //For now just left this here
+        LoadImage(); //For now just left this here
 
         StartLogPump();
         BtnScan.IsEnabled = false;
     }
 
-    private void loadImage()
+    public void LoadImage()
     {
-        var Resource = SvgSource.Load(SpeckScan);
-        ScanSpeckImage.Source = new SvgImage { Source = Resource };
+        var Resource = SvgSource.Load(SpeckImg);
+        SpeckPic.Source = new SvgImage { Source = Resource };
     }
     private enum ScanProfile
     {
@@ -669,7 +662,6 @@ public partial class Scans : UserControl
 
     private void ScanCmb_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-
 
         if (QuickItem.IsSelected)
         {

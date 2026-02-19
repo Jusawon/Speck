@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using Avalonia.Svg.Skia;
 using Npgsql;
 using System;
 using System.Collections.Generic;
@@ -16,16 +17,50 @@ public partial class Dashboard : UserControl, INotifyPropertyChanged
 {
     public event Action? VulnerabilitiesRequested;
     public event PropertyChangedEventHandler? PropertyChanged;
+    public static string SpeckImg;
     public event Action? ScansRequested;
 
     public Dashboard()
     {
         InitializeComponent();
         DataContext = this;
-        
+
+
         loadCounters();
+        LoadMessage();
     }
 
+    private void LoadMessage()
+    {
+        var scanCount = scanDBCount();
+        DateTime now = DateTime.Now;
+        DateTime? lastScan = GetLatestScanFinishedAt();
+
+        TimeSpan diff = now - lastScan.Value;
+        int daysDifference = diff.Days;
+
+        if (daysDifference > 3 && scanCount > 0)
+        {
+            SpeckBorderText.Text = "*Pock* *Pock* It has been " + daysDifference + " days, since your last scan. Do you want to scan now?";
+        }
+        else if (daysDifference <= 3 && scanCount > 0)
+        {
+            SpeckBorderText.Text = "*Pock* *Pock* Here are your latest scan info!";
+            SpeckNavScan.IsVisible = false;
+        }
+        else if (scanCount <= 0)
+        {
+            SpeckBorderText.Text = "*Pock* *Pock* Looks like you haven’t run any scans yet. Do you want to scan your device now?";
+        }
+
+        LoadImage();
+    }
+
+    private void LoadImage()
+    {
+        var Resource = SvgSource.Load(SpeckImg);
+        SpeckPic.Source = new SvgImage { Source = Resource };
+    }
     public class VulnSeverity
     {
         public string Severity { get; set; }
@@ -83,12 +118,12 @@ public partial class Dashboard : UserControl, INotifyPropertyChanged
         var Info = sever.Count(v => string.Equals(v.Severity, "info", StringComparison.OrdinalIgnoreCase));
         var Unknown = sever.Count(v => string.Equals(v.Severity, "unknown", StringComparison.OrdinalIgnoreCase));
 
-         int rawScore = ((Critical * 5)
-            + (High * 4)
-            + (Medium * 3)
-            + (Low * 2)
-            + (Info * 1)
-            + (Unknown * 1));
+        int rawScore = ((Critical * 5)
+           + (High * 4)
+           + (Medium * 3)
+           + (Low * 2)
+           + (Info * 1)
+           + (Unknown * 1));
 
         int totalFindings = Critical + High + Medium + Low + Info + Unknown;
         int maxScore = totalFindings * 5;
@@ -116,10 +151,40 @@ public partial class Dashboard : UserControl, INotifyPropertyChanged
         return MetricScore;
     }
 
+    public DateTime? GetLatestScanFinishedAt()
+    {
+        try
+        {
+            using var conn = new NpgsqlConnection(ConnectionString);
+            conn.Open();
+
+            using var cmd = new NpgsqlCommand("""
+            SELECT finished_at
+            FROM scans
+            WHERE status = 'completed'
+              AND finished_at IS NOT NULL
+            ORDER BY finished_at DESC
+            LIMIT 1
+        """, conn);
+
+            var result = cmd.ExecuteScalar();
+
+            if (result != null && result != DBNull.Value)
+                return (DateTime)result;
+
+            return null; // no completed scans found
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Database error: {ex.Message}");
+            return null;
+        }
+    }
+
     public int vulnDBCount()
     {
         int VulnCount = 0;
-        try 
+        try
         {
             using var conn = new NpgsqlConnection(ConnectionString);
             conn.Open();
@@ -197,5 +262,8 @@ public partial class Dashboard : UserControl, INotifyPropertyChanged
         VulnerabilitiesRequested?.Invoke();
     }
 
-
+    private void SpeckNavScan_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        ScansRequested?.Invoke();
+    }
 }

@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Documents;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
+using Avalonia.Svg.Skia;
 using Avalonia.VisualTree;
 using ExCSS;
 using Npgsql;
@@ -28,6 +29,7 @@ public partial class Logs : UserControl
     public ObservableCollection<SelectedVulns> SelectedLogVuln { get; set; } = new();
     private ObservableCollection<Scans_DB> filteredScansDB = new();
     private string ExportLogID { get; set; } = string.Empty;
+    public static string SpeckImg;
 
     public class Scans_DB
     {
@@ -412,6 +414,14 @@ public partial class Logs : UserControl
     {
         InitializeComponent();
         LoadData();
+        LoadImage();
+    }
+
+    public void LoadImage()
+    {
+        SpeckBorderText.Text = "*Pock* *Pock* Here are logs of your previous scans, feel free to export them!";
+        var Resource = SvgSource.Load(SpeckImg);
+        SpeckPic.Source = new SvgImage { Source = Resource };
     }
 
     private void SearchInput_TextChanged(object? sender, TextChangedEventArgs e)

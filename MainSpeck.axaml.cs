@@ -28,17 +28,8 @@ namespace Speck
         private float _riskMetric;
         private bool _ableToChat = false;
         private bool _loadingResp;
-        private static string _SpeckIcon;
+        public static string SpeckIcon;
         private readonly string _configPath = Path.Combine(AppContext.BaseDirectory, "config.json");
-
-        public static string SpeckIcon
-        {
-            get { return _SpeckIcon; }
-            set
-            {
-                _SpeckIcon = value;
-            }
-        }
 
         private bool AbleToChat
         {
@@ -75,12 +66,11 @@ namespace Speck
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-
         public MainWindow()
         {
             InitializeComponent();
 
-            
+
             LoadConfig();
             Glb.LoadSpecks();
 
@@ -114,6 +104,7 @@ namespace Speck
             Btn_Close_Chat.Click += Btn_Close_Chat_Click;
             ChatWindow.PaneClosing += ChatWindow_PaneClosing;
             ChatWindow.PaneOpening += ChatWindow_PaneOpening;
+            MainCC.PropertyChanged += MainCC_PropertyChanged;
 
             ChatInput.TextChanged += (s, e) =>
             {
@@ -125,6 +116,8 @@ namespace Speck
 
             MI_Dashboard_Click(this, new RoutedEventArgs());
         }
+
+
 
         public class AppConfig
         {
@@ -600,7 +593,8 @@ namespace Speck
 
         private void Btn_Send_Chat_Click(object? sender, RoutedEventArgs e)
         {
-            if (Btn_Send_Chat.IsEnabled) {
+            if (Btn_Send_Chat.IsEnabled)
+            {
                 ProcessUserInputAsync(ChatInput.Text);
                 ChatInput.Text = string.Empty;
             }
@@ -684,5 +678,9 @@ namespace Speck
             }
         }
 
+        private void MainCC_PropertyChanged(object? sender, Avalonia.AvaloniaPropertyChangedEventArgs e)
+        {
+            scans.LoadImage();
+        }
     }
 }

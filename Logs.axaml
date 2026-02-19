@@ -56,6 +56,17 @@
   <ScrollViewer>
            <StackPanel Classes="VControlStack">
                   <TextBlock Classes="H1" Text="Logs"/>
+
+                                      <WrapPanel Classes="HControlStack" Name="SpeckControl">
+                        <Border Classes="SpeckBorder">
+                            <Grid RowDefinitions="*, auto" RowSpacing="10">
+			                        <TextBlock Name="SpeckBorderText" Classes="SpeckText" Grid.Row="0"/>
+                             </Grid>
+                        </Border>
+
+                    <Image Classes="SpeckPic" Name="SpeckPic"/>
+                </WrapPanel>
+
                 <TextBlock Classes="H2" Text="Scan Logs"/>
                <Grid 
                ColumnDefinitions="*, auto"

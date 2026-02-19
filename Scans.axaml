@@ -9,14 +9,13 @@
              VerticalAlignment="Stretch">
 
   <ScrollViewer>
-          <WrapPanel>
-           <StackPanel Classes="VControlStack">
+           <StackPanel Classes="VControlStack" HorizontalAlignment="Stretch">
                   <TextBlock Classes="H1" Text="Scans"/>
 
                <TextBlock Classes="H2" Text="Run a Scan"/>
                       <Border Classes="ScanButtonBlock">
                       <WrapPanel>
-			            <Image Name="ScanSpeckImage"/>
+			            <Image Name="SpeckPic"/>
 
                         <WrapPanel>
                             <TextBlock Classes="Heading"/>
@@ -46,6 +45,5 @@
                       </Grid>  
 
                   </StackPanel>
-              </WrapPanel>
     </ScrollViewer>
 </UserControl>

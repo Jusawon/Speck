@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.Svg.Skia;
 using Avalonia.VisualTree;
 using ExCSS;
 using Npgsql;
@@ -19,7 +20,14 @@ public partial class Vulnerabilities : UserControl
     public event Action<string>? OpenChat;
     public ObservableCollection<Vuln_DB> VulnDB { get; set; } = new();
     private ObservableCollection<Vuln_DB> filteredVulnDB = new();
+    private int Criticals;
+    private int Highs;
+    private int Mediums;
+    private int Lows;
+    private int Infos;
+    private int Unknowns;
     private string VulnID { get; set; } = string.Empty;
+    public static string SpeckImg;
 
     public class Vuln_DB
     {
@@ -109,14 +117,19 @@ public partial class Vulnerabilities : UserControl
     {
         var vuln = GetVulns();
 
-        CriticalCounter.Text = vuln.Count(v => string.Equals(v.Severity, "critical", StringComparison.OrdinalIgnoreCase)).ToString();
-        HighCounter.Text = vuln.Count(v => string.Equals(v.Severity, "high", StringComparison.OrdinalIgnoreCase)).ToString();
-        MediumCounter.Text = vuln.Count(v => string.Equals(v.Severity, "medium", StringComparison.OrdinalIgnoreCase)).ToString();
-        LowCounter.Text = vuln.Count(v => string.Equals(v.Severity, "low", StringComparison.OrdinalIgnoreCase)).ToString();
-        InfoCounter.Text = vuln.Count(v => string.Equals(v.Severity, "info", StringComparison.OrdinalIgnoreCase)).ToString();
-        UnknownCounter.Text = vuln.Count(v => string.Equals(v.Severity, "unknown", StringComparison.OrdinalIgnoreCase)).ToString();
+        Criticals = vuln.Count(v => string.Equals(v.Severity, "critical", StringComparison.OrdinalIgnoreCase));
+        Highs = vuln.Count(v => string.Equals(v.Severity, "high", StringComparison.OrdinalIgnoreCase));
+        Mediums = vuln.Count(v => string.Equals(v.Severity, "medium", StringComparison.OrdinalIgnoreCase));
+        Lows = vuln.Count(v => string.Equals(v.Severity, "low", StringComparison.OrdinalIgnoreCase));
+        Infos = vuln.Count(v => string.Equals(v.Severity, "info", StringComparison.OrdinalIgnoreCase));
+        Unknowns = vuln.Count(v => string.Equals(v.Severity, "unknown", StringComparison.OrdinalIgnoreCase));
 
-
+        CriticalCounter.Text = Criticals.ToString();
+        HighCounter.Text = Highs.ToString();
+        MediumCounter.Text= Mediums.ToString();
+        LowCounter.Text = Lows.ToString();
+        InfoCounter.Text = Infos.ToString();
+        UnknownCounter.Text = Unknowns.ToString();
 
         VulnDB.Clear();
         foreach (var scan in vuln)
@@ -132,6 +145,31 @@ public partial class Vulnerabilities : UserControl
     {
         InitializeComponent();
         LoadData();
+        LoadImage();
+    }
+    public void LoadImage()
+    {
+        var SpeckImage = SpeckImg;
+
+        if (Criticals > 5 || Highs > 10)
+        {
+            SpeckBorderText.Text = "*Pock* *Pock* That's a lot of vulnerabilities!";
+        }
+        else if (Mediums > 5 || Lows > 5)
+        {
+            SpeckBorderText.Text = "*Pock* *Pock* That's a handful of vulnerabilities!";
+        }
+        else if (Criticals == 0 && Highs == 0 && Mediums == 0 && Lows ==0)
+        {
+            SpeckBorderText.Text = "*Pock* *Pock* You're quite safe!";
+            SpeckImage = "avares://Speck/Assets/Specks/Normals/Basic/";
+            SpeckImage += Glb.SpeckBreed;
+            SpeckImage += ".svg";
+        }
+        else SpeckBorderText.Text = "*Pock* *Pock* Found some vulnerabilities!";
+
+            var Resource = SvgSource.Load(SpeckImage);
+        SpeckPic.Source = new SvgImage { Source = Resource };
     }
 
     private void SearchInput_TextChanged(object? sender, TextChangedEventArgs e)
