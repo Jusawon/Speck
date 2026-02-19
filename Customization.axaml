@@ -13,35 +13,35 @@
                      <WrapPanel Classes="HControlStack">
 
           <WrapPanel Classes="SpeckSelection">
-			  <ToggleButton Name="SelectKampoeng" Click="SelectKampoeng_Click">
+			  <ToggleButton Name="SelectKampoeng" Click="SelectKampoeng_Click" ToolTip.Tip="Change Speck into a Kampoeng Chicken">
 				  <Image Source="{SvgImage //Speck/Assets/Specks/Normals/Basic/Kampoeng.svg}"/>
               </ToggleButton>
               <TextBlock Text="Kampoeng"/>
           </WrapPanel>
 
           <WrapPanel Classes="SpeckSelection">
-			  <ToggleButton Name="SelectOrpington" Click="SelectOrpington_Click">
+			  <ToggleButton Name="SelectOrpington" Click="SelectOrpington_Click" ToolTip.Tip="Change Speck into an Orpington Chicken">
 				  <Image Source="{SvgImage //Speck/Assets/Specks/Normals/Basic/Orpington.svg}"/>
               </ToggleButton>
               <TextBlock Text="Orpington"/>
           </WrapPanel>
 
           <WrapPanel Classes="SpeckSelection">
-			  <ToggleButton Name="SelectLeghorn" Click="SelectLeghorn_Click">
+			  <ToggleButton Name="SelectLeghorn" Click="SelectLeghorn_Click" ToolTip.Tip="Change Speck into a Leghorn Chicken">
 				  <Image Source="{SvgImage //Speck/Assets/Specks/Normals/Basic/Leghorn.svg}"/>
               </ToggleButton>
               <TextBlock Text="Leghorn"/>
           </WrapPanel>
 
           <WrapPanel Classes="SpeckSelection">
-			  <ToggleButton Name="SelectAustraslop" Click="SelectAustraslop_Click">
+			  <ToggleButton Name="SelectAustraslop" Click="SelectAustraslop_Click" ToolTip.Tip="Change Speck into an Austraslop Chicken">
 				  <Image Source="{SvgImage //Speck/Assets/Specks/Normals/Basic/Austraslop.svg}"/>
               </ToggleButton>
               <TextBlock Text="Austraslop"/>
           </WrapPanel>
 
           <WrapPanel Classes="SpeckSelection">
-			  <ToggleButton Name="SelectSussex" Click="SelectSussex_Click">
+			  <ToggleButton Name="SelectSussex" Click="SelectSussex_Click" ToolTip.Tip="Change Speck into a Sussex Chicken">
 				  <Image Source="{SvgImage //Speck/Assets/Specks/Normals/Basic/Sussex.svg}"/>
               </ToggleButton>
               <TextBlock Text="Sussex"/>

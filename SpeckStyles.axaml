@@ -38,6 +38,11 @@
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Cursor" Value="Hand"/>
 
+            <Style Selector="^ ToolTip">
+		<Setter Property="FontSize" Value="12"/>
+        <Setter Property="Foreground" Value="Gray"/>
+    </Style>
+
         <Style Selector="^ StackPanel">
             <Setter Property="Orientation" Value="Horizontal"/>
             <Setter Property="Spacing" Value="15"/>
