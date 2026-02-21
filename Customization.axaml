@@ -13,10 +13,10 @@
                      <WrapPanel Classes="HControlStack">
 
           <WrapPanel Classes="SpeckSelection">
-			  <ToggleButton Name="SelectKampoeng" Click="SelectKampoeng_Click" ToolTip.Tip="Change Speck into a Kampoeng Chicken">
-				  <Image Source="{SvgImage //Speck/Assets/Specks/Normals/Basic/Kampoeng.svg}"/>
+			  <ToggleButton Name="SelectKampoeng" Click="SelectKampoeng_Click" ToolTip.Tip="Change Speck into a Kampong Chicken">
+				  <Image Source="{SvgImage //Speck/Assets/Specks/Normals/Basic/Kampong.svg}"/>
               </ToggleButton>
-              <TextBlock Text="Kampoeng"/>
+              <TextBlock Text="Kampong"/>
           </WrapPanel>
 
           <WrapPanel Classes="SpeckSelection">
@@ -34,10 +34,10 @@
           </WrapPanel>
 
           <WrapPanel Classes="SpeckSelection">
-			  <ToggleButton Name="SelectAustraslop" Click="SelectAustraslop_Click" ToolTip.Tip="Change Speck into an Austraslop Chicken">
-				  <Image Source="{SvgImage //Speck/Assets/Specks/Normals/Basic/Austraslop.svg}"/>
+			  <ToggleButton Name="SelectAustraslop" Click="SelectAustraslop_Click" ToolTip.Tip="Change Speck into an Australorp Chicken">
+				  <Image Source="{SvgImage //Speck/Assets/Specks/Normals/Basic/Australorp.svg}"/>
               </ToggleButton>
-              <TextBlock Text="Austraslop"/>
+              <TextBlock Text="Australorp"/>
           </WrapPanel>
 
           <WrapPanel Classes="SpeckSelection">

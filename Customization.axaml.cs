@@ -17,7 +17,7 @@ public partial class Customization : UserControl
     {
         switch (Glb.SpeckBreed)
         {
-            case "Kampoeng":
+            case "Kampong":
                 SelectKampoeng.IsChecked = true;
             break;
 
@@ -29,7 +29,7 @@ public partial class Customization : UserControl
                 SelectLeghorn.IsChecked = true;
             break;
 
-            case "Austraslop":
+            case "Australorp":
                 SelectAustraslop.IsChecked = true;
             break;
 
@@ -46,7 +46,7 @@ public partial class Customization : UserControl
         SelectAustraslop.IsChecked = false;
         SelectSussex.IsChecked = false;
 
-        Glb.SpeckBreed = "Kampoeng";
+        Glb.SpeckBreed = "Kampong";
     }
 
     private void SelectOrpington_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -77,7 +77,7 @@ public partial class Customization : UserControl
         SelectLeghorn.IsChecked = false;
         SelectSussex.IsChecked = false;
 
-        Glb.SpeckBreed = "Austraslop";
+        Glb.SpeckBreed = "Australorp";
 
     }
 

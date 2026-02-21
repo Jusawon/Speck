@@ -12,12 +12,12 @@
                   <TextBlock Classes="H1" Text="Settings"/>
 
 
-		          <Grid ColumnDefinitions="*, *"  Classes="SettingsItem">
+		          <Grid ColumnDefinitions="auto, *"  Classes="SettingsItem">
 			          <TextBlock Text="Access Guide Here" Classes="Title" Grid.Column="0"/>
-                      <Button Content="Speck Guide" Name="BtnGuide" Grid.Column="1" ToolTip.Tip="Open Speck How-To Guide"/>
+                      <Button Content="Speck Guide" Name="BtnGuide" Grid.Column="1" ToolTip.Tip="Open Speck How-To Guide" Click="BtnGuide_Click"/>
                   </Grid>
 
-                  <Grid ColumnDefinitions="*, *"  Classes="SettingsItem">
+                  <Grid ColumnDefinitions="auto, *"  Classes="SettingsItem">
 			          <TextBlock Text="Scan Log Export File Format" Classes="Title" Grid.Column="0"/>
                       <ComboBox SelectionChanged="CmbFormat_SelectionChanged" Name="CmbFormat" SelectedItem="0" Grid.Column="1" ToolTip.Tip="Select Your Scan Log Export File Format">
                             <ComboBoxItem Content="JSON" Name="JsonSelect" />
