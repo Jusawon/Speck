@@ -9,7 +9,7 @@ namespace Speck
     internal class Glb
     {
         public const string ConnectionString = "Host=localhost;Port=5434;Username=postgres;Password=1234;Database=dbspeck";
-        public static string _SpeckBreed = "Orpington";
+        public static string _SpeckBreed = "Kampoeng";
         public static string ExportType  = "JSON"; //JSON/CSV/XML
 
         public static string SpeckBreed
