@@ -6,9 +6,6 @@ using Avalonia.Media;
 using Avalonia.Svg.Skia;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
-using LLama;
-using LLama.Common;
-using LLama.Sampling;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -26,9 +23,6 @@ namespace Speck
 {
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        private int _scanCount;
-        private int _vulnCount;
-        private float _riskMetric;
         private bool _ableToChat = false;
         private bool _loadingResp;
         public static string SpeckIcon;
