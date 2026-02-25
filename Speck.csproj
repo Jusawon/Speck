@@ -42,7 +42,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="AI\speck-ai.gguf" />
     <None Remove="How-To-Guide\Speck How-To Guide.pdf" />
     <None Remove="Scanners\Nuclei\nuclei.exe" />
     <None Remove="Scanners\Osquery\osqueryi.exe" />
@@ -50,9 +49,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="AI\speck-ai.gguf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="How-To-Guide\Speck How-To Guide.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

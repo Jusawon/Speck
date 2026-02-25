@@ -4,16 +4,19 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Svg.Skia;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 using LLama;
 using LLama.Common;
 using LLama.Sampling;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
@@ -30,6 +33,7 @@ namespace Speck
         private bool _loadingResp;
         public static string SpeckIcon;
         private readonly string _configPath = Path.Combine(AppContext.BaseDirectory, "config.json");
+
 
         private bool AbleToChat
         {
@@ -51,6 +55,16 @@ namespace Speck
             }
         }
 
+        public class ChatRequest
+        {
+            public string message { get; set; }
+        }
+
+        public class ChatResponse
+        {
+            public string response { get; set; }
+        }
+
         private void UpdateSendButtonState()
         {
             Btn_Send_Chat.IsEnabled = !_loadingResp && _ableToChat;
@@ -59,12 +73,12 @@ namespace Speck
         private string modelPath;
 
         private Scans scans;
-        private LLamaWeights SpeckModel;
-        private LLamaContext _context;
-        private InteractiveExecutor _executor;
-        private ConversationHistory _history;
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        private static readonly HttpClient _httpClient = new HttpClient
+        {
+            Timeout = TimeSpan.FromSeconds(120)
+        };
 
         public MainWindow()
         {
@@ -79,12 +93,6 @@ namespace Speck
             ChatInput_KeyDown,
             Avalonia.Interactivity.RoutingStrategies.Tunnel);
             scans = new Scans();
-
-            //============================ Model Loading ===============================
-
-            InitializeModelAsync();
-
-            //==========================================================================
 
             this.Closing += (_, __) =>
             {
@@ -189,74 +197,9 @@ namespace Speck
             }
         }
 
-        public class ConversationMessage
-        {
-            public AuthorRole Role { get; set; }
-            public string Content { get; set; }
-            public DateTime Timestamp { get; set; } = DateTime.Now;
-        }
-
-        public class ConversationHistory
-        {
-            public List<ConversationMessage> Messages { get; set; } = new List<ConversationMessage>();
-
-            public void AddMessage(AuthorRole role, string content)
-            {
-                Messages.Add(new ConversationMessage { Role = role, Content = content });
-            }
-
-            public void Clear()
-            {
-                Messages.Clear();
-            }
-        }
-
-        // Track loading indicators
-
-        public async Task InitializeModelAsync()
-        {
-            modelPath = Path.Combine(AppContext.BaseDirectory, "AI", "speck-ai.gguf");
-
-            if (!File.Exists(modelPath))
-            {
-                Debug.WriteLine("Model file not found!");
-                return;
-            }
-
-            var parameters = new ModelParams(modelPath)
-            {
-                ContextSize = 8192,
-                BatchSize = 512,
-                GpuLayerCount = -1  // All layers to GPU
-            };
-
-            try
-            {
-                Debug.WriteLine("Loading model...");
-                SpeckModel = LLamaWeights.LoadFromFile(parameters);
-                _context = SpeckModel.CreateContext(parameters);
-                _executor = new InteractiveExecutor(_context);
-
-                _history = new ConversationHistory();
-
-                Debug.WriteLine("Model loaded successfully.");
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Model loading failed: {ex.Message}");
-            }
-        }
-
         public async Task ProcessUserInputAsync(string userInput)
         {
             LoadingResp = true;
-
-            if (_executor == null)
-            {
-                AddAIResponse("Model is not initialized. Please wait for loading to complete.");
-                LoadingResp = false;
-                return;
-            }
 
             try
             {
@@ -269,66 +212,54 @@ namespace Speck
                         ChatScrollViewer.Extent.Height
                     );
 
-                // Add user message to conversation history
-                _history.AddMessage(AuthorRole.User, userInput);
-
-                // Build the full prompt with system prompt and limited conversation history
-                var fullPrompt = BuildPrompt();
-
-                // Configure inference parameters
-                var inferenceParams = new InferenceParams()
-                {
-                    SamplingPipeline = new DefaultSamplingPipeline()
-                    {
-                        Temperature = 0.7f,
-                    },
-                    AntiPrompts = new List<string> { "User:", "###" },
-                    MaxTokens = 500,
-                };
-
-                // Create a temporary message UI element for streaming
+                // Create temporary AI message container
                 var aiMessageContainer = CreateAIMessageUI(". . .");
-                var messageTextBlock = FindMessageTextBlock(aiMessageContainer); // You'll need this helper method
+                var messageTextBlock = FindMessageTextBlock(aiMessageContainer);
+                messageTextBlock.Foreground = Brushes.Gray;
                 ChatPanel.Children.Add(aiMessageContainer);
 
-                // Get AI response with streaming
-                var aiResponse = new StringBuilder();
-                var lastUpdate = DateTime.Now;
-
-                await foreach (var token in _executor.InferAsync(fullPrompt, inferenceParams))
+                // Prepare HTTP request
+                var requestObj = new ChatRequest
                 {
-                    aiResponse.Append(token);
+                    message = userInput
+                };
 
-                    // Update UI periodically to avoid excessive updates
-                    if ((DateTime.Now - lastUpdate).TotalMilliseconds > 50) // Update every 50ms
-                    {
-                        var currentText = CleanResponse(aiResponse.ToString().Trim());
-                        messageTextBlock.Text = currentText;
+                var json = JsonSerializer.Serialize(requestObj);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                        // Scroll to bottom
-                        ChatScrollViewer.Offset =
-                            new Avalonia.Vector(
-                                ChatScrollViewer.Offset.X,
-                                ChatScrollViewer.Extent.Height
-                            );
+                // Call FastAPI
+                var response = await _httpClient.PostAsync(
+                    "http://127.0.0.1:8000/chat",
+                    content
+                );
 
-                        lastUpdate = DateTime.Now;
-                    }
+                response.EnsureSuccessStatusCode();
+
+                var responseJson = await response.Content.ReadAsStringAsync();
+                var result = JsonSerializer.Deserialize<ChatResponse>(responseJson);
+
+                var fullResponse = result?.response ?? "No response received.";
+
+                // 🔥 Simulated streaming directly here
+                var builder = new StringBuilder();
+                messageTextBlock.Foreground = Brushes.Black;
+                foreach (char c in fullResponse)
+                {
+                    builder.Append(c);
+                    messageTextBlock.Text = builder.ToString();
+
+                    ChatScrollViewer.Offset =
+                        new Avalonia.Vector(
+                            ChatScrollViewer.Offset.X,
+                            ChatScrollViewer.Extent.Height
+                        );
+
+                    await Task.Delay(10); // adjust typing speed here
                 }
-
-                var finalResponse = CleanResponse(aiResponse.ToString().Trim());
-                messageTextBlock.Text = finalResponse;
-
-
-                // Add final response to conversation history
-                _history.AddMessage(AuthorRole.Assistant, finalResponse);
-
-                // Scroll to bottom one final time
-                ChatScrollViewer.Offset =
-                    new Avalonia.Vector(
-                        ChatScrollViewer.Offset.X,
-                        ChatScrollViewer.Extent.Height
-                    );
+            }
+            catch (Exception ex)
+            {
+                AddAIResponse($"Error: {ex.Message}");
             }
             finally
             {
@@ -336,7 +267,6 @@ namespace Speck
             }
         }
 
-        // Helper method to create AI message UI
         private Grid CreateAIMessageUI(string initialText)
         {
             var messageText = new SelectableTextBlock
@@ -399,77 +329,6 @@ namespace Speck
             }
             return null;
         }
-
-        private string CleanResponse(string response)
-        {
-            // Remove anything after the first occurrence of "User:" or other assistant tags
-            var userIndex = response.IndexOf("User:");
-            if (userIndex >= 0)
-            {
-                response = response.Substring(0, userIndex).TrimEnd();
-            }
-
-            var assistantIndex = response.IndexOf("<|im_start|>assistant");
-            if (assistantIndex >= 0)
-            {
-                response = response.Substring(0, assistantIndex).TrimEnd();
-            }
-
-            var assistantTagIndex = response.IndexOf("Assistant:");
-            if (assistantTagIndex >= 0)
-            {
-                response = response.Substring(0, assistantTagIndex).TrimEnd();
-            }
-
-            // Remove trailing whitespace and special characters
-            response = response.TrimEnd('\n', '\r', ' ', ':', '<', '|', 'i', 'm', '_', 's', 't', 'a', 'r', 't', '>', 'e', 'n', 'd');
-
-            return response;
-        }
-
-        private string BuildPrompt()
-        {
-            var promptBuilder = new StringBuilder();
-
-            var systemPrompt = "You are Speck, an experienced cybersecurity expert with a unique personality. " +
-                              "You analyze vulnerabilities with deep technical knowledge while maintaining a friendly, approachable tone. " +
-                              "Explain with occasional chicken sounds (*Pock* *Pock*). " +
-                              "Think step-by-step: identify the vulnerability type, explain the risk, describe the impact, and suggest specific mitigations.";
-
-            //var systemPrompt = "You are Speck, an experienced cybersecurity expert with a unique personality. " +
-            //                  "You analyze vulnerabilities with deep technical knowledge while maintaining a friendly, approachable tone. " +
-            //                  "Explain with occasional chicken sounds (*Pock* *Pock*). " +
-            //                  "Provide practical, actionable advice that general users can implement immediately. " +
-            //                  "Use varied sentence structures and speak conversationally while remaining professional. " +
-            //                  "When discussing patches, focus on explaining the core concept rather than saying 'No patch available'. " +
-            //                  "Think step-by-step: identify the vulnerability type, explain the risk, describe the impact, and suggest specific mitigations." +
-            //                  "If no mitigation steps are found, answer with the patch method or no ways to mitigate vulnerability for now";
-
-            promptBuilder.AppendLine($"<|im_start|>system");
-            promptBuilder.AppendLine($"{systemPrompt}<|im_end|>");
-
-            var recentMessages = _history.Messages.TakeLast(2).ToList();
-
-            foreach (var message in recentMessages)
-            {
-                switch (message.Role)
-                {
-                    case AuthorRole.User:
-                        promptBuilder.AppendLine($"<|im_start|>user");
-                        promptBuilder.AppendLine($"{message.Content}<|im_end|>");
-                        break;
-                    case AuthorRole.Assistant:
-                        promptBuilder.AppendLine($"<|im_start|>assistant");
-                        promptBuilder.AppendLine($"{message.Content}<|im_end|>");
-                        break;
-                }
-            }
-
-            promptBuilder.AppendLine($"<|im_start|>assistant");
-
-            return promptBuilder.ToString();
-        }
-
 
         private void ChatWindow_PaneClosing(object? sender, CancelRoutedEventArgs e)
         {
