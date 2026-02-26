@@ -194,24 +194,23 @@ namespace Speck
         public async Task ProcessUserInputAsync(string userInput)
         {
             LoadingResp = true;
+            // Add user message to UI
+            AddUserMessage(userInput);
+
+            ChatScrollViewer.Offset =
+                new Avalonia.Vector(
+                    ChatScrollViewer.Offset.X,
+                    ChatScrollViewer.Extent.Height
+                );
+
+            // Create temporary AI message container
+            var aiMessageContainer = CreateAIMessageUI(". . .");
+            var messageTextBlock = FindMessageTextBlock(aiMessageContainer);
+            messageTextBlock.Foreground = Brushes.Gray;
+            ChatPanel.Children.Add(aiMessageContainer);
 
             try
             {
-                // Add user message to UI
-                AddUserMessage(userInput);
-
-                ChatScrollViewer.Offset =
-                    new Avalonia.Vector(
-                        ChatScrollViewer.Offset.X,
-                        ChatScrollViewer.Extent.Height
-                    );
-
-                // Create temporary AI message container
-                var aiMessageContainer = CreateAIMessageUI(". . .");
-                var messageTextBlock = FindMessageTextBlock(aiMessageContainer);
-                messageTextBlock.Foreground = Brushes.Gray;
-                ChatPanel.Children.Add(aiMessageContainer);
-
                 // Prepare HTTP request
                 var requestObj = new ChatRequest
                 {
@@ -253,7 +252,7 @@ namespace Speck
             }
             catch (Exception ex)
             {
-                AddAIResponse($"Error: {ex.Message}");
+                messageTextBlock.Text = $"Error: {ex.Message}";
             }
             finally
             {

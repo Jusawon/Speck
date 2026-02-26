@@ -1,0 +1,21 @@
+Required Packages:
+fastapi
+uvicorn
+unsloth
+torch
+transformers
+pydantic
+requests
+re
+threading
+
+How to set up server:
+1. Insert "Speck-AI" folder to a local directory where a python environment with the packages installed is able to access.
+2. Start command prompt or terminal.
+3. Enable environment with packages (root installation of packages does not require activation of environment).
+4. Change directory (CD) into the "Speck-AI" folder.
+5. Run this command "uvicorn server:app --host 0.0.0.0 --port 8000"
+6. Wait until the uvicorn server replies that the server is running, pay attention to number or id inside the box bracket (ex: [2876]), this is the PID; it will be needed for stopping the service.
+7. Run Speck and use its AI function.
+8. Once done, shut down the server by pressing CTRL+C. If it's unable to stop, run the following command taskkill /PID [PID] /F and the server will shutdown.
+
