@@ -109,35 +109,35 @@
 
                 <StackPanel Orientation="Vertical" Margin="20 20" Spacing="10" DockPanel.Dock="Top">
                       <ToggleButton Classes="MenuItems" Name="MI_Dashboard" ToolTip.Tip="Open Speck's Dashboard"> <!-- MI_Dashboard-->
-                          <StackPanel>
+                          <StackPanel Classes="A">
                               <Image Classes="MenuItemIcon" Source="{SvgImage //Speck/Assets/Icons/Menu Items/Dashboard Icon.svg}"/>
                               <TextBlock Classes="MenuItemText" Text="Dashboard"/>
                           </StackPanel>
                       </ToggleButton>
 
                       <ToggleButton Classes="MenuItems" Name="MI_Scans" ToolTip.Tip="Scan Your Device Here"> <!-- MI_Scans-->
-                          <StackPanel>
+                          <StackPanel Classes="A">
                               <Image Classes="MenuItemIcon" Source="{SvgImage //Speck/Assets/Icons/Menu Items/Scans Icon.svg}"/>
                               <TextBlock Classes="MenuItemText" Text="Scan"/>
                           </StackPanel>
                       </ToggleButton>
 
                       <ToggleButton Classes="MenuItems" Name="MI_Vulnerabilities" ToolTip.Tip="Display Latest Vulnerabilities Found"> <!-- MI_Vulnerabilities-->
-                          <StackPanel>
+                          <StackPanel Classes="A">
                               <Image Classes="MenuItemIcon" Source="{SvgImage //Speck/Assets/Icons/Menu Items/Vulnerabilities Icon.svg}"/>
                               <TextBlock Classes="MenuItemText" Text="Vulnerabilities"/>
                           </StackPanel>
                       </ToggleButton>
 
                       <ToggleButton Classes="MenuItems" Name="MI_Logs" ToolTip.Tip="Display All Scans"> <!-- MI_Logs -->
-                          <StackPanel>
+                          <StackPanel Classes="A">
                               <Image Classes="MenuItemIcon" Source="{SvgImage //Speck/Assets/Icons/Menu Items/Logs Icon.svg}"/>
                               <TextBlock Classes="MenuItemText" Text="Logs"/>
                           </StackPanel>
                       </ToggleButton>
 
                       <ToggleButton Classes="MenuItems" Name="MI_Customization" ToolTip.Tip="Customize Speck"> <!-- MI_Customization -->  
-                          <StackPanel>
+                          <StackPanel Classes="A">
                               <Image Classes="MenuItemIcon" Source="{SvgImage //Speck/Assets/Icons/Menu Items/Speck Customization Icon.svg}"/>
                               <TextBlock Classes="MenuItemText" Text="Customization"/>
                           </StackPanel>
@@ -148,7 +148,7 @@
                 <ToggleButton Classes="MenuItems" Margin="0, 0, 0, 20" Name="MI_Settings" 
                               DockPanel.Dock="Bottom"
                               ToolTip.Tip="Configure Settings">
-                      <StackPanel>
+                      <StackPanel Classes="A">
                             <Image Classes="MenuItemIcon" Source="{SvgImage //Speck/Assets/Icons/Menu Items/Settings Icon.svg}"/>
                             <TextBlock Classes="MenuItemText" Text="Settings"/>
                           </StackPanel>

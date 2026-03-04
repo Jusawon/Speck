@@ -74,14 +74,15 @@ public partial class Logs : UserControl
 
     public class SelectedVulns
     {
-        public string ID { get; set; } = string.Empty;
+
+
+        public string Severity { get; set; } = string.Empty;
         public string Category { get; set; } = string.Empty;
         public string Identifier { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
-        public string Severity { get; set; } = string.Empty;
-        public string Exposed { get; set; }
         public string Tool { get; set; }
-
+        public string Exposed { get; set; }
+        public string ID { get; set; } = string.Empty;
     }
 
     public void GetSelectedLogVulns(string scanId)
@@ -112,7 +113,7 @@ public partial class Logs : UserControl
                     Identifier = reader.IsDBNull(2) ? string.Empty : reader.GetString(2),
                     Title = reader.IsDBNull(3) ? string.Empty : reader.GetString(3),
                     Severity = reader.IsDBNull(4) ? string.Empty : reader.GetString(4),
-                    Exposed = !reader.IsDBNull(5) ? string.Empty : reader.GetString(5),
+                    Exposed = reader.IsDBNull(5) ? string.Empty : reader.GetBoolean(5) ? "Exposed" : "Not Exposed",
                     Tool = reader.IsDBNull(6) ? string.Empty : reader.GetString(6)
                 });
             }
@@ -510,7 +511,14 @@ public partial class Logs : UserControl
                 FontWeight = Avalonia.Media.FontWeight.SemiBold
             });
 
-            QuestBodyText.Inlines.Add(new Avalonia.Controls.Documents.Run(" and all it's finding(s)?"));
+            QuestBodyText.Inlines.Add(new Avalonia.Controls.Documents.Run(" and all it's finding(s) to "));
+
+            QuestBodyText.Inlines.Add(new Avalonia.Controls.Documents.Run(ExportType)
+            {
+                FontWeight = Avalonia.Media.FontWeight.SemiBold
+            });
+
+            QuestBodyText.Inlines.Add(new Avalonia.Controls.Documents.Run("?"));
         }
     }
 }

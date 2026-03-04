@@ -31,13 +31,13 @@ public partial class Vulnerabilities : UserControl
 
     public class Vuln_DB
     {
-        public string ID { get; set; } = string.Empty;
+        public string Severity { get; set; } = string.Empty;
         public string Category { get; set; } = string.Empty;
         public string Identifier { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
-        public string Severity { get; set; } = string.Empty;
-        public string Exposed { get; set; }
         public string Tool { get; set; }
+        public string Exposed { get; set; }
+        public string ID { get; set; } = string.Empty;
 
     }
 
@@ -74,10 +74,11 @@ public partial class Vulnerabilities : UserControl
                     Identifier = reader.IsDBNull(2) ? string.Empty : reader.GetString(2),
                     Title = reader.IsDBNull(3) ? string.Empty : reader.GetString(3),
                     Severity = reader.IsDBNull(4) ? string.Empty : reader.GetString(4),
-                    Exposed = !reader.IsDBNull(5) ? string.Empty : reader.GetString(5),
+                    Exposed = reader.IsDBNull(5) ? string.Empty : reader.GetBoolean(5) ? "Exposed" : "Not Exposed",
                     Tool = reader.IsDBNull(6) ? string.Empty : reader.GetString(6)
                 });
             }
+
         }
         catch (System.Exception ex)
         {
@@ -85,6 +86,40 @@ public partial class Vulnerabilities : UserControl
         }
 
         return scanList;
+    }
+
+    public DateTime GetLastScanDate()
+    {
+        var LastScanDate = new DateTime();
+
+        try
+        {
+            using var conn = new NpgsqlConnection(ConnectionString);
+            conn.Open();
+
+            using var cmd = new NpgsqlCommand("""
+                SELECT finished_at
+                FROM scans
+                WHERE status = 'completed'
+                  AND finished_at IS NOT NULL
+                ORDER BY finished_at DESC
+                LIMIT 1
+            """, conn);
+
+            using var reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                LastScanDate = reader.GetDateTime(0).ToLocalTime();
+            }
+
+        }
+        catch (System.Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Database error: {ex.Message}");
+        }
+
+        return LastScanDate;
     }
 
     private void ApplyFilter(string searchText = "")
@@ -126,7 +161,7 @@ public partial class Vulnerabilities : UserControl
 
         CriticalCounter.Text = Criticals.ToString();
         HighCounter.Text = Highs.ToString();
-        MediumCounter.Text= Mediums.ToString();
+        MediumCounter.Text = Mediums.ToString();
         LowCounter.Text = Lows.ToString();
         InfoCounter.Text = Infos.ToString();
         UnknownCounter.Text = Unknowns.ToString();
@@ -137,7 +172,7 @@ public partial class Vulnerabilities : UserControl
             VulnDB.Add(scan);
         }
 
-
+        LastScan.Text = "Last Scan At: " + GetLastScanDate() + " " + TimeZoneInfo.Local.StandardName;
         ApplyFilter();
     }
 
@@ -159,7 +194,7 @@ public partial class Vulnerabilities : UserControl
         {
             SpeckBorderText.Text = "*Pock* *Pock* That's a handful of vulnerabilities!";
         }
-        else if (Criticals == 0 && Highs == 0 && Mediums == 0 && Lows ==0)
+        else if (Criticals == 0 && Highs == 0 && Mediums == 0 && Lows == 0)
         {
             SpeckBorderText.Text = "*Pock* *Pock* You're quite safe!";
             SpeckImage = "avares://Speck/Assets/Specks/Normals/Basic/";
@@ -168,7 +203,7 @@ public partial class Vulnerabilities : UserControl
         }
         else SpeckBorderText.Text = "*Pock* *Pock* Found some vulnerabilities!";
 
-            var Resource = SvgSource.Load(SpeckImage);
+        var Resource = SvgSource.Load(SpeckImage);
         SpeckPic.Source = new SvgImage { Source = Resource };
     }
 
@@ -237,5 +272,41 @@ public partial class Vulnerabilities : UserControl
             QuestBodyText.Inlines.Add(new Avalonia.Controls.Documents.Run("?"));
         }
 
+    }
+
+    private void CriticalExec_Tapped(object? sender, Avalonia.Input.TappedEventArgs e)
+    {
+        SearchInput.Clear();
+        SearchInput.Text = "CRITICAL";
+    }
+
+    private void HighExec_Tapped(object? sender, Avalonia.Input.TappedEventArgs e)
+    {
+        SearchInput.Clear();
+        SearchInput.Text = "HIGH";
+    }
+
+    private void MediumExec_Tapped(object? sender, Avalonia.Input.TappedEventArgs e)
+    {
+        SearchInput.Clear();
+        SearchInput.Text = "MEDIUM";
+    }
+
+    private void LowExec_Tapped(object? sender, Avalonia.Input.TappedEventArgs e)
+    {
+        SearchInput.Clear();
+        SearchInput.Text = "LOW";
+    }
+
+    private void InfoExec_Tapped(object? sender, Avalonia.Input.TappedEventArgs e)
+    {
+        SearchInput.Clear();
+        SearchInput.Text = "INFO";
+    }
+
+    private void UnknownExec_Tapped(object? sender, Avalonia.Input.TappedEventArgs e)
+    {
+        SearchInput.Clear();
+        SearchInput.Text = "UNKNOWN";
     }
 }

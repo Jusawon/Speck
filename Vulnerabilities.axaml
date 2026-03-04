@@ -66,7 +66,7 @@
                 </WrapPanel>
 
                           <WrapPanel Classes="ExecutiveSum">
-                                <Border>
+                                <Border ToolTip.Tip="Filter only Critical severity vulnerabilities" Name="CriticalExec" Tapped="CriticalExec_Tapped" Classes="A">
                                     <StackPanel>
                                         <Image Source="{SvgImage //Speck/Assets/Icons/Scan Items/Critical.svg}"/>
                                         <TextBlock Classes="Title" Text="Critical"/>
@@ -74,7 +74,7 @@
                                     </StackPanel>
                                 </Border>
 
-                                <Border>
+                                <Border ToolTip.Tip="Filter only High severity vulnerabilities" Name="HighExec" Tapped="HighExec_Tapped" Classes="A">
                                     <StackPanel>
                                         <Image Source="{SvgImage //Speck/Assets/Icons/Scan Items/High.svg}"/>
                                         <TextBlock Classes="Title" Text="High"/>
@@ -82,7 +82,7 @@
                                     </StackPanel>
                                 </Border>
 
-                                  <Border>
+                                  <Border ToolTip.Tip="Filter only Medium severity vulnerabilities" Name="MediumExec" Tapped="MediumExec_Tapped" Classes="A">
                                     <StackPanel>
                                         <Image Source="{SvgImage //Speck/Assets/Icons/Scan Items/Medium.svg}"
                                                 />
@@ -91,7 +91,7 @@
                                     </StackPanel>
                                   </Border>
 
-                                  <Border>
+                                  <Border ToolTip.Tip="Filter only Low severity vulnerabilities" Name="LowExec" Tapped="LowExec_Tapped" Classes="A">
                                     <StackPanel>
                                         <Image Source="{SvgImage //Speck/Assets/Icons/Scan Items/Low.svg}"
                                                 />
@@ -100,7 +100,7 @@
                                     </StackPanel>
                                    </Border>
 
-                                  <Border>
+                                  <Border ToolTip.Tip="Filter only Info entries" Name="InfoExec" Tapped="InfoExec_Tapped" Classes="A">
                                     <StackPanel>
                                         <Image Source="{SvgImage //Speck/Assets/Icons/Scan Items/Info.svg}"
                                                />
@@ -109,7 +109,7 @@
                                     </StackPanel>
                                    </Border>
 
-                                  <Border>
+                                  <Border ToolTip.Tip="Filter only Unknown severity vulnerabilities" Name="UnknownExec" Tapped="UnknownExec_Tapped" Classes="A">
                                     <StackPanel>
                                         <Image Source="{SvgImage //Speck/Assets/Icons/Scan Items/Unknown.svg}"
                                                />
@@ -121,10 +121,12 @@
 
                 <TextBlock Classes="H2" Text="Vulnerabilities Found"/>
 
+               <DockPanel Classes="VulnDock">
+                   <TextBlock Classes="LastScan" Name="LastScan" DockPanel.Dock="Left"/>
                               <Grid 
                                ColumnDefinitions="*, auto"
                                HorizontalAlignment="Stretch"      
-                                     >
+                                     DockPanel.Dock="Right">
 
 				                <Border Classes=" ChatBox"
                 
@@ -148,6 +150,7 @@
                                              </Grid>
                                          </Border>
                                </Grid>
+                   </DockPanel>
 
                <DataGrid Classes="DatabaseView" Name="VulnTable" DoubleTapped="VulnTable_DoubleTapped" ToolTip.Tip="Display All Currently Found Vulnerabilities"/>
 

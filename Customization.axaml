@@ -16,35 +16,35 @@
 			  <ToggleButton Name="SelectKampoeng" Click="SelectKampoeng_Click" ToolTip.Tip="Change Speck into a Kampong Chicken">
 				  <Image Source="{SvgImage //Speck/Assets/Specks/Normals/Basic/Kampong.svg}"/>
               </ToggleButton>
-              <TextBlock Text="Kampong"/>
+              <TextBlock Text="Kampong" Classes="A"/>
           </WrapPanel>
 
           <WrapPanel Classes="SpeckSelection">
 			  <ToggleButton Name="SelectOrpington" Click="SelectOrpington_Click" ToolTip.Tip="Change Speck into an Orpington Chicken">
 				  <Image Source="{SvgImage //Speck/Assets/Specks/Normals/Basic/Orpington.svg}"/>
               </ToggleButton>
-              <TextBlock Text="Orpington"/>
+              <TextBlock Text="Orpington" Classes="A"/>
           </WrapPanel>
 
           <WrapPanel Classes="SpeckSelection">
 			  <ToggleButton Name="SelectLeghorn" Click="SelectLeghorn_Click" ToolTip.Tip="Change Speck into a Leghorn Chicken">
 				  <Image Source="{SvgImage //Speck/Assets/Specks/Normals/Basic/Leghorn.svg}"/>
               </ToggleButton>
-              <TextBlock Text="Leghorn"/>
+              <TextBlock Text="Leghorn" Classes="A"/>
           </WrapPanel>
 
           <WrapPanel Classes="SpeckSelection">
 			  <ToggleButton Name="SelectAustraslop" Click="SelectAustraslop_Click" ToolTip.Tip="Change Speck into an Australorp Chicken">
 				  <Image Source="{SvgImage //Speck/Assets/Specks/Normals/Basic/Australorp.svg}"/>
               </ToggleButton>
-              <TextBlock Text="Australorp"/>
+              <TextBlock Text="Australorp" Classes="A"/>
           </WrapPanel>
 
           <WrapPanel Classes="SpeckSelection">
 			  <ToggleButton Name="SelectSussex" Click="SelectSussex_Click" ToolTip.Tip="Change Speck into a Sussex Chicken">
 				  <Image Source="{SvgImage //Speck/Assets/Specks/Normals/Basic/Sussex.svg}"/>
               </ToggleButton>
-              <TextBlock Text="Sussex"/>
+              <TextBlock Text="Sussex" Classes="A"/>
           </WrapPanel>
 
         </WrapPanel>

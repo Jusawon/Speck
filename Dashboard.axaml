@@ -27,7 +27,7 @@
                   <TextBlock Classes="H2" Text="Overview"/>
               <WrapPanel Classes="HControlStack">
                   <Border Classes="OverviewBoxes">
-                        <StackPanel>
+                        <StackPanel Classes="A">
                             <TextBlock  Foreground="#537BFF" Classes="OverviewCounter" Name="ScanCounter"/>
 
                             <StackPanel>
@@ -38,7 +38,7 @@
                 </Border>
 
                   <Border Classes="OverviewBoxes">
-                        <StackPanel>
+                        <StackPanel Classes="A">
                             <TextBlock  Foreground="#CB1111" Classes="OverviewCounter" Name="VulnCounter"/>
 
                             <StackPanel>
@@ -49,7 +49,7 @@
                 </Border>
 
                  <Border Classes="OverviewBoxes">
-                        <StackPanel>
+                        <StackPanel Classes="A">
                             <TextBlock  Foreground="#FF893A" Classes="OverviewCounter" Name="RiskMetric"/>
 
                             <StackPanel>

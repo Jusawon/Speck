@@ -38,24 +38,19 @@
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Cursor" Value="Hand"/>
 
-            <Style Selector="^ ToolTip">
-		<Setter Property="FontSize" Value="12"/>
-        <Setter Property="Foreground" Value="Gray"/>
-    </Style>
-
-        <Style Selector="^ StackPanel">
+        <Style Selector="^ StackPanel.A">
             <Setter Property="Orientation" Value="Horizontal"/>
             <Setter Property="Spacing" Value="15"/>
         </Style>
 
-        <Style Selector="^ TextBlock">
+        <Style Selector="^ TextBlock.MenuItemText">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="FontWeight" Value="Medium"/>
             <Setter Property="Padding" Value="0,4, 0, 0"/>
         </Style>
 
-        <Style Selector="^ Image">
+        <Style Selector="^ Image.MenuItemIcon">
             <Setter Property="Width" Value="20"/>
             <Setter Property="Height" Value="20"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -96,7 +91,7 @@
             </Setter.Value>
         </Setter>
 
-        <Style Selector="^ StackPanel">
+        <Style Selector="^ StackPanel.A">
             <Setter Property="Orientation" Value="Vertical"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -107,7 +102,6 @@
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 
             </Style>
-
         </Style>
 
     </Style> <!-- Overview Boxes-->
@@ -555,13 +549,14 @@
         <Setter Property="ItemSpacing" Value="5"/>
         <Setter Property="ItemsAlignment" Value="Center"/>
 
-        <Style Selector="^ Border">
+        <Style Selector="^ Border.A">
             <Setter Property="Width" Value="180"/>
             <Setter Property="Height" Value="140"/>
             <Setter Property="Background" Value="White"/>
             <Setter Property="CornerRadius" Value="20"/>
             <Setter Property="Padding" Value="20"/>
             <Setter Property="Margin" Value="5"/>
+            <Setter Property="Cursor" Value="Hand"/>
 
             <Setter Property="Effect">
                 <Setter.Value>
@@ -597,8 +592,15 @@
                         <Setter Property="TextWrapping" Value="Wrap"/>
                         <Setter Property="TextAlignment" Value="Center"/>
                      </Style>
-
                 </Style>
+         <Style Selector="^:pointerover">
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" BlurRadius="8" Opacity="0.5" OffsetY="0" OffsetX="0"/>
+                </Setter.Value>
+             </Setter>
+        </Style>
+
             </Style>
     </Style><!-- Executive Summary Boxes-->
 
@@ -607,7 +609,7 @@
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="VerticalAlignment" Value="Stretch"/>
         
-        <Style Selector="^ Border"> 
+        <Style Selector="^ Border.A"> 
 		    <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="VerticalAlignment" Value="Stretch"/>
             <Setter Property="MaxHeight" Value="600"/>
@@ -781,7 +783,7 @@
                 </Setter>
          </Style>
 
-        <Style Selector="^ TextBlock">
+        <Style Selector="^ TextBlock.A">
 			<Setter Property="FontSize" Value="28"/>
             <Setter Property="Foreground" Value="Gray"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -844,6 +846,37 @@
        <Setter Property="Width" Value="322"/>
        <Setter Property="Height" Value="326"/>
    </Style>
+
+    <Style Selector="DockPanel.VulnDock">
+	    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="LastChildFill" Value="False"/>
+
+        <Style Selector="^ TextBlock.LastScan">
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontWeight" Value="Regular"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+    </Style>
+
+  <Style Selector="ToolTip">
+    <Setter Property="Background" Value="White"/>
+    <Setter Property="Foreground" Value="Gray"/>
+    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="Padding" Value="12"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="CornerRadius" Value="12"/>
+    <Setter Property="FontWeight" Value="Regular"/>
+
+
+    <Setter Property="Effect">
+        <Setter.Value>
+            <DropShadowEffect Color="Black" BlurRadius="4" Opacity="0.1" OffsetY="0" OffsetX="0"/>
+        </Setter.Value>
+    </Setter>
+</Style>
 
 
 
