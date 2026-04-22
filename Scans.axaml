@@ -24,7 +24,7 @@
 
                           <StackPanel>
                          <Button Name="BtnScan" Click="BtnScan_Click" ToolTip.Tip="Scan Your Device"/>
-                                <ComboBox Name="ScanCmb" SelectionChanged="ScanCmb_SelectionChanged" ToolTip.Tip="Select Your Scan Type">
+                                <ComboBox Name="ScanCmb" SelectionChanged="ScanCmb_SelectionChanged" ToolTip.Tip="Select Your Scan Type"> 
 							    <ComboBoxItem Name="QuickItem"> Quick </ComboBoxItem>
                                 <ComboBoxItem Name="FullItem"> Full </ComboBoxItem>
                             </ComboBox> 
